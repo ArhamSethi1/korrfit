@@ -12,7 +12,7 @@ const stats = [
   { icon: Maximize, value: 5, suffix: "", label: "Dedicated zones" },
 ];
 
-function CountUp({ to, suffix, decimals }: { to: number; suffix: string; decimals?: boolean }) {
+function CountUp({ to, suffix, decimals }: { to: number; suffix: string; decimals?: boolean | undefined }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [n, setN] = useState(0);
 
