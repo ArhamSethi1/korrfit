@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/SiteNav";
+import { LeadProvider } from "@/components/site/LeadDialog";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 import { Hero } from "@/components/site/sections/Hero";
 import { Stats } from "@/components/site/sections/Stats";
