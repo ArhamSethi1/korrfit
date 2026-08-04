@@ -1,9 +1,14 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 import { site } from "@/lib/site";
 import { Logo } from "../primitives";
 import { navItems } from "@/lib/site";
+import { useLead } from "../LeadDialog";
+import { trackEvent } from "@/lib/analytics";
 
 export function FinalCta() {
+  const { openLead } = useLead();
+
+
   return (
     <section className="relative overflow-hidden border-y border-hairline py-24 md:py-32">
       <span
