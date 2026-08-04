@@ -54,19 +54,20 @@ export function Pricing() {
                 ))}
               </ul>
 
-              <a
-                href={site.whatsapp}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                type="button"
+                onClick={() =>
+                  openLead({ intent: "membership", plan: plan.name, source: "pricing" })
+                }
                 className={cn(
-                  "mt-8 inline-flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5",
+                  "mt-8 inline-flex min-h-11 items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   plan.featured
                     ? "bg-primary text-primary-foreground"
                     : "border border-hairline bg-surface/60 text-foreground hover:bg-surface",
                 )}
               >
                 Get this plan
-              </a>
+              </button>
             </div>
           </Reveal>
         ))}
