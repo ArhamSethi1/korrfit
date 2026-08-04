@@ -75,7 +75,11 @@ export function Pricing() {
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
         Not sure which plan fits?{" "}
-        <a href={site.tel} className="text-foreground underline underline-offset-4">
+        <a
+          href={site.tel}
+          onClick={() => trackEvent("click_call", { source: "pricing" })}
+          className="text-foreground underline underline-offset-4"
+        >
           Call {site.phoneDisplay}
         </a>{" "}
         and we will tell you honestly.
