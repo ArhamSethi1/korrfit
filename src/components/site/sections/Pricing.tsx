@@ -1,8 +1,10 @@
 import { Check, Sparkles } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
+import { useLead } from "../LeadDialog";
 import { plans } from "@/data/content";
 import { site } from "@/lib/site";
+import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export function Pricing() {
