@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Play } from "lucide-react";
+import { useRef, useState } from "react";
+import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
 import { tourRooms } from "@/data/content";
@@ -144,5 +144,57 @@ export function Gallery() {
         </div>
       </div>
     </Section>
+  );
+}
+
+function MoreMoments({ images }: { images: string[] }) {
+  const track = useRef<HTMLDivElement>(null);
+
+  const scrollBy = (dir: 1 | -1) => {
+    const el = track.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.max(280, el.clientWidth * 0.8), behavior: "smooth" });
+  };
+
+  return (
+    <div className="mt-16">
+      <div className="flex items-center justify-between gap-4">
+        <h3 className="text-xl font-semibold">More moments</h3>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => scrollBy(-1)}
+            aria-label="Scroll gallery left"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-hairline bg-background/40 transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <ChevronLeft width={18} height={18} aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollBy(1)}
+            aria-label="Scroll gallery right"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-hairline bg-background/40 transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <ChevronRight width={18} height={18} aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+
+      <div
+        ref={track}
+        className="mt-5 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8"
+      >
+        {images.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt={`Inside KORR.fit gym, view ${i + 1}`}
+            loading="lazy"
+            decoding="async"
+            className="h-40 w-64 shrink-0 snap-start rounded-2xl border border-hairline object-cover sm:h-48 sm:w-80"
+          />
+        ))}
+      </div>
+    </div>
   );
 }
