@@ -8,6 +8,8 @@ import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export function Pricing() {
+  const { openLead } = useLead();
+
   return (
     <Section id="pricing" tone="raised">
       <SectionHeading
