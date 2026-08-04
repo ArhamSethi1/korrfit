@@ -53,22 +53,7 @@ export function Gallery() {
         ))}
       </div>
 
-      <h3 className="mt-16 text-xl font-semibold">More moments</h3>
-      <div className="marquee mt-5 -mx-5 sm:-mx-8">
-        <div className="marquee-track">
-          {[...marquee, ...marquee].map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-              decoding="async"
-              className="h-40 w-64 shrink-0 rounded-2xl border border-hairline object-cover sm:h-48 sm:w-80"
-            />
-          ))}
-        </div>
-      </div>
+      <MoreMoments images={marquee} />
 
       <h3 className="mt-16 text-xl font-semibold">Video walkthroughs</h3>
       <p className="mt-2 text-sm text-muted-foreground">
