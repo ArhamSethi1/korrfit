@@ -1,9 +1,14 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 import { site } from "@/lib/site";
 import { Logo } from "../primitives";
 import { navItems } from "@/lib/site";
+import { useLead } from "../LeadDialog";
+import { trackEvent } from "@/lib/analytics";
 
 export function FinalCta() {
+  const { openLead } = useLead();
+
+
   return (
     <section className="relative overflow-hidden border-y border-hairline py-24 md:py-32">
       <span
@@ -20,11 +25,10 @@ export function FinalCta() {
           decide after — no pressure, no paperwork first.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
-          <a
-            href={site.whatsapp}
-            target="_blank"
-            rel="noreferrer"
-            className="group inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+          <button
+            type="button"
+            onClick={() => openLead({ intent: "trial", source: "final_cta" })}
+            className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Book your free trial
             <ArrowRight
@@ -33,11 +37,13 @@ export function FinalCta() {
               aria-hidden="true"
               className="transition-transform duration-300 group-hover:translate-x-1"
             />
-          </a>
+          </button>
           <a
             href={site.tel}
-            className="inline-flex items-center rounded-full border border-hairline bg-surface/60 px-7 py-4 text-sm font-semibold transition-colors hover:bg-surface"
+            onClick={() => trackEvent("click_call", { source: "final_cta" })}
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-surface/60 px-7 py-4 text-sm font-semibold transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
+            <Phone width={16} height={16} aria-hidden="true" />
             Call {site.phoneDisplay}
           </a>
         </div>

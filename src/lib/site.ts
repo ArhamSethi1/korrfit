@@ -14,6 +14,8 @@ export const site = {
   instagram: "https://www.instagram.com/korr.fit",
   facebook: "https://www.facebook.com/", // TODO: replace with the real page
   maps: "https://maps.app.goo.gl/",
+  googleReviews:
+    "https://www.google.com/search?sca_esv=b59435e14644ce34&rlz=1C1CHBF_enIN1082IN1082&sxsrf=APpeQnvoCXezBgldsI6oIeryRBge2ukQrw:1785863055247&si=APenkKm7iecQ4G6P-TsbSMFKIQtv3EFIqRAFw-i8uEbk55Z-_88MRfSimQReKFtcObpJ28OnP2dJ9Tj3VxBhOySWQZL7k_1xqe_5WEAF4F9CIqSYug4Cygpb1vmpcpXiLiay9UF1pWhUUj2vgYTzkk0HzqAsu8lEzA%3D%3D&q=KORR.fit+Mansarovar,+Jaipur+Reviews&sa=X&ved=2ahUKEwju4ZmouoeWAxUimeEIHXb-C24Q0bkNegQIKBAI",
   directions:
     "https://www.google.com/maps/dir/?api=1&destination=KORR.fit+Gym+51%2F12+Shipra+Path+Mansarovar+Jaipur",
   mapEmbed:

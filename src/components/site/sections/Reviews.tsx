@@ -102,22 +102,9 @@ export function Reviews() {
         </div>
       </div>
 
-      <div className="mt-10 flex flex-wrap gap-2">
+      <div className="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter reviews by topic">
         {reviewTags.map((t) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => setTag(t)}
-            aria-pressed={tag === t}
-            className={cn(
-              "rounded-full border px-4 py-2 text-sm transition-all duration-300",
-              tag === t
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-hairline bg-surface/40 text-muted-foreground hover:bg-surface hover:text-foreground",
-            )}
-          >
-            {t}
-          </button>
+          <Chip key={t} label={t} active={tag === t} onSelect={() => setTag(t)} />
         ))}
       </div>
 
@@ -137,15 +124,15 @@ export function Reviews() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="rounded-full border border-hairline bg-surface/60 px-6 py-3.5 text-sm font-semibold transition-colors hover:bg-surface"
+          className="min-h-11 rounded-full border border-hairline bg-surface/60 px-6 py-3.5 text-sm font-semibold transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           View all reviews
         </button>
         <a
-          href={site.maps}
+          href={site.googleReviews}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           Review us on Google
         </a>
@@ -161,7 +148,7 @@ export function Reviews() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="float-in flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-t-3xl border border-hairline bg-background sm:rounded-3xl"
+            className="float-in flex max-h-[88dvh] w-full max-w-4xl flex-col overflow-hidden rounded-t-3xl border border-hairline bg-background sm:rounded-3xl"
           >
             <div className="flex items-center justify-between border-b border-hairline px-6 py-5">
               <div className="flex items-center gap-3">
@@ -177,19 +164,59 @@ export function Reviews() {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close reviews"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-hairline"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-hairline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 <X width={17} height={17} aria-hidden="true" />
               </button>
             </div>
+
+            <div
+              className="flex flex-wrap gap-2 border-b border-hairline px-6 py-4"
+              role="group"
+              aria-label="Filter reviews by topic"
+            >
+              {reviewTags.map((t) => (
+                <Chip key={`modal-${t}`} label={t} active={tag === t} onSelect={() => setTag(t)} />
+              ))}
+            </div>
+
             <div className="grid gap-4 overflow-y-auto p-6 sm:grid-cols-2">
-              {reviews.map((r, i) => (
+              {filtered.map((r, i) => (
                 <ReviewCard key={`modal-${i}`} r={r} />
               ))}
+              {filtered.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No reviews tagged “{tag}” yet.</p>
+              ) : null}
             </div>
           </div>
         </div>
       ) : null}
     </Section>
+  );
+}
+
+function Chip({
+  label,
+  active,
+  onSelect,
+}: {
+  label: string;
+  active: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={active}
+      className={cn(
+        "min-h-11 rounded-full border px-4 py-2 text-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        active
+          ? "border-primary bg-primary text-primary-foreground"
+          : "border-hairline bg-surface/40 text-muted-foreground hover:bg-surface hover:text-foreground",
+      )}
+    >
+      {label}
+    </button>
   );
 }

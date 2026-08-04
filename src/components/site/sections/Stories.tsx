@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Quote, MoveHorizontal } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
@@ -9,7 +9,7 @@ import afterImg from "@/assets/gym-strength.jpg";
 function BeforeAfter() {
   const [pos, setPos] = useState(50);
   const wrap = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
+  const [dragging, setDragging] = useState(false);
 
   const setFromClientX = useCallback((clientX: number) => {
     const el = wrap.current;
@@ -19,21 +19,32 @@ function BeforeAfter() {
     setPos(Math.min(100, Math.max(0, next)));
   }, []);
 
+  // Window-level listeners so the drag keeps tracking outside the element and
+  // works for both mouse and touch pointers.
+  useEffect(() => {
+    if (!dragging) return;
+    const move = (e: PointerEvent) => {
+      e.preventDefault();
+      setFromClientX(e.clientX);
+    };
+    const stop = () => setDragging(false);
+    window.addEventListener("pointermove", move, { passive: false });
+    window.addEventListener("pointerup", stop);
+    window.addEventListener("pointercancel", stop);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", stop);
+      window.removeEventListener("pointercancel", stop);
+    };
+  }, [dragging, setFromClientX]);
+
   return (
     <div
       ref={wrap}
-      className="relative select-none overflow-hidden rounded-3xl border border-hairline"
+      className="relative touch-none select-none overflow-hidden rounded-3xl border border-hairline"
       onPointerDown={(e) => {
-        dragging.current = true;
-        e.currentTarget.setPointerCapture(e.pointerId);
+        setDragging(true);
         setFromClientX(e.clientX);
-      }}
-      onPointerMove={(e) => dragging.current && setFromClientX(e.clientX)}
-      onPointerUp={() => {
-        dragging.current = false;
-      }}
-      onPointerCancel={() => {
-        dragging.current = false;
       }}
     >
       <img
@@ -43,10 +54,11 @@ function BeforeAfter() {
         height={900}
         loading="lazy"
         decoding="async"
+        draggable={false}
         className="h-72 w-full object-cover sm:h-96 md:h-[30rem]"
       />
       <div
-        className="absolute inset-0 overflow-hidden"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
       >
         <img
@@ -56,6 +68,7 @@ function BeforeAfter() {
           height={900}
           loading="lazy"
           decoding="async"
+          draggable={false}
           className="h-72 w-full object-cover sm:h-96 md:h-[30rem]"
         />
       </div>
@@ -71,7 +84,7 @@ function BeforeAfter() {
         className="pointer-events-none absolute inset-y-0 w-0.5 bg-primary"
         style={{ left: `${pos}%` }}
       >
-        <span className="absolute left-1/2 top-1/2 inline-flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-primary/60 bg-background text-primary shadow-lift">
+        <span className="absolute left-1/2 top-1/2 inline-flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize items-center justify-center rounded-full border border-primary/60 bg-background text-primary shadow-lift">
           <MoveHorizontal width={18} height={18} aria-hidden="true" />
         </span>
       </div>
@@ -84,9 +97,10 @@ function BeforeAfter() {
         type="range"
         min={0}
         max={100}
-        value={pos}
+        value={Math.round(pos)}
+        aria-valuetext={`${Math.round(pos)}% of the before photo shown`}
         onChange={(e) => setPos(Number(e.target.value))}
-        className="absolute inset-x-0 bottom-0 h-10 w-full cursor-ew-resize opacity-0"
+        className="absolute inset-x-0 bottom-0 h-10 w-full cursor-ew-resize opacity-0 focus-visible:opacity-100"
       />
     </div>
   );

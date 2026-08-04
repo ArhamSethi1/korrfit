@@ -1,11 +1,15 @@
 import { Check, Sparkles } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
+import { useLead } from "../LeadDialog";
 import { plans } from "@/data/content";
 import { site } from "@/lib/site";
+import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export function Pricing() {
+  const { openLead } = useLead();
+
   return (
     <Section id="pricing" tone="raised">
       <SectionHeading
@@ -50,19 +54,20 @@ export function Pricing() {
                 ))}
               </ul>
 
-              <a
-                href={site.whatsapp}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                type="button"
+                onClick={() =>
+                  openLead({ intent: "membership", plan: plan.name, source: "pricing" })
+                }
                 className={cn(
-                  "mt-8 inline-flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5",
+                  "mt-8 inline-flex min-h-11 items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   plan.featured
                     ? "bg-primary text-primary-foreground"
                     : "border border-hairline bg-surface/60 text-foreground hover:bg-surface",
                 )}
               >
                 Get this plan
-              </a>
+              </button>
             </div>
           </Reveal>
         ))}
@@ -70,7 +75,11 @@ export function Pricing() {
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
         Not sure which plan fits?{" "}
-        <a href={site.tel} className="text-foreground underline underline-offset-4">
+        <a
+          href={site.tel}
+          onClick={() => trackEvent("click_call", { source: "pricing" })}
+          className="text-foreground underline underline-offset-4"
+        >
           Call {site.phoneDisplay}
         </a>{" "}
         and we will tell you honestly.

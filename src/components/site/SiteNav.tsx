@@ -3,8 +3,10 @@ import { Menu, X, Phone } from "lucide-react";
 import { navItems, site } from "@/lib/site";
 import { Logo } from "./primitives";
 import { cn } from "@/lib/utils";
+import { useLead } from "./LeadDialog";
 
 export function SiteNav() {
+  const { openLead } = useLead();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#home");
@@ -96,12 +98,13 @@ export function SiteNav() {
               <Phone width={15} height={15} aria-hidden="true" />
               {site.phoneDisplay}
             </a>
-            <a
-              href="#contact"
-              className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5 sm:inline-flex"
+            <button
+              type="button"
+              onClick={() => openLead({ intent: "trial", source: "nav" })}
+              className="hidden min-h-11 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex"
             >
               Book Free Trial
-            </a>
+            </button>
             <button
               type="button"
               onClick={() => setOpen(true)}
@@ -159,13 +162,16 @@ export function SiteNav() {
           ))}
         </nav>
         <div className="grid gap-3 p-6">
-          <a
-            href="#contact"
-            onClick={() => setOpen(false)}
-            className="rounded-full bg-primary px-6 py-4 text-center font-semibold text-primary-foreground"
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              openLead({ intent: "trial", source: "mobile_nav" });
+            }}
+            className="min-h-11 rounded-full bg-primary px-6 py-4 text-center font-semibold text-primary-foreground"
           >
             Book Free Trial
-          </a>
+          </button>
           <div className="grid grid-cols-2 gap-3">
             <a
               href={site.tel}
