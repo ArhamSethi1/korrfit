@@ -59,7 +59,7 @@ export function Hero() {
               alt="KORR.fit"
               width={1920}
               height={427}
-              className="h-16 w-auto sm:h-20 md:h-24"
+              className="h-16 w-auto mix-blend-screen sm:h-20 md:h-24"
             />
           </h1>
 
