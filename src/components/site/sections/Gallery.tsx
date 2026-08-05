@@ -59,7 +59,7 @@ export function Gallery() {
       <p className="mt-2 text-sm text-muted-foreground">
         Placeholder tiles — drop in gym reels or trainer clips here.
       </p>
-      <div className="mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
+      <div className="korr-scroll mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
         {[hero, studio, functional, cardio].map((src, i) => (
           <div
             key={i}
@@ -182,7 +182,7 @@ function MoreMoments({ images }: { images: string[] }) {
 
       <div
         ref={track}
-        className="mt-5 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8"
+        className="korr-scroll mt-5 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8"
       >
         {images.map((src, i) => (
           <img

@@ -56,17 +56,17 @@ function CountUp({ to, suffix, decimals }: { to: number; suffix: string; decimal
 
 export function Stats() {
   return (
-    <section className="relative border-y border-hairline bg-surface/30 py-16 md:py-20">
+    <section className="relative border-y border-hairline bg-surface/30 py-10 md:py-14">
       <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 60}>
-              <div className="hairline-card h-full p-5 transition-transform duration-500 hover:-translate-y-1">
-                <s.icon width={18} height={18} aria-hidden="true" className="text-primary" />
-                <div className="mt-4 font-display text-3xl font-semibold tracking-tight">
+              <div className="hairline-card h-full p-3.5 transition-transform duration-500 hover:-translate-y-1 sm:p-4">
+                <s.icon width={16} height={16} aria-hidden="true" className="text-primary" />
+                <div className="mt-2.5 font-display text-xl font-semibold tracking-tight sm:text-2xl">
                   <CountUp to={s.value} suffix={s.suffix} decimals={s.decimals} />
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
+                <div className="mt-0.5 text-[0.6rem] uppercase tracking-widest text-muted-foreground sm:text-[0.65rem]">
                   {s.label}
                 </div>
               </div>
