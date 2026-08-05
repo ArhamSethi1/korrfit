@@ -8,6 +8,7 @@ import { useLead } from "./LeadDialog";
 export function SiteNav() {
   const { openLead } = useLead();
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#home");
   const [progress, setProgress] = useState(0);
@@ -15,14 +16,22 @@ export function SiteNav() {
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 24);
+      const hero = document.getElementById("home");
+      const threshold = hero ? hero.offsetHeight - 96 : 400;
+      setPastHero(window.scrollY > threshold);
       const doc = document.documentElement;
       const max = doc.scrollHeight - doc.clientHeight;
       setProgress(max > 0 ? (window.scrollY / max) * 100 : 0);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
+
 
   useEffect(() => {
     const ids = navItems.map((n) => n.href.slice(1));
