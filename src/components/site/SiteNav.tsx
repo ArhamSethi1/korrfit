@@ -70,9 +70,21 @@ export function SiteNav() {
         )}
       >
         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-5 sm:px-8 md:h-20">
-          <a href="#home" aria-label="KORR.fit home" className="shrink-0">
+          <a
+            href="#home"
+            aria-label="KORR.fit home"
+            aria-hidden={!pastHero}
+            tabIndex={pastHero ? 0 : -1}
+            className={cn(
+              "shrink-0 transition-all duration-500",
+              pastHero
+                ? "pointer-events-auto translate-y-0 opacity-100"
+                : "pointer-events-none -translate-y-1 opacity-0",
+            )}
+          >
             <Logo />
           </a>
+
 
           <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
             {navItems.map((item) => (
