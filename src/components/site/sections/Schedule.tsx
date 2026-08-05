@@ -37,17 +37,17 @@ export function Schedule() {
         ))}
       </div>
 
-      <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-3">
         {current.sessions.map((s, i) => (
           <Reveal key={`${current.day}-${s.time}-${i}`} delay={i * 70}>
-            <div className="float-in flex h-full items-start gap-4 rounded-2xl border border-hairline bg-background/40 p-5 transition-colors duration-500 hover:border-primary/40">
-              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-2/60 text-primary">
-                <Clock width={17} height={17} aria-hidden="true" />
+            <div className="float-in flex h-full items-start gap-3 rounded-2xl border border-hairline bg-background/40 p-3.5 transition-colors duration-500 hover:border-primary/40 sm:p-4">
+              <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-2/60 text-primary">
+                <Clock width={15} height={15} aria-hidden="true" />
               </span>
               <div>
-                <div className="text-sm font-semibold text-primary">{s.time}</div>
-                <div className="mt-1 text-base font-semibold">{s.title}</div>
-                <div className="mt-0.5 text-sm text-muted-foreground">with {s.coach}</div>
+                <div className="text-xs font-semibold text-primary">{s.time}</div>
+                <div className="mt-1 text-sm font-semibold">{s.title}</div>
+                <div className="mt-0.5 text-xs text-muted-foreground">with {s.coach}</div>
               </div>
             </div>
           </Reveal>

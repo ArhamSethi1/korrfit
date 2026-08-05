@@ -19,35 +19,35 @@ export function Pricing() {
         align="center"
       />
 
-      <div className="mt-14 grid items-start gap-5 lg:grid-cols-3">
+      <div className="mt-14 grid grid-cols-2 items-start gap-3 lg:grid-cols-3 lg:gap-5">
         {plans.map((plan, i) => (
           <Reveal key={plan.name} delay={i * 90}>
             <div
               className={cn(
-                "relative flex h-full flex-col rounded-3xl border p-7 transition-all duration-500 hover:-translate-y-1 md:p-8",
+                "relative flex h-full flex-col rounded-2xl border p-4 transition-all duration-500 hover:-translate-y-1 sm:p-6 md:rounded-3xl",
                 plan.featured
                   ? "border-primary/50 bg-surface shadow-lift lg:-mt-4 lg:pb-12"
                   : "border-hairline bg-background/40",
               )}
             >
               {plan.featured ? (
-                <span className="absolute -top-3 left-7 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-widest text-primary-foreground">
+                <span className="absolute -top-3 left-4 sm:left-6 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-widest text-primary-foreground">
                   <Sparkles width={12} height={12} aria-hidden="true" />
                   Most popular
                 </span>
               ) : null}
 
-              <h3 className="text-lg font-semibold">{plan.name}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{plan.description}</p>
+              <h3 className="text-base font-semibold sm:text-lg">{plan.name}</h3>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">{plan.description}</p>
 
               <div className="mt-6 flex items-baseline gap-2">
-                <span className="font-display text-4xl font-semibold tracking-tight">{plan.price}</span>
-                <span className="text-sm text-muted-foreground">{plan.period}</span>
+                <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{plan.price}</span>
+                <span className="text-xs text-muted-foreground">{plan.period}</span>
               </div>
 
-              <ul className="mt-6 flex-1 space-y-3">
+              <ul className="mt-5 flex-1 space-y-2.5">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                  <li key={f} className="flex items-start gap-2 text-xs text-muted-foreground sm:text-sm">
                     <Check width={15} height={15} aria-hidden="true" className="mt-0.5 shrink-0 text-primary" />
                     {f}
                   </li>

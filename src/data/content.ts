@@ -1,3 +1,9 @@
+import strengthImg from "@/assets/gym-strength.jpg";
+import cardioImg from "@/assets/gym-cardio.jpg";
+import functionalImg from "@/assets/gym-functional.jpg";
+import recoveryImg from "@/assets/gym-recovery.jpg";
+import studioImg from "@/assets/gym-studio.jpg";
+
 /**
  * Placeholder-friendly content for KORR.fit.
  * Everything here is plain data — swap in real content or a CMS/API response
@@ -176,6 +182,12 @@ export const stories: Story[] = [
   { name: "Member Name", program: "Body Recomposition", duration: "4 months", result: "Result placeholder", quote: "Placeholder story about how training at KORR.fit changed their routine, energy and confidence." },
 ];
 
+export type ReviewMedia = {
+  type: "image" | "video";
+  src: string;
+  alt: string;
+};
+
 export type Review = {
   name: string;
   initials: string;
@@ -183,6 +195,8 @@ export type Review = {
   text: string;
   helpful: number;
   tags: string[];
+  /** Optional highlighted photos/clips attached to the review. */
+  media?: ReviewMedia[];
 };
 
 export const reviewTags = [
@@ -199,10 +213,10 @@ export const reviewTags = [
 
 // TODO: connect to the Google Reviews API later — the card layout stays the same.
 export const reviews: Review[] = [
-  { name: "Reviewer Name", initials: "R", when: "2 weeks ago", helpful: 4, tags: ["Trainers", "Personal Training"], text: "The trainers actually watch your form and correct it. I never felt lost as a beginner, and the plan was adjusted to what I could handle." },
-  { name: "Reviewer Name", initials: "A", when: "a month ago", helpful: 7, tags: ["Space", "Equipment"], text: "Really spacious floor. Even in the evening rush I never had to wait long for a rack or a machine, which was my problem at my last gym." },
-  { name: "Reviewer Name", initials: "S", when: "a month ago", helpful: 3, tags: ["Cleanliness", "Hygiene"], text: "Easily the cleanest gym I have been to in Mansarovar. Equipment is wiped down, changing rooms are maintained, and the steam room is spotless." },
-  { name: "Reviewer Name", initials: "P", when: "2 months ago", helpful: 9, tags: ["Zumba"], text: "The Zumba sessions are so much fun. Great music, a proper studio floor, and the instructor keeps everyone included regardless of fitness level." },
+  { name: "Reviewer Name", initials: "R", when: "2 weeks ago", helpful: 4, tags: ["Trainers", "Personal Training"], media: [{ type: "image", src: strengthImg, alt: "Coached lifting on the strength floor" }, { type: "video", src: functionalImg, alt: "Clip from a functional training session" }], text: "The trainers actually watch your form and correct it. I never felt lost as a beginner, and the plan was adjusted to what I could handle." },
+  { name: "Reviewer Name", initials: "A", when: "a month ago", helpful: 7, tags: ["Space", "Equipment"], media: [{ type: "image", src: cardioImg, alt: "The cardio zone at KORR.fit" }], text: "Really spacious floor. Even in the evening rush I never had to wait long for a rack or a machine, which was my problem at my last gym." },
+  { name: "Reviewer Name", initials: "S", when: "a month ago", helpful: 3, tags: ["Cleanliness", "Hygiene"], media: [{ type: "image", src: recoveryImg, alt: "Steam room and recovery lounge" }], text: "Easily the cleanest gym I have been to in Mansarovar. Equipment is wiped down, changing rooms are maintained, and the steam room is spotless." },
+  { name: "Reviewer Name", initials: "P", when: "2 months ago", helpful: 9, tags: ["Zumba"], media: [{ type: "video", src: studioImg, alt: "Clip from a Zumba class in the studio" }], text: "The Zumba sessions are so much fun. Great music, a proper studio floor, and the instructor keeps everyone included regardless of fitness level." },
   { name: "Reviewer Name", initials: "N", when: "2 months ago", helpful: 5, tags: ["Trainers", "Value"], text: "Genuinely helpful staff. They checked on my progress every few weeks and adjusted my diet suggestions instead of giving one generic chart." },
   { name: "Reviewer Name", initials: "K", when: "3 months ago", helpful: 2, tags: ["Equipment", "Value"], text: "Good range of machines and free weights for the price. Everything is well maintained and nothing has been out of order during my membership." },
   { name: "Reviewer Name", initials: "M", when: "3 months ago", helpful: 6, tags: ["Personal Training"], text: "Started personal training after a long break from fitness. The progression was slow and safe, which is exactly what I needed." },

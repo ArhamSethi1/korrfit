@@ -25,6 +25,9 @@ const description =
   "KORR.fit is a premium gym in Mansarovar, Jaipur with certified trainers, strength, cardio, functional training, Zumba, steam and personalised plans. Book a free trial.";
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    reviews: typeof search["reviews"] === "string" ? (search["reviews"] as string) : undefined,
+  }),
   head: () => ({
     meta: [
       { title },
@@ -92,16 +95,16 @@ function Home() {
         <main>
           <Hero />
           <Stats />
-          <WhyUs />
+          <Gallery />
           <Stories />
+          <Reviews />
           <Programs />
           <Amenities />
           <Pricing />
           <Trainers />
           <Schedule />
           <Offers />
-          <Reviews />
-          <Gallery />
+          <WhyUs />
           <FindUs />
           <Faq />
           <FinalCta />
