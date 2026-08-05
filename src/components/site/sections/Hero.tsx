@@ -54,13 +54,15 @@ export function Hero() {
             <span className="sr-only">
               KORR.fit — premium gym in Mansarovar, Jaipur
             </span>
-            <img
-              src={logo.url}
-              alt="KORR.fit"
-              width={1920}
-              height={427}
-              className="h-16 w-auto mix-blend-screen sm:h-20 md:h-24"
-            />
+            <span className="inline-flex rounded-2xl border border-hairline bg-background/70 px-5 py-4 backdrop-blur-md">
+              <img
+                src={logo.url}
+                alt="KORR.fit"
+                width={1920}
+                height={427}
+                className="h-12 w-auto sm:h-16 md:h-20"
+              />
+            </span>
           </h1>
 
           <p className="mt-6 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl md:text-4xl">
