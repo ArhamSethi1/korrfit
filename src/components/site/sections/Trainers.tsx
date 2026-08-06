@@ -34,7 +34,7 @@ export function Trainers() {
         ))}
       </div>
 
-      <div className="mt-10 rounded-3xl border border-hairline bg-surface/40 p-6 text-center md:p-8">
+      <div className="mt-10 hidden rounded-3xl border md:block border-hairline bg-surface/40 p-6 text-center md:p-8">
         <p className="text-base text-muted-foreground">
           Want to train one-to-one with a specific coach?
         </p>

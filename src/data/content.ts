@@ -34,6 +34,16 @@ export type AmenityGroup = { title: string; blurb: string; items: string[] };
 
 export const amenityGroups: AmenityGroup[] = [
   {
+    title: "Zumba",
+    blurb: "High-energy Zumba on alternate days in a dedicated studio.",
+    items: ["Alternate-day classes", "Certified instructor", "Mirrored dance floor", "Sound system", "Beginner friendly", "Weekly schedule"],
+  },
+  {
+    title: "Steam",
+    blurb: "Wind down properly — steam is part of the membership, not an add-on.",
+    items: ["Steam room", "Post-workout recovery", "Hygienically cleaned", "Towel & locker access", "Changing rooms", "Open all week"],
+  },
+  {
     title: "Strength Floor",
     blurb: "A full free-weight floor with room to move between sets.",
     items: ["Power racks", "Olympic barbells", "Full dumbbell range", "Benches & platforms", "Cable stations", "Plate-loaded machines"],
@@ -52,11 +62,6 @@ export const amenityGroups: AmenityGroup[] = [
     title: "Recovery & Comfort",
     blurb: "The part most gyms skip — and the part that keeps you coming back.",
     items: ["Steam room", "Stretching zone", "Clean changing rooms", "Lockers", "Air-conditioned floors", "Drinking water"],
-  },
-  {
-    title: "Group Activities",
-    blurb: "A separate studio so classes stay energetic without the crowd.",
-    items: ["Zumba studio", "Group HIIT", "Mobility sessions", "Mirrored dance floor", "Sound system", "Weekly schedule"],
   },
 ];
 
