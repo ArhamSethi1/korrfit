@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { ThumbsUp, X, Play, Link2, Check } from "lucide-react";
+import { MediaLightbox } from "../MediaLightbox";
 import { Section, Stars } from "../primitives";
 import { Reveal } from "../Reveal";
 import { reviews, reviewTags, type Review, type ReviewMedia } from "@/data/content";
@@ -18,7 +19,13 @@ function GoogleG({ size = 18 }: { size?: number }) {
   );
 }
 
-function ReviewCard({ r, onMedia }: { r: Review; onMedia: (m: ReviewMedia) => void }) {
+function ReviewCard({
+  r,
+  onMedia,
+}: {
+  r: Review;
+  onMedia: (list: ReviewMedia[], index: number) => void;
+}) {
   return (
     <article className="flex h-full flex-col rounded-2xl border border-hairline bg-surface/40 p-4 transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 sm:p-5">
       <div className="flex items-center gap-2.5">
@@ -44,7 +51,7 @@ function ReviewCard({ r, onMedia }: { r: Review; onMedia: (m: ReviewMedia) => vo
             <button
               key={i}
               type="button"
-              onClick={() => onMedia(m)}
+              onClick={() => onMedia(r.media!, i)}
               aria-label={`Open ${m.type === "video" ? "video" : "photo"}: ${m.alt}`}
               className="group relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-hairline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
@@ -79,7 +86,8 @@ export function Reviews() {
   const tag = search.reviews && reviewTags.includes(search.reviews) ? search.reviews : "All";
 
   const [open, setOpen] = useState(false);
-  const [media, setMedia] = useState<ReviewMedia | null>(null);
+  const [mediaList, setMediaList] = useState<ReviewMedia[]>([]);
+  const [mediaIndex, setMediaIndex] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
 
   const setTag = (t: string) => {
@@ -99,10 +107,12 @@ export function Reviews() {
     [tag],
   );
 
-  const openMedia = (m: ReviewMedia) => {
-    setOpen(true);
-    setMedia(m);
+  const openMedia = (list: ReviewMedia[], index: number) => {
+    setMediaList(list);
+    setMediaIndex(index);
   };
+
+  const closeMedia = () => setMediaIndex(null);
 
   const copyLink = async () => {
     const url = new URL(window.location.href);
@@ -121,9 +131,7 @@ export function Reviews() {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      if (media) setMedia(null);
-      else setOpen(false);
+      if (e.key === "Escape") setOpen(false);
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -131,7 +139,7 @@ export function Reviews() {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [open, media]);
+  }, [open]);
 
   return (
     <Section id="reviews">
@@ -253,35 +261,6 @@ export function Reviews() {
               </button>
             </div>
 
-            {media ? (
-              <div className="border-b border-hairline bg-surface/30 p-4 sm:p-6">
-                <div className="relative overflow-hidden rounded-2xl border border-hairline">
-                  <img
-                    src={media.src}
-                    alt={media.alt}
-                    className="max-h-[46dvh] w-full object-cover"
-                  />
-                  {media.type === "video" ? (
-                    <span className="absolute inset-0 grid place-items-center bg-black/40">
-                      <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                        <Play width={20} height={20} aria-hidden="true" className="fill-current" />
-                      </span>
-                    </span>
-                  ) : null}
-                </div>
-                <div className="mt-3 flex items-center justify-between gap-4">
-                  <p className="text-xs text-muted-foreground">{media.alt}</p>
-                  <button
-                    type="button"
-                    onClick={() => setMedia(null)}
-                    className="shrink-0 rounded-full border border-hairline px-4 py-2 text-xs font-medium transition-colors hover:bg-surface"
-                  >
-                    Close media
-                  </button>
-                </div>
-              </div>
-            ) : null}
-
             <div
               className="flex flex-wrap gap-2 border-b border-hairline px-6 py-4"
               role="group"
@@ -294,7 +273,7 @@ export function Reviews() {
 
             <div className="korr-scroll grid grid-cols-2 gap-3 overflow-y-auto p-4 sm:p-6">
               {filtered.map((r, i) => (
-                <ReviewCard key={`modal-${i}`} r={r} onMedia={(m) => setMedia(m)} />
+                <ReviewCard key={`modal-${i}`} r={r} onMedia={openMedia} />
               ))}
               {filtered.length === 0 ? (
                 <p className="text-sm text-muted-foreground">No reviews tagged “{tag}” yet.</p>
@@ -302,6 +281,15 @@ export function Reviews() {
             </div>
           </div>
         </div>
+      ) : null}
+
+      {mediaIndex !== null ? (
+        <MediaLightbox
+          items={mediaList}
+          index={mediaIndex}
+          onIndexChange={setMediaIndex}
+          onClose={closeMedia}
+        />
       ) : null}
     </Section>
   );
