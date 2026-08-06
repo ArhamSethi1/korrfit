@@ -69,7 +69,7 @@ export function Amenities() {
               height={900}
               loading="lazy"
               decoding="async"
-              className="float-in h-56 w-full object-cover sm:h-72 md:h-80"
+              className="float-in hidden h-56 w-full object-cover md:block md:h-80"
             />
             <div className="p-6 md:p-7">
               <h3 className="text-xl font-semibold">{group.title}</h3>

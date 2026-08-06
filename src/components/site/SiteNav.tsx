@@ -64,6 +64,9 @@ export function SiteNav() {
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+          pastHero
+            ? "max-lg:pointer-events-auto max-lg:translate-y-0 max-lg:opacity-100"
+            : "max-lg:pointer-events-none max-lg:-translate-y-full max-lg:opacity-0",
           scrolled
             ? "border-b border-hairline bg-background/85 backdrop-blur-xl"
             : "border-b border-transparent bg-transparent",

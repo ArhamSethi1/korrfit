@@ -1,0 +1,146 @@
+import { useCallback, useEffect, useRef } from "react";
+import { X, Play, ChevronLeft, ChevronRight } from "lucide-react";
+import type { ReviewMedia } from "@/data/content";
+
+type Props = {
+  items: ReviewMedia[];
+  index: number;
+  onIndexChange: (i: number) => void;
+  onClose: () => void;
+  title?: string;
+};
+
+/**
+ * Standalone media popup: Esc to close, focus trap, arrow keys to move
+ * between the photos/videos attached to a review.
+ */
+export function MediaLightbox({ items, index, onIndexChange, onClose, title }: Props) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const item = items[index];
+
+  const go = useCallback(
+    (dir: number) => {
+      if (items.length < 2) return;
+      onIndexChange((index + dir + items.length) % items.length);
+    },
+    [index, items.length, onIndexChange],
+  );
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    panelRef.current?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        onClose();
+        return;
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        go(1);
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        go(-1);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusables = panelRef.current?.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusables?.length) return;
+      const first = focusables[0]!;
+      const last = focusables[focusables.length - 1]!;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey, true);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey, true);
+      document.body.style.overflow = prevOverflow;
+      previouslyFocused?.focus?.();
+    };
+  }, [go, onClose]);
+
+  if (!item) return null;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={title ? `Media from ${title}` : "Review media"}
+      className="fixed inset-0 z-[90] grid place-items-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
+      onClick={onClose}
+    >
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
+        className="float-in relative w-full max-w-3xl overflow-hidden rounded-3xl border border-hairline bg-background focus:outline-none"
+      >
+        <div className="flex items-center justify-between gap-4 border-b border-hairline px-5 py-4">
+          <p className="min-w-0 truncate text-sm font-semibold">
+            {item.type === "video" ? "Member video" : "Member photo"}
+            {items.length > 1 ? (
+              <span className="ml-2 text-xs font-normal text-muted-foreground">
+                {index + 1} / {items.length}
+              </span>
+            ) : null}
+          </p>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close media"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-hairline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <X width={17} height={17} aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="relative bg-surface/30">
+          <img src={item.src} alt={item.alt} className="max-h-[62dvh] w-full object-contain" />
+          {item.type === "video" ? (
+            <span aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
+              <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <Play width={20} height={20} className="fill-current" />
+              </span>
+            </span>
+          ) : null}
+
+          {items.length > 1 ? (
+            <>
+              <button
+                type="button"
+                onClick={() => go(-1)}
+                aria-label="Previous media"
+                className="absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/80 backdrop-blur focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <ChevronLeft width={18} height={18} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => go(1)}
+                aria-label="Next media"
+                className="absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/80 backdrop-blur focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <ChevronRight width={18} height={18} aria-hidden="true" />
+              </button>
+            </>
+          ) : null}
+        </div>
+
+        <p className="px-5 py-4 text-xs text-muted-foreground">{item.alt}</p>
+      </div>
+    </div>
+  );
+}

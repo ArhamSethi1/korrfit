@@ -43,7 +43,7 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent to-background"
       />
 
-      <div className="mx-auto w-full max-w-7xl px-5 pb-20 pt-28 sm:px-8 md:pb-28 md:pt-36">
+      <div className="mx-auto w-full max-w-7xl px-5 pb-14 pt-16 sm:px-8 sm:pt-28 md:pb-28 md:pt-36">
         <div className="max-w-3xl">
           <span className="eyebrow">
             <MapPin width={14} height={14} aria-hidden="true" className="text-primary" />
@@ -166,9 +166,8 @@ export function Hero() {
               </span>
             </div>
             {[
-              { k: "2", v: "Floors" },
-              { k: "6", v: "Trainers" },
-              { k: "15+", v: "Programs" },
+              { k: "Zumba", v: "Alternate days" },
+              { k: "Steam", v: "Recovery room" },
             ].map((s) => (
               <div
                 key={s.v}
