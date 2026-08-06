@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Star, MessageSquare, Users, Layers, Dumbbell, Maximize } from "lucide-react";
+import { Star, MessageSquare, Users, Layers, Music, Waves } from "lucide-react";
 import { Reveal } from "../Reveal";
 import { site } from "@/lib/site";
 
@@ -8,9 +8,16 @@ const stats = [
   { icon: MessageSquare, value: site.rating.count, suffix: "+", label: "Member reviews" },
   { icon: Users, value: 6, suffix: "", label: "Certified trainers" },
   { icon: Layers, value: 2, suffix: "", label: "Training floors" },
-  { icon: Dumbbell, value: 100, suffix: "%", label: "Maintained equipment" },
-  { icon: Maximize, value: 5, suffix: "", label: "Dedicated zones" },
-];
+  { icon: Music, text: "Zumba", label: "On alternate days" },
+  { icon: Waves, text: "Steam", label: "Recovery room" },
+] as {
+  icon: typeof Star;
+  value?: number;
+  suffix?: string;
+  label: string;
+  decimals?: boolean;
+  text?: string;
+}[];
 
 function CountUp({ to, suffix, decimals }: { to: number; suffix: string; decimals?: boolean | undefined }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -64,7 +71,11 @@ export function Stats() {
               <div className="hairline-card h-full p-3.5 transition-transform duration-500 hover:-translate-y-1 sm:p-4">
                 <s.icon width={16} height={16} aria-hidden="true" className="text-primary" />
                 <div className="mt-2.5 font-display text-xl font-semibold tracking-tight sm:text-2xl">
-                  <CountUp to={s.value} suffix={s.suffix} decimals={s.decimals} />
+                  {s.text ? (
+                    s.text
+                  ) : (
+                    <CountUp to={s.value ?? 0} suffix={s.suffix ?? ""} decimals={s.decimals} />
+                  )}
                 </div>
                 <div className="mt-0.5 text-[0.6rem] uppercase tracking-widest text-muted-foreground sm:text-[0.65rem]">
                   {s.label}

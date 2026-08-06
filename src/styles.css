@@ -232,8 +232,16 @@
 /* ---------- Branded scrollbars ---------- */
 
 html {
+  /* Safari/iOS ignore scrollbar-color; color-scheme keeps native bars dark. */
+  color-scheme: dark;
   scrollbar-width: thin;
   scrollbar-color: var(--primary) oklch(0.235 0.004 30);
+}
+
+/* iOS/Safari momentum scrolling with overlay scrollbars */
+body,
+.korr-scroll {
+  -webkit-overflow-scrolling: touch;
 }
 
 ::-webkit-scrollbar {
@@ -261,6 +269,7 @@ html {
 
 /* Horizontal rails inside the gallery */
 @utility korr-scroll {
+  color-scheme: dark;
   scrollbar-width: thin;
   scrollbar-color: var(--primary) oklch(0.285 0.005 30);
   &::-webkit-scrollbar {
@@ -273,6 +282,19 @@ html {
   &::-webkit-scrollbar-thumb {
     background: var(--primary);
     border-radius: 999px;
+  }
+}
+
+/* Safari/iOS fallback: overlay scrollbars can't be styled, so give the rails a
+   subtle branded edge instead so the vibe stays consistent. */
+@supports (-webkit-touch-callout: none) {
+  .korr-scroll {
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid oklch(from var(--primary) l c h / 25%);
+  }
+  .korr-scroll::-webkit-scrollbar {
+    height: 0;
   }
 }
 
