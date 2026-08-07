@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { X, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import type { ReviewMedia } from "@/data/content";
+import { cn } from "@/lib/utils";
 
 type Props = {
   items: ReviewMedia[];
@@ -16,7 +17,23 @@ type Props = {
  */
 export function MediaLightbox({ items, index, onIndexChange, onClose, title }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [loaded, setLoaded] = useState(false);
   const item = items[index];
+
+  // Reset the lightweight placeholder whenever the active item changes, and
+  // warm the neighbours so arrow navigation feels instant on mobile.
+  useEffect(() => {
+    setLoaded(false);
+    if (items.length < 2 || typeof Image === "undefined") return;
+    for (const dir of [1, -1]) {
+      const next = items[(index + dir + items.length) % items.length];
+      if (!next) continue;
+      const img = new Image();
+      img.decoding = "async";
+      img.src = next.src;
+    }
+  }, [index, items]);
+
 
   const go = useCallback(
     (dir: number) => {
@@ -79,14 +96,14 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
       role="dialog"
       aria-modal="true"
       aria-label={title ? `Media from ${title}` : "Review media"}
-      className="fixed inset-0 z-[90] grid place-items-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
+      className="backdrop-in fixed inset-0 z-[90] grid place-items-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
       onClick={onClose}
     >
       <div
         ref={panelRef}
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
-        className="float-in relative w-full max-w-3xl overflow-hidden rounded-3xl border border-hairline bg-background focus:outline-none"
+        className="pop-in relative w-full max-w-3xl overflow-hidden rounded-3xl border border-hairline bg-background focus:outline-none"
       >
         <div className="flex items-center justify-between gap-4 border-b border-hairline px-5 py-4">
           <p className="min-w-0 truncate text-sm font-semibold">
@@ -108,7 +125,30 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
         </div>
 
         <div className="relative bg-surface/30">
-          <img src={item.src} alt={item.alt} className="max-h-[62dvh] w-full object-contain" />
+          {/* Lightweight blurred preview keeps the popup instant on mobile */}
+          <img
+            key={`${item.src}-preview`}
+            src={item.src}
+            alt=""
+            aria-hidden="true"
+            className={cn(
+              "absolute inset-0 h-full w-full scale-105 object-contain blur-xl transition-opacity duration-500",
+              loaded ? "opacity-0" : "opacity-70",
+            )}
+          />
+          <img
+            key={item.src}
+            src={item.src}
+            alt={item.alt}
+            decoding="async"
+            fetchPriority="high"
+            onLoad={() => setLoaded(true)}
+            className={cn(
+              "relative max-h-[62dvh] w-full object-contain transition-opacity duration-500",
+              loaded ? "opacity-100" : "opacity-0",
+            )}
+          />
+
           {item.type === "video" ? (
             <span aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
               <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
