@@ -177,6 +177,7 @@ export function Gallery() {
           onIndexChange={(i) => setLightbox((l) => (l ? { ...l, index: i } : l))}
           onClose={() => setLightbox(null)}
           title="the KORR.fit gallery"
+          kind="Gym"
         />
       ) : null}
     </Section>

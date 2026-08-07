@@ -9,13 +9,15 @@ type Props = {
   onIndexChange: (i: number) => void;
   onClose: () => void;
   title?: string;
+  /** Wording for the popup header, e.g. "Member" or "Gym". */
+  kind?: string;
 };
 
 /**
  * Standalone media popup: Esc to close, focus trap, arrow keys to move
  * between the photos/videos attached to a review.
  */
-export function MediaLightbox({ items, index, onIndexChange, onClose, title }: Props) {
+export function MediaLightbox({ items, index, onIndexChange, onClose, title, kind = "Member" }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
   const item = items[index];
@@ -107,7 +109,7 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
       >
         <div className="flex items-center justify-between gap-4 border-b border-hairline px-5 py-4">
           <p className="min-w-0 truncate text-sm font-semibold">
-            {item.type === "video" ? "Member video" : "Member photo"}
+            {item.type === "video" ? `${kind} video` : `${kind} photo`}
             {items.length > 1 ? (
               <span className="ml-2 text-xs font-normal text-muted-foreground">
                 {index + 1} / {items.length}
