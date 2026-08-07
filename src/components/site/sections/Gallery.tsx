@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
-import { tourRooms } from "@/data/content";
+import { tourRooms, type ReviewMedia } from "@/data/content";
+import { MediaLightbox } from "../MediaLightbox";
 import { cn } from "@/lib/utils";
 import strength from "@/assets/gym-strength.jpg";
 import cardio from "@/assets/gym-cardio.jpg";
@@ -26,8 +27,25 @@ const marquee = [hero, stretch, cardio, studio, functional, reception, strength,
 
 const tourImages = [reception, strength, cardio, functional, recovery, stretch, reception];
 
+const gridMedia: ReviewMedia[] = grid.map((g) => ({ type: "image", src: g.src, alt: g.alt }));
+const marqueeMedia: ReviewMedia[] = marquee.map((src, i) => ({
+  type: "image",
+  src,
+  alt: `Inside KORR.fit gym, view ${i + 1}`,
+}));
+const videoTiles = [hero, studio, functional, cardio];
+const videoMedia: ReviewMedia[] = videoTiles.map((src, i) => ({
+  type: "video",
+  src,
+  alt: `KORR.fit walkthrough clip ${i + 1}`,
+}));
+
 export function Gallery() {
   const [room, setRoom] = useState(0);
+  const [lightbox, setLightbox] = useState<{ items: ReviewMedia[]; index: number } | null>(null);
+
+  const openLightbox = (items: ReviewMedia[], index: number) =>
+    setLightbox({ items, index });
 
   return (
     <Section id="gallery" tone="raised">
@@ -40,7 +58,12 @@ export function Gallery() {
       <div className="mt-12 grid auto-rows-[11rem] grid-cols-2 gap-3 sm:auto-rows-[13rem] lg:grid-cols-3">
         {grid.map((g, i) => (
           <Reveal key={g.alt} delay={(i % 3) * 70} className={cn("h-full", g.span)}>
-            <div className="group h-full overflow-hidden rounded-2xl border border-hairline">
+            <button
+              type="button"
+              onClick={() => openLightbox(gridMedia, i)}
+              aria-label={`Open photo: ${g.alt}`}
+              className="group block h-full w-full overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
               <img
                 src={g.src}
                 alt={g.alt}
@@ -48,22 +71,25 @@ export function Gallery() {
                 decoding="async"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-            </div>
+            </button>
           </Reveal>
         ))}
       </div>
 
-      <MoreMoments images={marquee} />
+      <MoreMoments images={marquee} onOpen={(i) => openLightbox(marqueeMedia, i)} />
 
       <h3 className="mt-16 text-xl font-semibold">Video walkthroughs</h3>
       <p className="mt-2 text-sm text-muted-foreground">
         Placeholder tiles — drop in gym reels or trainer clips here.
       </p>
       <div className="korr-scroll mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
-        {[hero, studio, functional, cardio].map((src, i) => (
-          <div
+        {videoTiles.map((src, i) => (
+          <button
             key={i}
-            className="group relative aspect-[9/14] w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-hairline sm:w-64"
+            type="button"
+            onClick={() => openLightbox(videoMedia, i)}
+            aria-label={`Play walkthrough clip ${i + 1}`}
+            className="group relative aspect-[9/14] w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:w-64"
           >
             <img
               src={src}
@@ -76,7 +102,7 @@ export function Gallery() {
             <span className="absolute bottom-4 left-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground">
               <Play width={16} height={16} aria-hidden="true" className="fill-current" />
             </span>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -113,9 +139,9 @@ export function Gallery() {
               alt={`${tourRooms[room]!.name} at KORR.fit`}
               loading="lazy"
               decoding="async"
-              className="float-in h-60 w-full object-cover sm:h-80"
+              className="swap-in h-60 w-full object-cover sm:h-80"
             />
-            <div className="p-6">
+            <div key={`copy-${room}`} className="swap-in p-6">
               <div className="text-xs uppercase tracking-widest text-primary">
                 Stop {room + 1} of {tourRooms.length}
               </div>
@@ -143,11 +169,23 @@ export function Gallery() {
           </div>
         </div>
       </div>
+
+      {lightbox ? (
+        <MediaLightbox
+          items={lightbox.items}
+          index={lightbox.index}
+          onIndexChange={(i) => setLightbox((l) => (l ? { ...l, index: i } : l))}
+          onClose={() => setLightbox(null)}
+          title="the KORR.fit gallery"
+          kind="Gym"
+        />
+      ) : null}
     </Section>
+
   );
 }
 
-function MoreMoments({ images }: { images: string[] }) {
+function MoreMoments({ images, onOpen }: { images: string[]; onOpen: (i: number) => void }) {
   const track = useRef<HTMLDivElement>(null);
 
   const scrollBy = (dir: 1 | -1) => {
@@ -185,14 +223,21 @@ function MoreMoments({ images }: { images: string[] }) {
         className="korr-scroll mt-5 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8"
       >
         {images.map((src, i) => (
-          <img
+          <button
             key={i}
-            src={src}
-            alt={`Inside KORR.fit gym, view ${i + 1}`}
-            loading="lazy"
-            decoding="async"
-            className="h-40 w-64 shrink-0 snap-start rounded-2xl border border-hairline object-cover sm:h-48 sm:w-80"
-          />
+            type="button"
+            onClick={() => onOpen(i)}
+            aria-label={`Open photo ${i + 1} of the gym`}
+            className="group h-40 w-64 shrink-0 snap-start overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:h-48 sm:w-80"
+          >
+            <img
+              src={src}
+              alt={`Inside KORR.fit gym, view ${i + 1}`}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </button>
         ))}
       </div>
     </div>

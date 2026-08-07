@@ -23,7 +23,7 @@ export function Hero() {
   const { openLead } = useLead();
 
   return (
-    <section id="home" className="relative isolate overflow-hidden">
+    <section id="home" className="gpu relative isolate overflow-hidden">
       {/* Full-bleed hero background */}
       <img
         src={heroImg}
@@ -43,18 +43,18 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent to-background"
       />
 
-      <div className="mx-auto w-full max-w-7xl px-5 pb-14 pt-16 sm:px-8 sm:pt-28 md:pb-28 md:pt-36">
+      <div className="mx-auto w-full max-w-7xl px-5 pb-14 pt-7 sm:px-8 sm:pt-24 md:pb-28 md:pt-32">
         <div className="max-w-3xl">
-          <span className="eyebrow">
+          <span className="eyebrow rise-in">
             <MapPin width={14} height={14} aria-hidden="true" className="text-primary" />
             Mansarovar, Jaipur
           </span>
 
-          <h1 className="mt-6">
+          <h1 className="mt-5 sm:mt-6">
             <span className="sr-only">
               KORR.fit — premium gym in Mansarovar, Jaipur
             </span>
-            <span className="inline-flex rounded-2xl border border-hairline bg-background/70 px-5 py-4 backdrop-blur-md">
+            <span className="pop-in inline-flex rounded-2xl border border-hairline bg-background/70 px-5 py-4 backdrop-blur-sm md:backdrop-blur-md">
               <img
                 src={logo.url}
                 alt="KORR.fit"
@@ -65,16 +65,30 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="mt-6 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl md:text-4xl">
+          <p
+            className="rise-in mt-5 font-display text-2xl font-semibold leading-tight tracking-tight sm:mt-6 sm:text-3xl md:text-4xl"
+            style={{ animationDelay: "80ms" }}
+          >
             Train with people who{" "}
             <span className="text-primary">actually know your name.</span>
           </p>
 
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            KORR.fit is a spacious, genuinely clean gym in Mansarovar with certified trainers,
-            personalised plans and everything from strength and functional training to Zumba, steam
-            and nutrition guidance.
+          <p
+            className="rise-in mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-5 md:text-lg"
+            style={{ animationDelay: "140ms" }}
+          >
+            <span className="md:hidden">
+              KORR.fit is a spacious, clean gym in Mansarovar with certified trainers, and
+              everything from strength and functional training to Zumba, steam and nutrition
+              guidance.
+            </span>
+            <span className="hidden md:inline">
+              KORR.fit is a spacious, genuinely clean gym in Mansarovar with certified trainers,
+              personalised plans and everything from strength and functional training to Zumba,
+              steam and nutrition guidance.
+            </span>
           </p>
+
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <button

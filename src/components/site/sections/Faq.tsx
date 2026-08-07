@@ -26,31 +26,46 @@ export function Faq() {
                     type="button"
                     onClick={() => setOpen(isOpen ? null : i)}
                     aria-expanded={isOpen}
-                    className="flex w-full items-start justify-between gap-6 py-5 text-left"
+                    className="group flex w-full items-start justify-between gap-6 py-5 text-left transition-colors duration-300 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
-                    <span className="text-base font-medium">{f.q}</span>
+                    <span
+                      className={cn(
+                        "text-base font-medium transition-transform duration-400 ease-out",
+                        isOpen && "translate-x-1 text-primary",
+                      )}
+                    >
+                      {f.q}
+                    </span>
                     <Plus
                       width={18}
                       height={18}
                       aria-hidden="true"
                       className={cn(
-                        "mt-0.5 shrink-0 text-primary transition-transform duration-400",
-                        isOpen && "rotate-45",
+                        "mt-0.5 shrink-0 text-primary transition-transform duration-500 ease-out group-hover:scale-110",
+                        isOpen && "rotate-[135deg]",
                       )}
                     />
                   </button>
                 </h3>
                 <div
                   className={cn(
-                    "grid transition-all duration-400 ease-out",
+                    "grid transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
                     isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
                   )}
                 >
                   <div className="overflow-hidden">
-                    <p className="pb-6 pr-10 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+                    <p
+                      className={cn(
+                        "pb-6 pr-10 text-sm leading-relaxed text-muted-foreground transition-transform duration-500 ease-out",
+                        isOpen ? "translate-y-0" : "-translate-y-1",
+                      )}
+                    >
+                      {f.a}
+                    </p>
                   </div>
                 </div>
               </div>
+
             );
           })}
         </div>

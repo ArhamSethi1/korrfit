@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
+import { scrollToId } from "@/lib/scroll";
 import { ThumbsUp, X, Play, Link2, Check } from "lucide-react";
 import { MediaLightbox } from "../MediaLightbox";
 import { Section, Stars } from "../primitives";
@@ -58,6 +59,8 @@ function ReviewCard({
               <img
                 src={m.src}
                 alt=""
+                width={56}
+                height={56}
                 loading="lazy"
                 decoding="async"
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -127,6 +130,14 @@ export function Reviews() {
       /* clipboard unavailable */
     }
   };
+
+  // Deep link: land directly on the filtered review list.
+  useEffect(() => {
+    if (!search.reviews) return;
+    const t = window.setTimeout(() => scrollToId("reviews"), 250);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -234,12 +245,12 @@ export function Reviews() {
           role="dialog"
           aria-modal="true"
           aria-label="All Google reviews"
-          className="fixed inset-0 z-[70] flex items-end justify-center bg-black/70 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+          className="backdrop-in fixed inset-0 z-[70] flex items-end justify-center bg-black/70 p-0 backdrop-blur-sm sm:items-center sm:p-6"
           onClick={() => setOpen(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="float-in flex max-h-[88dvh] w-full max-w-4xl flex-col overflow-hidden rounded-t-3xl border border-hairline bg-background sm:rounded-3xl"
+            className="pop-in flex max-h-[88dvh] w-full max-w-4xl flex-col overflow-hidden rounded-t-3xl border border-hairline bg-background sm:rounded-3xl"
           >
             <div className="flex items-center justify-between border-b border-hairline px-6 py-5">
               <div className="flex items-center gap-3">

@@ -315,3 +315,107 @@ body,
     transform: none;
   }
 }
+
+/* ---------- Interaction & popup motion ---------- */
+
+button,
+a,
+[role="button"],
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+/* Every interactive control gets a subtle press response */
+button:not(:disabled):active,
+a:active,
+[role="button"]:active {
+  transform: scale(0.97);
+}
+button,
+a,
+[role="button"] {
+  transition-property: transform, color, background-color, border-color, box-shadow, opacity;
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes korr-backdrop-in {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@utility backdrop-in {
+  animation: korr-backdrop-in 0.28s ease-out both;
+}
+
+@keyframes korr-pop-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0) scale(0.94);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility pop-in {
+  animation: korr-pop-in 0.42s cubic-bezier(0.22, 1.12, 0.36, 1) both;
+}
+
+@keyframes korr-swap-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility swap-in {
+  animation: korr-swap-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes korr-rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility rise-in {
+  animation: korr-rise-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- Scroll performance ---------- */
+
+html {
+  scroll-padding-top: 5.5rem;
+  overscroll-behavior-y: none;
+}
+
+body {
+  /* Keeps long-page compositing cheap on mobile */
+  text-rendering: optimizeSpeed;
+}
+
+.gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}

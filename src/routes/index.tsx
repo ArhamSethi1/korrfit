@@ -18,7 +18,9 @@ import { FindUs } from "@/components/site/sections/FindUs";
 import { Faq } from "@/components/site/sections/Faq";
 import { FinalCta, Footer } from "@/components/site/sections/FinalCta";
 import { site } from "@/lib/site";
-import { faqs } from "@/data/content";
+import { faqs, reviews, stories } from "@/data/content";
+import { BackToTop } from "@/components/site/BackToTop";
+import { SmoothAnchors } from "@/components/site/SmoothAnchors";
 
 const title = "KORR.fit — Premium Gym in Mansarovar, Jaipur";
 const description =
@@ -68,6 +70,33 @@ export const Route = createFileRoute("/")({
             reviewCount: site.rating.count,
           },
           sameAs: [site.instagram],
+          review: reviews.slice(0, 6).map((r) => ({
+            "@type": "Review",
+            author: { "@type": "Person", name: r.name },
+            reviewBody: r.text,
+            reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+            itemReviewed: { "@type": "HealthAndBeautyBusiness", name: site.name },
+          })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "KORR.fit member success stories",
+          itemListElement: stories.map((s, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+              "@type": "Review",
+              name: `${s.program} transformation`,
+              author: { "@type": "Person", name: s.name },
+              reviewBody: `${s.quote} (${s.program}, ${s.duration}, ${s.result})`,
+              reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+              itemReviewed: { "@type": "HealthAndBeautyBusiness", name: site.name },
+            },
+          })),
         }),
       },
       {
@@ -110,7 +139,9 @@ function Home() {
           <FinalCta />
         </main>
         <Footer />
+        <BackToTop />
         <WhatsAppFloat />
+        <SmoothAnchors />
       </div>
     </LeadProvider>
   );
