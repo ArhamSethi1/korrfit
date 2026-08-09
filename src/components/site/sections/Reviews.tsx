@@ -100,10 +100,12 @@ export function Reviews() {
         ...prev,
         reviews: t === "All" ? undefined : t,
       }),
-      replace: true,
+      // Push a history entry so browser back/forward restores the filter.
+      replace: false,
       resetScroll: false,
     });
   };
+
 
   const filtered = useMemo(
     () => (tag === "All" ? reviews : reviews.filter((r) => r.tags.includes(tag))),
