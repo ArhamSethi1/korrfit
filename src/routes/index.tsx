@@ -70,12 +70,13 @@ export const Route = createFileRoute("/")({
             reviewCount: site.rating.count,
           },
           sameAs: [site.instagram],
+          url: "/",
+          priceRange: "₹₹",
           review: reviews.slice(0, 6).map((r) => ({
             "@type": "Review",
             author: { "@type": "Person", name: r.name },
             reviewBody: r.text,
-            reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-            itemReviewed: { "@type": "HealthAndBeautyBusiness", name: site.name },
+            reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
           })),
         }),
       },
@@ -89,16 +90,16 @@ export const Route = createFileRoute("/")({
             "@type": "ListItem",
             position: i + 1,
             item: {
-              "@type": "Review",
-              name: `${s.program} transformation`,
-              author: { "@type": "Person", name: s.name },
-              reviewBody: `${s.quote} (${s.program}, ${s.duration}, ${s.result})`,
-              reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-              itemReviewed: { "@type": "HealthAndBeautyBusiness", name: site.name },
+              "@type": "CreativeWork",
+              name: `${s.name} — ${s.program} transformation`,
+              about: s.program,
+              text: `${s.quote} (${s.program}, ${s.duration}, ${s.result})`,
+              creator: { "@type": "Person", name: s.name },
             },
           })),
         }),
       },
+
       {
         type: "application/ld+json",
         children: JSON.stringify({
