@@ -28,7 +28,7 @@ function ReviewCard({
   onMedia: (list: ReviewMedia[], index: number) => void;
 }) {
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-hairline bg-surface/40 p-4 transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 sm:p-5">
+    <article className="flex h-full flex-col rounded-2xl border border-hairline bg-surface/40 p-4 transition-all duration-500 card-hover sm:p-5">
       <div className="flex items-center gap-2.5">
         <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 font-display text-sm font-semibold text-primary">
           {r.initials}
@@ -100,10 +100,12 @@ export function Reviews() {
         ...prev,
         reviews: t === "All" ? undefined : t,
       }),
-      replace: true,
+      // Push a history entry so browser back/forward restores the filter.
+      replace: false,
       resetScroll: false,
     });
   };
+
 
   const filtered = useMemo(
     () => (tag === "All" ? reviews : reviews.filter((r) => r.tags.includes(tag))),

@@ -118,7 +118,7 @@ export function Stories() {
       <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3">
         {stories.map((s, i) => (
           <Reveal key={`${s.program}-${i}`} delay={i * 90}>
-            <article className="h-full rounded-2xl border border-hairline bg-background/40 p-4 transition-all sm:p-6 md:rounded-3xl duration-500 hover:-translate-y-1 hover:border-primary/40">
+            <article className="h-full rounded-2xl border border-hairline bg-background/40 p-4 transition-all sm:p-6 md:rounded-3xl duration-500 card-hover">
               <Quote width={18} height={18} aria-hidden="true" className="text-primary" />
               <p className="mt-3 text-xs leading-relaxed text-muted-foreground sm:text-sm">“{s.quote}”</p>
               <div className="mt-4 border-t border-hairline pt-4">

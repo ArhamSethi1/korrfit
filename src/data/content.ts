@@ -74,42 +74,98 @@ export type Plan = {
   featured?: boolean;
 };
 
-// TODO: replace placeholder pricing with real membership rates.
+/** Official KORR.fit tariff — all gym memberships include Yoga, Zumba & Steam. */
 export const plans: Plan[] = [
   {
-    name: "Monthly",
-    description: "Try the floor, the classes and the coaching with no long commitment.",
-    price: "₹ —",
-    period: "per month",
-    features: ["Full gym access", "Group class access", "Onboarding session", "Locker access"],
+    name: "Individual — 3 Months",
+    description: "Long enough to build the habit and see the first real change.",
+    price: "₹8,000",
+    period: "3 months",
+    features: ["Full gym access", "Yoga, Zumba & Steam included", "Onboarding session", "Locker access on request"],
   },
   {
-    name: "Quarterly",
-    description: "The plan most members choose — long enough to see real change.",
-    price: "₹ —",
-    period: "for 3 months",
+    name: "Individual — 6 Months",
+    description: "The plan most members choose — steady progress, better value.",
+    price: "₹12,000",
+    period: "6 months",
     features: [
-      "Everything in Monthly",
+      "Everything in 3 Months",
       "Personalised training plan",
       "Monthly progress review",
-      "Steam room access",
-      "Nutrition guidance",
+      "Yoga, Zumba & Steam included",
     ],
     featured: true,
   },
   {
-    name: "Annual",
+    name: "Individual — 12 Months",
     description: "Best value for members who train as part of their routine.",
-    price: "₹ —",
-    period: "per year",
+    price: "₹16,000",
+    period: "12 months",
     features: [
-      "Everything in Quarterly",
-      "Priority class booking",
+      "Everything in 6 Months",
       "Quarterly body assessment",
-      "Guest passes",
+      "Priority class access",
+      "Yoga, Zumba & Steam included",
     ],
   },
 ];
+
+export const lifetimeMembership = { label: "Life Time Membership Fee", price: "₹1,50,000" };
+
+export const otherFacilities: string[] = [
+  "One Day Access: ₹500 (Gym + 1 Yoga/Zumba class)",
+  "Dietician Consultation: ₹1,000 (pre-booking only)",
+  "Locker: ₹350/month or ₹2,000/year",
+  "Steam for non-gym members: ₹350/session (advance booking mandatory)",
+  "Couple, group & personal training plans — ask at reception",
+];
+
+export const importantNotes: string[] = [
+  "No offers or discounts on the one-month membership plan.",
+  "No refunds after activation.",
+  "Transfer/freeze allowed only under terms mentioned in policy.",
+];
+
+export const membershipTerms =
+  "By using our services, you agree to abide by all terms and facility rules displayed at the gym.";
+
+export type PtPlan = { label: string; price: string };
+
+export const ptSessionPlans: PtPlan[] = [
+  { label: "Per session", price: "₹1,000" },
+  { label: "3 sessions", price: "₹2,500" },
+  { label: "10 sessions", price: "₹7,000" },
+];
+
+export const ptMonthPlans: PtPlan[] = [
+  { label: "1 month", price: "₹12,000" },
+  { label: "3 months", price: "₹30,000" },
+  { label: "6 months", price: "₹50,000" },
+  { label: "12 months", price: "₹85,000" },
+];
+
+export const ptIncludes: string[] = [
+  "Fitness assessment",
+  "Customized workout",
+  "Nutrition guidance",
+  "Form correction",
+  "Monthly progress tracking",
+  "Motivation & accountability",
+];
+
+export const ptIdealFor: string[] = [
+  "Fat loss",
+  "Muscle gain",
+  "Strength",
+  "Beginners",
+  "Transformation",
+];
+
+export const ptTerms =
+  "PT fees are non-refundable. Sessions are non-transferable. Valid only within the selected duration. Prior notice required for rescheduling.";
+
+export const ptTagline = "Transform yourself with expert coaching.";
+
 
 export type Trainer = {
   name: string;

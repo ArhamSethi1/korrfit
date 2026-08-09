@@ -16,7 +16,7 @@ export function Offers() {
       <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3">
         {offers.map((o, i) => (
           <Reveal key={o.title} delay={i * 90}>
-            <article className="group relative h-full overflow-hidden rounded-2xl border border-hairline bg-surface/40 p-4 transition-all sm:p-6 md:rounded-3xl duration-500 hover:-translate-y-1 hover:border-primary/40">
+            <article className="group relative h-full overflow-hidden rounded-2xl border border-hairline bg-surface/40 p-4 transition-all sm:p-6 md:rounded-3xl duration-500 card-hover">
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-primary/10 blur-3xl transition-opacity duration-500 group-hover:opacity-160"
