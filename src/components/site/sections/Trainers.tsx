@@ -15,7 +15,7 @@ export function Trainers() {
       <div className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-3">
         {trainers.map((t, i) => (
           <Reveal key={`${t.specialization}-${i}`} delay={(i % 3) * 80}>
-            <article className="group h-full overflow-hidden rounded-2xl border border-hairline bg-surface/40 transition-all md:rounded-3xl duration-500 hover:-translate-y-1 hover:border-primary/40">
+            <article className="group h-full overflow-hidden rounded-2xl border border-hairline bg-surface/40 transition-all md:rounded-3xl duration-500 card-hover">
               <div className="grain relative flex h-32 items-center justify-center bg-surface-2/60 sm:h-40">
                 <span className="font-display text-4xl font-semibold text-muted-foreground/25">
                   {t.specialization.charAt(0)}

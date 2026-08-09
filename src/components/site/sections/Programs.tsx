@@ -51,7 +51,7 @@ export function Programs() {
           const Icon = icons[i % icons.length]!;
           return (
             <Reveal key={p.title} delay={(i % 3) * 70}>
-              <article className="group h-full rounded-2xl border border-hairline bg-background/40 p-4 transition-all sm:p-5 md:rounded-3xl duration-500 hover:-translate-y-1 hover:border-primary/40 hover:bg-surface">
+              <article className="group h-full rounded-2xl border border-hairline bg-background/40 p-4 transition-all sm:p-5 md:rounded-3xl duration-500 card-hover hover:bg-surface">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-hairline bg-surface-2/60 text-primary transition-colors duration-500 group-hover:border-primary/40">
                   <Icon width={17} height={17} aria-hidden="true" />
                 </span>
