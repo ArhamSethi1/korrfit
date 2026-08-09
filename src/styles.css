@@ -419,3 +419,49 @@ body {
   transform: translateZ(0);
   will-change: transform;
 }
+
+/* ---------- Extra polish ---------- */
+
+@keyframes korr-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility fade-up {
+  animation: korr-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Cards lift with a soft brand glow instead of a flat border change */
+@utility card-hover {
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s ease;
+  &:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+    box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+}
+
+/* Section headings underline sweeps in when revealed */
+.is-revealed .eyebrow span[aria-hidden="true"] {
+  animation: korr-line-grow 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes korr-line-grow {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}

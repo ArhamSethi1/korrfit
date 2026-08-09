@@ -21,6 +21,7 @@ import { site } from "@/lib/site";
 import { faqs, reviews, stories } from "@/data/content";
 import { BackToTop } from "@/components/site/BackToTop";
 import { SmoothAnchors } from "@/components/site/SmoothAnchors";
+import { ImagePreloader } from "@/components/site/ImagePreloader";
 
 const title = "KORR.fit — Premium Gym in Mansarovar, Jaipur";
 const description =
@@ -143,6 +144,7 @@ function Home() {
         <BackToTop />
         <WhatsAppFloat />
         <SmoothAnchors />
+        <ImagePreloader />
       </div>
     </LeadProvider>
   );
