@@ -126,8 +126,15 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
           </button>
         </div>
 
-        <div className="relative bg-surface/30">
-          {/* Lightweight blurred preview keeps the popup instant on mobile */}
+        <div className="relative min-h-[40dvh] bg-surface/30">
+          {/* Skeleton + blurred preview keep the popup instant on mobile */}
+          <span
+            aria-hidden="true"
+            className={cn(
+              "skeleton-shimmer absolute inset-0 transition-opacity duration-500",
+              loaded ? "opacity-0" : "opacity-100",
+            )}
+          />
           <img
             key={`${item.src}-preview`}
             src={item.src}

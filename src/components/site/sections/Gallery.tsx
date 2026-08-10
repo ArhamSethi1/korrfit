@@ -4,6 +4,7 @@ import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
 import { tourRooms, type ReviewMedia } from "@/data/content";
 import { MediaLightbox } from "../MediaLightbox";
+import { SmartImage } from "../SmartImage";
 import { cn } from "@/lib/utils";
 import strength from "@/assets/gym-strength.jpg";
 import cardio from "@/assets/gym-cardio.jpg";
@@ -64,12 +65,12 @@ export function Gallery() {
               aria-label={`Open photo: ${g.alt}`}
               className="group block h-full w-full overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <img
+              <SmartImage
                 src={g.src}
                 alt={g.alt}
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover group-hover:scale-105"
               />
             </button>
           </Reveal>
@@ -84,25 +85,26 @@ export function Gallery() {
       </p>
       <div className="korr-scroll mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
         {videoTiles.map((src, i) => (
+          <Reveal key={i} delay={i * 80} className="shrink-0">
           <button
-            key={i}
             type="button"
             onClick={() => openLightbox(videoMedia, i)}
             aria-label={`Play walkthrough clip ${i + 1}`}
             className="group relative aspect-[9/14] w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:w-64"
           >
-            <img
+            <SmartImage
               src={src}
               alt={`Video placeholder ${i + 1}`}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover group-hover:scale-105"
             />
             <span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
             <span className="absolute bottom-4 left-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground">
               <Play width={16} height={16} aria-hidden="true" className="fill-current" />
             </span>
           </button>
+          </Reveal>
         ))}
       </div>
 
@@ -133,13 +135,14 @@ export function Gallery() {
           </div>
 
           <div className="overflow-hidden rounded-3xl border border-hairline bg-background/40">
-            <img
+            <SmartImage
               key={room}
               src={tourImages[room]}
               alt={`${tourRooms[room]!.name} at KORR.fit`}
               loading="lazy"
               decoding="async"
-              className="swap-in h-60 w-full object-cover sm:h-80"
+              wrapperClassName="h-60 sm:h-80"
+              className="swap-in object-cover"
             />
             <div key={`copy-${room}`} className="swap-in p-6">
               <div className="text-xs uppercase tracking-widest text-primary">
@@ -230,12 +233,12 @@ function MoreMoments({ images, onOpen }: { images: string[]; onOpen: (i: number)
             aria-label={`Open photo ${i + 1} of the gym`}
             className="group h-40 w-64 shrink-0 snap-start overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:h-48 sm:w-80"
           >
-            <img
+            <SmartImage
               src={src}
               alt={`Inside KORR.fit gym, view ${i + 1}`}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover group-hover:scale-105"
             />
           </button>
         ))}

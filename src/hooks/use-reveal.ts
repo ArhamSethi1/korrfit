@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 /**
  * Reveals an element once when it scrolls into view, then disconnects.
  */
-export function useReveal<T extends HTMLElement = HTMLDivElement>(rootMargin = "0px 0px -12% 0px") {
+export function useReveal<T extends HTMLElement = HTMLDivElement>(rootMargin = "0px 0px -8% 0px") {
   const ref = useRef<T | null>(null);
   const [shown, setShown] = useState(false);
 
@@ -21,7 +21,7 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(rootMargin = "
           io.disconnect();
         }
       },
-      { rootMargin, threshold: 0.08 },
+      { rootMargin, threshold: 0.01 },
     );
     io.observe(el);
     return () => io.disconnect();
