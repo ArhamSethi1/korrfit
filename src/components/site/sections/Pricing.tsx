@@ -78,17 +78,20 @@ export function Pricing() {
                 </span>
               ) : null}
 
-              <h3 className="text-base font-semibold sm:text-lg">{plan.name}</h3>
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">{plan.description}</p>
-
-              <div className="mt-6 flex items-baseline gap-2">
-                <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{plan.price}</span>
-                <span className="text-xs text-muted-foreground">{plan.period}</span>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <h3 className="text-lg font-semibold">{plan.name}</h3>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="font-display text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
+                    {plan.price}
+                  </span>
+                  <span className="text-[0.7rem] text-muted-foreground">{plan.period}</span>
+                </div>
               </div>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{plan.description}</p>
 
               <ul className="mt-5 flex-1 space-y-2.5">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-xs text-muted-foreground sm:text-sm">
+                  <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">
                     <Check width={15} height={15} aria-hidden="true" className="mt-0.5 shrink-0 text-primary" />
                     {f}
                   </li>
@@ -101,7 +104,7 @@ export function Pricing() {
                   openLead({ intent: "membership", plan: plan.name, source: "pricing" })
                 }
                 className={cn(
-                  "mt-8 inline-flex min-h-11 items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  "mt-7 inline-flex min-h-11 w-full items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   plan.featured
                     ? "bg-primary text-primary-foreground"
                     : "border border-hairline bg-surface/60 text-foreground hover:bg-surface",
@@ -113,6 +116,7 @@ export function Pricing() {
           </Reveal>
         ))}
       </div>
+      )}
 
       <Reveal delay={80}>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3 rounded-2xl border border-primary/40 bg-primary/10 px-5 py-3.5 text-center">
