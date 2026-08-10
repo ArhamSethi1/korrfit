@@ -495,3 +495,57 @@ body {
     animation: none;
   }
 }
+
+/* ---------- Extra motion polish (desktop + mobile) ---------- */
+
+@keyframes korr-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Any dialog/popup surface gets a soft pop */
+[role="dialog"] {
+  animation: korr-pop-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Cards lift a touch more crisply on pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  .card-hover {
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.45s ease,
+      box-shadow 0.45s ease;
+  }
+  .card-hover:hover {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+/* Reduced motion: calm everything down on every device */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .rise-in,
+  .pop-in,
+  .float-in {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  .skeleton-shimmer {
+    animation: none !important;
+    background-image: none !important;
+  }
+  [role="dialog"] {
+    animation: none !important;
+  }
+}
