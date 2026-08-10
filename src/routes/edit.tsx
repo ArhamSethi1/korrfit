@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 import { getSiteTexts, saveSiteTexts } from "@/lib/site-texts.functions";
 import { textGroups, defaultTexts } from "@/data/editable-text";
 
@@ -56,6 +57,7 @@ function EditPage() {
 
   return (
     <main className="min-h-screen bg-background px-5 py-12 text-foreground sm:px-8">
+      <Toaster />
       <div className="mx-auto w-full max-w-3xl">
         <h1 className="font-display text-3xl font-semibold tracking-tight">Edit website text</h1>
         <p className="mt-2 text-sm text-muted-foreground">
