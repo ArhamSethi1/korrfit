@@ -13,6 +13,8 @@ import { site } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 import { useLead } from "../LeadDialog";
 import { WhatsAppIcon } from "../WhatsAppIcon";
+import { CountUp } from "../CountUp";
+import { useText } from "@/lib/text";
 import heroImg from "@/assets/hero-gym.jpg";
 import logo from "@/assets/korr-logo.png.asset.json";
 
@@ -21,6 +23,7 @@ const pillClass =
 
 export function Hero() {
   const { openLead } = useLead();
+  const t = useText();
 
   return (
     <section id="home" className="gpu relative isolate overflow-hidden">
@@ -47,7 +50,7 @@ export function Hero() {
         <div className="max-w-3xl">
           <span className="eyebrow rise-in">
             <MapPin width={14} height={14} aria-hidden="true" className="text-primary" />
-            Mansarovar, Jaipur
+            {t("hero.eyebrow", "Mansarovar, Jaipur")}
           </span>
 
           <h1 className="mt-5 sm:mt-6">
@@ -69,24 +72,19 @@ export function Hero() {
             className="rise-in mt-5 font-display text-2xl font-semibold leading-tight tracking-tight sm:mt-6 sm:text-3xl md:text-4xl"
             style={{ animationDelay: "80ms" }}
           >
-            Train with people who{" "}
-            <span className="text-primary">actually know your name.</span>
+            {t("hero.headline", "Train with people who")}{" "}
+            <span className="text-primary">{t("hero.headlineAccent", "actually know your name.")}</span>
           </p>
 
           <p
             className="rise-in mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-5 md:text-lg"
             style={{ animationDelay: "140ms" }}
           >
-            <span className="md:hidden">
-              KORR.fit is a spacious, clean gym in Mansarovar with certified trainers, and
-              everything from strength and functional training to Zumba, steam and nutrition
-              guidance.
-            </span>
-            <span className="hidden md:inline">
-              KORR.fit is a spacious, genuinely clean gym in Mansarovar with certified trainers,
-              personalised plans and everything from strength and functional training to Zumba,
-              steam and nutrition guidance.
-            </span>
+            {t(
+              "hero.paragraph",
+              "KORR.fit is a spacious, clean gym in Mansarovar with certified trainers, and everything from strength and functional training to Zumba, steam and nutrition guidance.",
+            )}
+
           </p>
 
 
@@ -176,7 +174,7 @@ export function Hero() {
               </span>
               <span aria-hidden="true" className="h-4 w-px bg-hairline" />
               <span className="text-sm text-muted-foreground">
-                {site.rating.count}+ Google reviews
+                <CountUp to={site.rating.count} suffix="+" /> Google reviews
               </span>
             </div>
             {[
