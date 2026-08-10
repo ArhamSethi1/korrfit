@@ -1,6 +1,8 @@
 import { Check, Sparkles, Info, Dot } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
+import { PricingSkeleton } from "../Skeletons";
+import { useText, useTextsLoading } from "@/lib/text";
 import { useLead } from "../LeadDialog";
 import {
   plans,
@@ -44,17 +46,21 @@ function MiniList({ title, items, accent }: { title: string; items: string[]; ac
 
 export function Pricing() {
   const { openLead } = useLead();
+  const t = useText();
+  const loading = useTextsLoading();
 
   return (
     <Section id="pricing" tone="raised">
       <SectionHeading
+        tkey="pricing"
         eyebrow="Membership"
         title="Simple plans. No hidden add-ons."
         lead="All gym memberships include access to Yoga, Zumba & Steam. Final pricing is confirmed at the front desk or over WhatsApp."
         align="center"
       />
 
-      <div className="mt-14 grid grid-cols-2 items-start gap-3 lg:grid-cols-3 lg:gap-5">
+      {loading ? <PricingSkeleton /> : (
+      <div className="mt-12 grid grid-cols-1 items-start gap-4 sm:mt-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
         {plans.map((plan, i) => (
           <Reveal key={plan.name} delay={i * 90}>
             <div
