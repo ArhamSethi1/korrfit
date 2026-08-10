@@ -4,6 +4,8 @@ import { scrollToId } from "@/lib/scroll";
 import { ThumbsUp, X, Play, Link2, Check } from "lucide-react";
 import { MediaLightbox } from "../MediaLightbox";
 import { Section, Stars } from "../primitives";
+import { ReviewsSkeleton } from "../Skeletons";
+import { useTextsLoading } from "@/lib/text";
 import { Reveal } from "../Reveal";
 import { reviews, reviewTags, type Review, type ReviewMedia } from "@/data/content";
 import { site } from "@/lib/site";
@@ -92,6 +94,7 @@ export function Reviews() {
   const [mediaList, setMediaList] = useState<ReviewMedia[]>([]);
   const [mediaIndex, setMediaIndex] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
+  const textsLoading = useTextsLoading();
 
   const setTag = (t: string) => {
     void navigate({
@@ -212,13 +215,17 @@ export function Reviews() {
         </button>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-3">
-        {filtered.slice(0, 6).map((r, i) => (
-          <Reveal key={`${r.initials}-${i}`} delay={(i % 3) * 70}>
-            <ReviewCard r={r} onMedia={openMedia} />
-          </Reveal>
-        ))}
-      </div>
+      {textsLoading ? (
+        <ReviewsSkeleton />
+      ) : (
+        <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-3">
+          {filtered.slice(0, 6).map((r, i) => (
+            <Reveal key={`${r.initials}-${i}`} delay={(i % 3) * 70}>
+              <ReviewCard r={r} onMedia={openMedia} />
+            </Reveal>
+          ))}
+        </div>
+      )}
 
       {filtered.length === 0 ? (
         <p className="mt-6 text-sm text-muted-foreground">No reviews tagged “{tag}” yet.</p>

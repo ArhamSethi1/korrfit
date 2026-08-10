@@ -177,7 +177,7 @@ export function Pricing() {
                   {block.rows.map((r) => (
                     <li key={r.label} className="flex items-baseline justify-between gap-3 py-2">
                       <span className="text-xs text-muted-foreground sm:text-sm">{r.label}</span>
-                      <span className="font-display text-sm font-semibold sm:text-base">{r.price}</span>
+                      <span className="font-display text-sm font-semibold text-primary sm:text-base">{r.price}</span>
                     </li>
                   ))}
                 </ul>
