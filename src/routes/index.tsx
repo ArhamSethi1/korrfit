@@ -120,32 +120,33 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <LeadProvider>
-      <div className="min-h-screen bg-background text-foreground">
-        <SiteNav />
-        <main>
-          <Hero />
-          <Stats />
-          <Gallery />
-          <Stories />
-          <Reviews />
-          <Programs />
-          <Amenities />
-          <Pricing />
-          <Trainers />
-          <Schedule />
-          <Offers />
-          <WhyUs />
-          <FindUs />
-          <Faq />
-          <FinalCta />
-        </main>
-        <Footer />
-        <BackToTop />
-        <WhatsAppFloat />
-        <SmoothAnchors />
-        <ImagePreloader />
-      </div>
-    </LeadProvider>
+    <TextProvider>
+      <LeadProvider>
+        <div className="min-h-screen bg-background text-foreground">
+          <SiteNav />
+          <main>
+            <Hero />
+            <Offers />
+            <Gallery />
+            <Stories />
+            <Reviews />
+            <Amenities />
+            <Programs />
+            <Pricing />
+            <Trainers />
+            <Schedule />
+            <WhyUs />
+            <FindUs />
+            <Faq />
+            <FinalCta />
+          </main>
+          <Footer />
+          <BackToTop />
+          <WhatsAppFloat />
+          <SmoothAnchors />
+          <ImagePreloader />
+        </div>
+      </LeadProvider>
+    </TextProvider>
   );
 }
