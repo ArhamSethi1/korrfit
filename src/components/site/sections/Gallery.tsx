@@ -85,8 +85,8 @@ export function Gallery() {
       </p>
       <div className="korr-scroll mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
         {videoTiles.map((src, i) => (
+          <Reveal key={i} delay={i * 80} className="shrink-0">
           <button
-            key={i}
             type="button"
             onClick={() => openLightbox(videoMedia, i)}
             aria-label={`Play walkthrough clip ${i + 1}`}
@@ -104,6 +104,7 @@ export function Gallery() {
               <Play width={16} height={16} aria-hidden="true" className="fill-current" />
             </span>
           </button>
+          </Reveal>
         ))}
       </div>
 
