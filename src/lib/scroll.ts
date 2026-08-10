@@ -9,9 +9,9 @@ const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2
 
 let activeAnimation = 0;
 
-/** Distance-aware duration: short hops ~900ms, long jumps up to ~2.2s. */
+/** Snappy but visible: short hops ~420ms, long jumps up to ~900ms. */
 function durationFor(distance: number) {
-  return Math.min(2200, Math.max(900, 700 + distance * 0.55));
+  return Math.min(900, Math.max(420, 320 + distance * 0.22));
 }
 
 function animateScrollTo(target: number) {

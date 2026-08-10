@@ -17,9 +17,10 @@ export function Amenities() {
   const group = amenityGroups[active]!;
 
   return (
-    <Section id="amenities">
+    <Section id="programs">
       <SectionHeading
-        eyebrow="Amenities"
+        tkey="programs"
+        eyebrow="Programs"
         title="Five zones, each with a job to do."
         lead="Space is the reason our floor never feels like a queue. Every kind of training has somewhere it belongs."
       />

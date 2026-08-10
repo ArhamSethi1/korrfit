@@ -3,7 +3,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { LeadProvider } from "@/components/site/LeadDialog";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 import { Hero } from "@/components/site/sections/Hero";
-import { Stats } from "@/components/site/sections/Stats";
+import { TextProvider } from "@/lib/text";
 import { WhyUs } from "@/components/site/sections/WhyUs";
 import { Programs } from "@/components/site/sections/Programs";
 import { Amenities } from "@/components/site/sections/Amenities";
@@ -120,32 +120,33 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <LeadProvider>
-      <div className="min-h-screen bg-background text-foreground">
-        <SiteNav />
-        <main>
-          <Hero />
-          <Stats />
-          <Gallery />
-          <Stories />
-          <Reviews />
-          <Programs />
-          <Amenities />
-          <Pricing />
-          <Trainers />
-          <Schedule />
-          <Offers />
-          <WhyUs />
-          <FindUs />
-          <Faq />
-          <FinalCta />
-        </main>
-        <Footer />
-        <BackToTop />
-        <WhatsAppFloat />
-        <SmoothAnchors />
-        <ImagePreloader />
-      </div>
-    </LeadProvider>
+    <TextProvider>
+      <LeadProvider>
+        <div className="min-h-screen bg-background text-foreground">
+          <SiteNav />
+          <main>
+            <Hero />
+            <Offers />
+            <Gallery />
+            <Stories />
+            <Reviews />
+            <Amenities />
+            <Programs />
+            <Pricing />
+            <Trainers />
+            <Schedule />
+            <WhyUs />
+            <FindUs />
+            <Faq />
+            <FinalCta />
+          </main>
+          <Footer />
+          <BackToTop />
+          <WhatsAppFloat />
+          <SmoothAnchors />
+          <ImagePreloader />
+        </div>
+      </LeadProvider>
+    </TextProvider>
   );
 }

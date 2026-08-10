@@ -39,9 +39,10 @@ const icons = [
 
 export function Programs() {
   return (
-    <Section id="programs" tone="raised">
+    <Section id="amenities" tone="raised">
       <SectionHeading
-        eyebrow="Programs"
+        tkey="amenities"
+        eyebrow="Amenities"
         title="Training built around you, not around a template."
         lead="Whatever brings you in — first gym, a comeback, or a specific goal — there is a path here that starts where you are today."
       />

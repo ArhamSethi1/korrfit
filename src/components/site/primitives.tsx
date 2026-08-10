@@ -1,6 +1,8 @@
 import { Star } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { useText } from "@/lib/text";
+import { Reveal } from "./Reveal";
 import logo from "@/assets/korr-logo.png.asset.json";
 
 export function Logo({ className }: { className?: string }) {
@@ -62,22 +64,32 @@ export function SectionHeading({
   title,
   lead,
   align = "left",
+  tkey,
 }: {
   eyebrow: string;
   title: ReactNode;
   lead?: string;
   align?: "left" | "center";
+  /** When set, the copy can be overridden from the /edit page (keys: `${tkey}.eyebrow|title|lead`). */
+  tkey?: string;
 }) {
+  const t = useText();
+  const resolvedEyebrow = tkey ? t(`${tkey}.eyebrow`, eyebrow) : eyebrow;
+  const resolvedTitle = tkey ? t(`${tkey}.title`, typeof title === "string" ? title : "") || title : title;
+  const resolvedLead = tkey && lead ? t(`${tkey}.lead`, lead) : lead;
+
   return (
-    <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
+    <Reveal className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
       <span className="eyebrow">
         <span aria-hidden="true" className="h-px w-6 bg-primary" />
-        {eyebrow}
+        {resolvedEyebrow}
       </span>
-      <h2 className="mt-4 text-3xl font-semibold leading-[1.08] sm:text-4xl md:text-5xl">{title}</h2>
-      {lead ? (
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">{lead}</p>
+      <h2 className="mt-4 text-3xl font-semibold leading-[1.08] sm:text-4xl md:text-5xl">
+        {resolvedTitle}
+      </h2>
+      {resolvedLead ? (
+        <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">{resolvedLead}</p>
       ) : null}
-    </div>
+    </Reveal>
   );
 }
