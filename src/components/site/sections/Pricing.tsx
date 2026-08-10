@@ -149,10 +149,10 @@ export function Pricing() {
                 Personal training
               </span>
               <h3 className="mt-3 font-display text-xl font-semibold tracking-tight sm:text-2xl">
-                One-to-one coaching plans
+                {t("pricing.ptTitle", "One-to-one coaching plans")}
               </h3>
               <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                All PT plans include a personalised workout plus ongoing guidance.
+                {t("pricing.ptLead", "All PT plans include a personalised workout plus ongoing guidance.")}
               </p>
             </div>
             <button
