@@ -8,6 +8,7 @@ export function Offers() {
   return (
     <Section id="offers">
       <SectionHeading
+        tkey="offers"
         eyebrow="Current offers"
         title="Reasons to start this week."
         lead="Offer content is fully editable — swap these in and out whenever a promotion changes."
