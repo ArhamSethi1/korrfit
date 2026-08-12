@@ -15,8 +15,9 @@ import { useLead } from "../LeadDialog";
 import { WhatsAppIcon } from "../WhatsAppIcon";
 import { CountUp } from "../CountUp";
 import { useText } from "@/lib/text";
-import heroImg from "@/assets/hero-gym.jpg";
+import { heroBackground } from "@/data/media";
 import logo from "@/assets/korr-logo.png.asset.json";
+
 
 const pillClass =
   "inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-background/40 px-4 py-2.5 text-sm font-medium text-muted-foreground backdrop-blur transition-colors hover:border-primary/40 hover:bg-background/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
