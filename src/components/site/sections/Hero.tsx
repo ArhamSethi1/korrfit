@@ -30,7 +30,7 @@ export function Hero() {
     <section id="home" className="gpu relative isolate overflow-hidden">
       {/* Full-bleed hero background */}
       <img
-        src={heroImg}
+        src={heroBackground}
         alt="The strength training floor at KORR.fit gym in Mansarovar, Jaipur"
         width={1600}
         height={1200}
