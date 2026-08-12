@@ -3,62 +3,89 @@ import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
 import { tourRooms, type ReviewMedia } from "@/data/content";
+import { galleryPhotos, tourVideos } from "@/data/media";
 import { MediaLightbox } from "../MediaLightbox";
 import { SmartImage } from "../SmartImage";
 import { cn } from "@/lib/utils";
-import strength from "@/assets/gym-strength.jpg";
-import cardio from "@/assets/gym-cardio.jpg";
-import functional from "@/assets/gym-functional.jpg";
-import recovery from "@/assets/gym-recovery.jpg";
-import studio from "@/assets/gym-studio.jpg";
-import reception from "@/assets/gym-reception.jpg";
-import stretch from "@/assets/gym-stretch.jpg";
-import hero from "@/assets/hero-gym.jpg";
 
-const grid = [
-  { src: strength, alt: "Strength training floor", span: "row-span-2" },
-  { src: cardio, alt: "Cardio zone with treadmills", span: "" },
-  { src: studio, alt: "Group fitness and Zumba studio", span: "" },
-  { src: functional, alt: "Functional training turf area", span: "" },
-  { src: recovery, alt: "Steam room and recovery lounge", span: "row-span-2" },
-  { src: reception, alt: "KORR.fit reception area", span: "" },
-];
-
-const marquee = [hero, stretch, cardio, studio, functional, reception, strength, recovery];
-
-const tourImages = [reception, strength, cardio, functional, recovery, stretch, reception];
+/** First six photos build the masonry grid; the rest fill the marquee rail. */
+const grid = galleryPhotos.slice(0, 6).map((p, i) => ({
+  ...p,
+  span: i === 0 || i === 4 ? "row-span-2" : "",
+}));
+const marquee = galleryPhotos.slice(6).concat(galleryPhotos.slice(0, 6));
 
 const gridMedia: ReviewMedia[] = grid.map((g) => ({ type: "image", src: g.src, alt: g.alt }));
-const marqueeMedia: ReviewMedia[] = marquee.map((src, i) => ({
+const marqueeMedia: ReviewMedia[] = marquee.map((p) => ({
   type: "image",
-  src,
-  alt: `Inside KORR.fit gym, view ${i + 1}`,
+  src: p.src,
+  alt: p.alt,
 }));
-const videoTiles = [hero, studio, functional, cardio];
-const videoMedia: ReviewMedia[] = videoTiles.map((src, i) => ({
+const videoMedia: ReviewMedia[] = tourVideos.map((v) => ({
   type: "video",
-  src,
-  alt: `KORR.fit walkthrough clip ${i + 1}`,
+  src: v.poster,
+  videoSrc: v.src,
+  alt: v.alt,
 }));
+
+const tourImages = galleryPhotos.map((p) => p.src);
 
 export function Gallery() {
   const [room, setRoom] = useState(0);
   const [lightbox, setLightbox] = useState<{ items: ReviewMedia[]; index: number } | null>(null);
 
-  const openLightbox = (items: ReviewMedia[], index: number) =>
-    setLightbox({ items, index });
+  const openLightbox = (items: ReviewMedia[], index: number) => setLightbox({ items, index });
 
   return (
     <Section id="gallery" tone="raised">
       <SectionHeading
         eyebrow="Gallery"
         title="Have a look around before you walk in."
-        lead="Photography placeholders for now — swap in real gym photos and videos any time."
+        lead="Real footage and photos from the KORR.fit floor in Mansarovar — videos first, then the photo tour."
       />
 
-      <div className="mt-12 grid auto-rows-[11rem] grid-cols-2 gap-3 sm:auto-rows-[13rem] lg:grid-cols-3">
+      {/* Videos come first so visitors see the gym in motion before the stills. */}
+      <div className="mt-12">
+        <h3 className="text-xl font-semibold">Video walkthroughs</h3>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+          Tap a clip to play it full screen with sound.
+        </p>
+
+        <div className="korr-scroll mt-5 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8">
+          {tourVideos.map((v, i) => (
+            <Reveal key={v.src} delay={(i % 4) * 80} className="shrink-0">
+              <button
+                type="button"
+                onClick={() => openLightbox(videoMedia, i)}
+                aria-label={`Play walkthrough video: ${v.alt}`}
+                className="group relative aspect-[9/14] w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:w-64"
+              >
+                <SmartImage
+                  src={v.poster}
+                  alt={v.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-4 left-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110"
+                >
+                  <Play width={16} height={16} className="fill-current" />
+                </span>
+              </button>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-16 grid auto-rows-[11rem] grid-cols-2 gap-3 sm:auto-rows-[13rem] lg:grid-cols-3">
         {grid.map((g, i) => (
-          <Reveal key={g.alt} delay={(i % 3) * 70} className={cn("h-full", g.span)}>
+          <Reveal key={g.src} delay={(i % 3) * 70} className={cn("h-full", g.span)}>
             <button
               type="button"
               onClick={() => openLightbox(gridMedia, i)}
@@ -78,35 +105,6 @@ export function Gallery() {
       </div>
 
       <MoreMoments images={marquee} onOpen={(i) => openLightbox(marqueeMedia, i)} />
-
-      <h3 className="mt-16 text-xl font-semibold">Video walkthroughs</h3>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Placeholder tiles — drop in gym reels or trainer clips here.
-      </p>
-      <div className="korr-scroll mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
-        {videoTiles.map((src, i) => (
-          <Reveal key={i} delay={i * 80} className="shrink-0">
-          <button
-            type="button"
-            onClick={() => openLightbox(videoMedia, i)}
-            aria-label={`Play walkthrough clip ${i + 1}`}
-            className="group relative aspect-[9/14] w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:w-64"
-          >
-            <SmartImage
-              src={src}
-              alt={`Video placeholder ${i + 1}`}
-              loading="lazy"
-              decoding="async"
-              className="object-cover group-hover:scale-105"
-            />
-            <span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-            <span className="absolute bottom-4 left-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground">
-              <Play width={16} height={16} aria-hidden="true" className="fill-current" />
-            </span>
-          </button>
-          </Reveal>
-        ))}
-      </div>
 
       <div className="mt-16">
         <h3 className="text-xl font-semibold">Take the interactive tour</h3>
@@ -137,7 +135,7 @@ export function Gallery() {
           <div className="overflow-hidden rounded-3xl border border-hairline bg-background/40">
             <SmartImage
               key={room}
-              src={tourImages[room]}
+              src={tourImages[room % tourImages.length]!}
               alt={`${tourRooms[room]!.name} at KORR.fit`}
               loading="lazy"
               decoding="async"
@@ -184,11 +182,16 @@ export function Gallery() {
         />
       ) : null}
     </Section>
-
   );
 }
 
-function MoreMoments({ images, onOpen }: { images: string[]; onOpen: (i: number) => void }) {
+function MoreMoments({
+  images,
+  onOpen,
+}: {
+  images: { src: string; alt: string }[];
+  onOpen: (i: number) => void;
+}) {
   const track = useRef<HTMLDivElement>(null);
 
   const scrollBy = (dir: 1 | -1) => {
@@ -225,17 +228,17 @@ function MoreMoments({ images, onOpen }: { images: string[]; onOpen: (i: number)
         ref={track}
         className="korr-scroll mt-5 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8"
       >
-        {images.map((src, i) => (
+        {images.map((img, i) => (
           <button
-            key={i}
+            key={`${img.src}-${i}`}
             type="button"
             onClick={() => onOpen(i)}
-            aria-label={`Open photo ${i + 1} of the gym`}
+            aria-label={`Open photo: ${img.alt}`}
             className="group h-40 w-64 shrink-0 snap-start overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:h-48 sm:w-80"
           >
             <SmartImage
-              src={src}
-              alt={`Inside KORR.fit gym, view ${i + 1}`}
+              src={img.src}
+              alt={img.alt}
               loading="lazy"
               decoding="async"
               className="object-cover group-hover:scale-105"
