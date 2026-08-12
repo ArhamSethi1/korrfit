@@ -27,7 +27,7 @@ export const textGroups: { group: string; keys: { key: string; label: string; mu
         key: "offers.lead",
         label: "Lead paragraph",
         multiline: true,
-        value: "Offer content is fully editable — swap these in and out whenever a promotion changes.",
+        value: "Tap any poster to see the full offer, then grab it on WhatsApp.",
       },
     ],
   },

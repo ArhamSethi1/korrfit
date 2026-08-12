@@ -27,6 +27,19 @@ export function TextProvider({ children }: { children: ReactNode }) {
     };
   }, [load]);
 
+  // Live preview: the /edit screen broadcasts draft copy so the embedded
+  // preview updates as you type, without a reload.
+  useEffect(() => {
+    if (typeof BroadcastChannel === "undefined") return;
+    const ch = new BroadcastChannel("korr-text-draft");
+    ch.onmessage = (e) => {
+      const draft = e.data as Record<string, string> | null;
+      if (draft && typeof draft === "object") setOverrides(draft);
+    };
+    return () => ch.close();
+  }, []);
+
+
   return (
     <TextCtx.Provider value={{ texts: { ...defaultTexts, ...overrides }, loading }}>
       {children}

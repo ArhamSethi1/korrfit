@@ -1,13 +1,12 @@
 import { useEffect } from "react";
-import strength from "@/assets/gym-strength.jpg";
-import cardio from "@/assets/gym-cardio.jpg";
-import functional from "@/assets/gym-functional.jpg";
-import recovery from "@/assets/gym-recovery.jpg";
-import studio from "@/assets/gym-studio.jpg";
-import reception from "@/assets/gym-reception.jpg";
-import stretch from "@/assets/gym-stretch.jpg";
+import { galleryPhotos, offerPosters, tourVideos } from "@/data/media";
 
-const deferred = [strength, cardio, functional, recovery, studio, reception, stretch];
+const deferred = [
+  ...offerPosters.map((o) => o.image),
+  ...galleryPhotos.map((p) => p.src),
+  ...tourVideos.map((v) => v.poster),
+];
+
 
 /**
  * Once the hero image has painted, quietly warm every other photo on the page

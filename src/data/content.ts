@@ -245,9 +245,13 @@ export const stories: Story[] = [
 
 export type ReviewMedia = {
   type: "image" | "video";
+  /** Image, or the poster frame when this is a video. */
   src: string;
+  /** Playable video file, when available. */
+  videoSrc?: string;
   alt: string;
 };
+
 
 export type Review = {
   name: string;
