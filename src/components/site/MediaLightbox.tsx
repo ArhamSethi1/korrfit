@@ -127,44 +127,61 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
         </div>
 
         <div className="relative min-h-[40dvh] bg-surface/30">
-          {/* Skeleton + blurred preview keep the popup instant on mobile */}
-          <span
-            aria-hidden="true"
-            className={cn(
-              "skeleton-shimmer absolute inset-0 transition-opacity duration-500",
-              loaded ? "opacity-0" : "opacity-100",
-            )}
-          />
-          <img
-            key={`${item.src}-preview`}
-            src={item.src}
-            alt=""
-            aria-hidden="true"
-            className={cn(
-              "absolute inset-0 h-full w-full scale-105 object-contain blur-xl transition-opacity duration-500",
-              loaded ? "opacity-0" : "opacity-70",
-            )}
-          />
-          <img
-            key={item.src}
-            src={item.src}
-            alt={item.alt}
-            decoding="async"
-            fetchPriority="high"
-            onLoad={() => setLoaded(true)}
-            className={cn(
-              "relative max-h-[62dvh] w-full object-contain transition-opacity duration-500",
-              loaded ? "opacity-100" : "opacity-0",
-            )}
-          />
+          {item.videoSrc ? (
+            <video
+              key={item.videoSrc}
+              src={item.videoSrc}
+              poster={item.src}
+              controls
+              autoPlay
+              playsInline
+              preload="metadata"
+              aria-label={item.alt}
+              className="relative max-h-[70dvh] w-full bg-black object-contain"
+            />
+          ) : (
+            <>
+              {/* Skeleton + blurred preview keep the popup instant on mobile */}
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "skeleton-shimmer absolute inset-0 transition-opacity duration-500",
+                  loaded ? "opacity-0" : "opacity-100",
+                )}
+              />
+              <img
+                key={`${item.src}-preview`}
+                src={item.src}
+                alt=""
+                aria-hidden="true"
+                className={cn(
+                  "absolute inset-0 h-full w-full scale-105 object-contain blur-xl transition-opacity duration-500",
+                  loaded ? "opacity-0" : "opacity-70",
+                )}
+              />
+              <img
+                key={item.src}
+                src={item.src}
+                alt={item.alt}
+                decoding="async"
+                fetchPriority="high"
+                onLoad={() => setLoaded(true)}
+                className={cn(
+                  "relative max-h-[62dvh] w-full object-contain transition-opacity duration-500",
+                  loaded ? "opacity-100" : "opacity-0",
+                )}
+              />
 
-          {item.type === "video" ? (
-            <span aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
-              <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <Play width={20} height={20} className="fill-current" />
-              </span>
-            </span>
-          ) : null}
+              {item.type === "video" ? (
+                <span aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
+                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <Play width={20} height={20} className="fill-current" />
+                  </span>
+                </span>
+              ) : null}
+            </>
+          )}
+
 
           {items.length > 1 ? (
             <>
