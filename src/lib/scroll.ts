@@ -31,12 +31,23 @@ function animateScrollTo(target: number) {
   const startTime = performance.now();
   const id = ++activeAnimation;
 
+  let firstFrame = true;
   const step = (now: number) => {
     if (id !== activeAnimation) return;
+    if (firstFrame) {
+      firstFrame = false;
+      // Lightweight regression check: scrolling must start moving on the very
+      // next frame on both mobile and desktop.
+      const latency = now - startTime;
+      if (import.meta.env.DEV && latency > 120) {
+        console.warn(`[scroll] delayed start: ${Math.round(latency)}ms`);
+      }
+    }
     const progress = Math.min(1, (now - startTime) / duration);
     window.scrollTo({ top: start + distance * easeInOutCubic(progress), behavior: "auto" });
     if (progress < 1) window.requestAnimationFrame(step);
   };
+
 
   window.requestAnimationFrame(step);
 }
