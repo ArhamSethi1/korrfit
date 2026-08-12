@@ -31,6 +31,7 @@ function EditPage() {
   const [passcode, setPasscode] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
 
   useEffect(() => {
     load()
@@ -38,6 +39,18 @@ function EditPage() {
       .catch(() => undefined)
       .finally(() => setLoading(false));
   }, [load]);
+
+  // Broadcast the draft so the live preview (and any other open tab) updates
+  // instantly as you type — no reload, no save required.
+  useEffect(() => {
+    if (typeof BroadcastChannel === "undefined") return;
+    const ch = new BroadcastChannel("korr-text-draft");
+    const id = window.setTimeout(() => ch.postMessage(values), 150);
+    return () => {
+      window.clearTimeout(id);
+      ch.close();
+    };
+  }, [values]);
 
   const onSave = async () => {
     if (!passcode.trim()) {
@@ -47,7 +60,7 @@ function EditPage() {
     setSaving(true);
     try {
       await save({ data: { passcode: passcode.trim(), texts: values } });
-      toast.success("Saved — the website now shows your new text.");
+      toast.success("Published — the live website now shows your new text.");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not save.");
     } finally {
@@ -58,7 +71,9 @@ function EditPage() {
   return (
     <main className="min-h-screen bg-background px-5 py-12 text-foreground sm:px-8">
       <Toaster />
-      <div className="mx-auto w-full max-w-3xl">
+      <div className="mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="min-w-0">
+
         <h1 className="font-display text-3xl font-semibold tracking-tight">Edit website text</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Change any copy below, enter your passcode and save. Updates appear on the live site
