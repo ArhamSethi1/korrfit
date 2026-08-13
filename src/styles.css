@@ -549,3 +549,19 @@ body {
     animation: none !important;
   }
 }
+
+/* Minimal video timeline used in the media popup */
+.korr-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 9999px;
+  background: var(--primary);
+}
+.korr-range::-moz-range-thumb {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--primary);
+}

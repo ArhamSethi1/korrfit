@@ -14,6 +14,7 @@ import g9 from "@/assets/media/gym-9.webp.asset.json";
 import g10 from "@/assets/media/gym-10.webp.asset.json";
 import g11 from "@/assets/media/gym-11.webp.asset.json";
 import g12 from "@/assets/media/gym-12.webp.asset.json";
+import g13 from "@/assets/media/gym-13.webp.asset.json";
 
 import o1 from "@/assets/media/offer-1.jpg.asset.json";
 import o2 from "@/assets/media/offer-2.jpg.asset.json";
@@ -45,13 +46,19 @@ export const galleryPhotos: GalleryPhoto[] = [
   { src: g3.url, alt: "Strength equipment and free weights at KORR.fit" },
   { src: g4.url, alt: "Members training on the KORR.fit gym floor" },
   { src: g5.url, alt: "Cardio machines at KORR.fit Mansarovar" },
-  { src: g6.url, alt: "Functional training area at KORR.fit" },
+  { src: g13.url, alt: "Strength racks and free weights on the KORR.fit floor" },
   { src: g7.url, alt: "Coached training session at KORR.fit" },
   { src: g8.url, alt: "Well-maintained equipment at KORR.fit" },
   { src: g9.url, alt: "Inside the KORR.fit gym in Mansarovar, Jaipur" },
   { src: g10.url, alt: "Training zone at KORR.fit" },
   { src: g11.url, alt: "Wide view of the KORR.fit strength floor" },
   { src: g12.url, alt: "Members working out at KORR.fit Jaipur" },
+];
+
+/** Every KORR.fit photo, including the ones not shown in the main gallery. */
+export const allImages: GalleryPhoto[] = [
+  ...galleryPhotos,
+  { src: g6.url, alt: "Functional training area at KORR.fit" },
 ];
 
 export type TourVideo = { src: string; poster: string; alt: string };
@@ -113,4 +120,10 @@ export const offerPosters: OfferPoster[] = [
     blurb: "High-energy Zumba on the studio floor, included with your KORR.fit membership.",
     cta: "Ask about classes",
   },
+];
+
+/** Everything shown in the "All Images" popup — gym photos plus offer posters. */
+export const allGalleryImages: GalleryPhoto[] = [
+  ...allImages,
+  ...offerPosters.map((o) => ({ src: o.image, alt: o.title })),
 ];

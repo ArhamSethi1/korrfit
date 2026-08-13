@@ -28,8 +28,14 @@ export function Offers() {
 
       <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         {offerPosters.map((o, i) => (
-          <Reveal key={o.title} delay={(i % 3) * 90}>
+          <Reveal
+            key={o.title}
+            delay={(i % 3) * 90}
+            // This poster duplicates the Zumba special — hide it on small screens.
+            className={o.title === "Zumba Classes — 3 Days A Week" ? "hidden sm:block" : ""}
+          >
             <article className="card-hover group relative flex h-full flex-col overflow-hidden rounded-2xl border border-hairline bg-surface/40 transition-all duration-500 md:rounded-3xl">
+
               <button
                 type="button"
                 onClick={() => setOpen(i)}

@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { scrollToId } from "@/lib/scroll";
-import { ThumbsUp, X, Play, Link2, Check } from "lucide-react";
-import { MediaLightbox } from "../MediaLightbox";
+import { ThumbsUp, X, Link2, Check } from "lucide-react";
 import { Section, Stars } from "../primitives";
 import { ReviewsSkeleton } from "../Skeletons";
 import { useTextsLoading } from "@/lib/text";
 import { Reveal } from "../Reveal";
-import { reviews, reviewTags, type Review, type ReviewMedia } from "@/data/content";
+import { reviews, reviewTags, type Review } from "@/data/content";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -22,13 +21,7 @@ function GoogleG({ size = 18 }: { size?: number }) {
   );
 }
 
-function ReviewCard({
-  r,
-  onMedia,
-}: {
-  r: Review;
-  onMedia: (list: ReviewMedia[], index: number) => void;
-}) {
+function ReviewCard({ r }: { r: Review }) {
   return (
     <article className="flex h-full flex-col rounded-2xl border border-hairline bg-surface/40 p-4 transition-all duration-500 card-hover sm:p-5">
       <div className="flex items-center gap-2.5">
@@ -48,35 +41,6 @@ function ReviewCard({
       </div>
       <p className="mt-2 flex-1 text-[0.8rem] leading-relaxed text-muted-foreground">{r.text}</p>
 
-      {r.media?.length ? (
-        <div className="mt-3 flex gap-2">
-          {r.media.map((m, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => onMedia(r.media!, i)}
-              aria-label={`Open ${m.type === "video" ? "video" : "photo"}: ${m.alt}`}
-              className="group relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-hairline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              <img
-                src={m.src}
-                alt=""
-                width={56}
-                height={56}
-                loading="lazy"
-                decoding="async"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              {m.type === "video" ? (
-                <span className="absolute inset-0 grid place-items-center bg-black/45 text-white">
-                  <Play width={13} height={13} aria-hidden="true" className="fill-current" />
-                </span>
-              ) : null}
-            </button>
-          ))}
-        </div>
-      ) : null}
-
       <div className="mt-3 flex items-center gap-2 border-t border-hairline pt-3 text-[0.68rem] text-muted-foreground">
         <ThumbsUp width={12} height={12} aria-hidden="true" />
         {r.helpful} found this helpful
@@ -85,14 +49,13 @@ function ReviewCard({
   );
 }
 
+
 export function Reviews() {
   const navigate = useNavigate();
   const search = useSearch({ strict: false }) as { reviews?: string };
   const tag = search.reviews && reviewTags.includes(search.reviews) ? search.reviews : "All";
 
   const [open, setOpen] = useState(false);
-  const [mediaList, setMediaList] = useState<ReviewMedia[]>([]);
-  const [mediaIndex, setMediaIndex] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
   const textsLoading = useTextsLoading();
 
@@ -115,12 +78,9 @@ export function Reviews() {
     [tag],
   );
 
-  const openMedia = (list: ReviewMedia[], index: number) => {
-    setMediaList(list);
-    setMediaIndex(index);
-  };
+  /** In-section preview: 6 reviews on "All", 3 for a specific topic. */
+  const preview = useMemo(() => filtered.slice(0, tag === "All" ? 6 : 3), [filtered, tag]);
 
-  const closeMedia = () => setMediaIndex(null);
 
   const copyLink = async () => {
     const url = new URL(window.location.href);
@@ -219,9 +179,9 @@ export function Reviews() {
         <ReviewsSkeleton />
       ) : (
         <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-3">
-          {filtered.slice(0, 6).map((r, i) => (
+          {preview.map((r, i) => (
             <Reveal key={`${r.initials}-${i}`} delay={(i % 3) * 70}>
-              <ReviewCard r={r} onMedia={openMedia} />
+              <ReviewCard r={r} />
             </Reveal>
           ))}
         </div>
@@ -293,7 +253,7 @@ export function Reviews() {
 
             <div className="korr-scroll grid grid-cols-2 gap-3 overflow-y-auto p-4 sm:p-6">
               {filtered.map((r, i) => (
-                <ReviewCard key={`modal-${i}`} r={r} onMedia={openMedia} />
+                <ReviewCard key={`modal-${i}`} r={r} />
               ))}
               {filtered.length === 0 ? (
                 <p className="text-sm text-muted-foreground">No reviews tagged “{tag}” yet.</p>
@@ -303,14 +263,6 @@ export function Reviews() {
         </div>
       ) : null}
 
-      {mediaIndex !== null ? (
-        <MediaLightbox
-          items={mediaList}
-          index={mediaIndex}
-          onIndexChange={setMediaIndex}
-          onClose={closeMedia}
-        />
-      ) : null}
     </Section>
   );
 }
