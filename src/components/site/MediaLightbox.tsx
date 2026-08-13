@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { X, Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 import type { ReviewMedia } from "@/data/content";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +12,80 @@ type Props = {
   /** Wording for the popup header, e.g. "Member" or "Gym". */
   kind?: string;
 };
+
+function fmt(t: number) {
+  if (!Number.isFinite(t)) return "0:00";
+  const m = Math.floor(t / 60);
+  const s = Math.floor(t % 60);
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
+/** Minimal video player: play/pause and a timeline, nothing else. */
+function VideoPlayer({ src, poster, label }: { src: string; poster?: string; label: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [time, setTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  const toggle = () => {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) void v.play();
+    else v.pause();
+  };
+
+  return (
+    <div className="relative w-full bg-black">
+      <video
+        ref={ref}
+        src={src}
+        poster={poster}
+        autoPlay
+        playsInline
+        preload="metadata"
+        aria-label={label}
+        onClick={toggle}
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onTimeUpdate={(e) => setTime(e.currentTarget.currentTime)}
+        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+        className="mx-auto max-h-[78dvh] w-auto max-w-full cursor-pointer bg-black object-contain"
+      />
+      <div className="flex items-center gap-3 border-t border-hairline bg-background px-4 py-3">
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={playing ? "Pause video" : "Play video"}
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          {playing ? (
+            <Pause width={16} height={16} className="fill-current" aria-hidden="true" />
+          ) : (
+            <Play width={16} height={16} className="fill-current" aria-hidden="true" />
+          )}
+        </button>
+        <input
+          type="range"
+          min={0}
+          max={duration || 0}
+          step={0.1}
+          value={time}
+          aria-label="Video timeline"
+          onChange={(e) => {
+            const v = ref.current;
+            if (!v) return;
+            v.currentTime = Number(e.target.value);
+            setTime(Number(e.target.value));
+          }}
+          className="korr-range h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-surface-2 accent-primary"
+        />
+        <span className="w-20 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
+          {fmt(time)} / {fmt(duration)}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 /**
  * Standalone media popup: Esc to close, focus trap, arrow keys to move
@@ -98,16 +172,16 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
       role="dialog"
       aria-modal="true"
       aria-label={title ? `Media from ${title}` : "Review media"}
-      className="backdrop-in fixed inset-0 z-[90] grid place-items-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
+      className="backdrop-in fixed inset-0 z-[90] grid place-items-center bg-black/90 p-2 backdrop-blur-sm sm:p-6"
       onClick={onClose}
     >
       <div
         ref={panelRef}
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
-        className="pop-in relative w-full max-w-3xl overflow-hidden rounded-3xl border border-hairline bg-background focus:outline-none"
+        className="pop-in relative flex max-h-[96dvh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-hairline bg-background focus:outline-none sm:rounded-3xl"
       >
-        <div className="flex items-center justify-between gap-4 border-b border-hairline px-5 py-4">
+        <div className="flex items-center justify-between gap-4 border-b border-hairline px-4 py-3 sm:px-5">
           <p className="min-w-0 truncate text-sm font-semibold">
             {item.type === "video" ? `${kind} video` : `${kind} photo`}
             {items.length > 1 ? (
@@ -120,25 +194,15 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
             type="button"
             onClick={onClose}
             aria-label="Close media"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-hairline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-hairline transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <X width={17} height={17} aria-hidden="true" />
           </button>
         </div>
 
-        <div className="relative min-h-[40dvh] bg-surface/30">
+        <div className="relative flex-1 bg-black/40">
           {item.videoSrc ? (
-            <video
-              key={item.videoSrc}
-              src={item.videoSrc}
-              poster={item.src}
-              controls
-              autoPlay
-              playsInline
-              preload="metadata"
-              aria-label={item.alt}
-              className="relative max-h-[70dvh] w-full bg-black object-contain"
-            />
+            <VideoPlayer key={item.videoSrc} src={item.videoSrc} poster={item.src} label={item.alt} />
           ) : (
             <>
               {/* Skeleton + blurred preview keep the popup instant on mobile */}
@@ -167,18 +231,10 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
                 fetchPriority="high"
                 onLoad={() => setLoaded(true)}
                 className={cn(
-                  "relative max-h-[62dvh] w-full object-contain transition-opacity duration-500",
+                  "relative mx-auto max-h-[88dvh] w-auto max-w-full object-contain transition-opacity duration-500",
                   loaded ? "opacity-100" : "opacity-0",
                 )}
               />
-
-              {item.type === "video" ? (
-                <span aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
-                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                    <Play width={20} height={20} className="fill-current" />
-                  </span>
-                </span>
-              ) : null}
             </>
           )}
 
@@ -189,7 +245,7 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
                 type="button"
                 onClick={() => go(-1)}
                 aria-label="Previous media"
-                className="absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/80 backdrop-blur focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/80 backdrop-blur transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 <ChevronLeft width={18} height={18} aria-hidden="true" />
               </button>
@@ -197,15 +253,13 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
                 type="button"
                 onClick={() => go(1)}
                 aria-label="Next media"
-                className="absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/80 backdrop-blur focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/80 backdrop-blur transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 <ChevronRight width={18} height={18} aria-hidden="true" />
               </button>
             </>
           ) : null}
         </div>
-
-        <p className="px-5 py-4 text-xs text-muted-foreground">{item.alt}</p>
       </div>
     </div>
   );

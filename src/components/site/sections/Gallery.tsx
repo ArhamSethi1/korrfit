@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
-import { Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Play, ChevronLeft, ChevronRight, X, Images } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
 import { tourRooms, type ReviewMedia } from "@/data/content";
-import { galleryPhotos, tourVideos } from "@/data/media";
+import { galleryPhotos, tourVideos, allGalleryImages } from "@/data/media";
 import { MediaLightbox } from "../MediaLightbox";
 import { SmartImage } from "../SmartImage";
 import { cn } from "@/lib/utils";
@@ -27,14 +27,35 @@ const videoMedia: ReviewMedia[] = tourVideos.map((v) => ({
   videoSrc: v.src,
   alt: v.alt,
 }));
+const allMedia: ReviewMedia[] = allGalleryImages.map((p) => ({
+  type: "image",
+  src: p.src,
+  alt: p.alt,
+}));
 
 const tourImages = galleryPhotos.map((p) => p.src);
 
 export function Gallery() {
   const [room, setRoom] = useState(0);
+  const [allOpen, setAllOpen] = useState(false);
   const [lightbox, setLightbox] = useState<{ items: ReviewMedia[]; index: number } | null>(null);
 
   const openLightbox = (items: ReviewMedia[], index: number) => setLightbox({ items, index });
+
+  // Lock the page and close the "All Images" popup on Escape.
+  useEffect(() => {
+    if (!allOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !lightbox) setAllOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [allOpen, lightbox]);
+
 
   return (
     <Section id="gallery" tone="raised">
@@ -104,7 +125,19 @@ export function Gallery() {
         ))}
       </div>
 
+      <div className="mt-8 flex justify-center">
+        <button
+          type="button"
+          onClick={() => setAllOpen(true)}
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-surface/60 px-6 py-3.5 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:bg-surface active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          <Images width={16} height={16} aria-hidden="true" />
+          View all images
+        </button>
+      </div>
+
       <MoreMoments images={marquee} onOpen={(i) => openLightbox(marqueeMedia, i)} />
+
 
       <div className="mt-16">
         <h3 className="text-xl font-semibold">Take the interactive tour</h3>
@@ -170,6 +203,59 @@ export function Gallery() {
           </div>
         </div>
       </div>
+
+      {allOpen ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="All Images"
+          className="backdrop-in fixed inset-0 z-[80] flex items-center justify-center bg-black/85 p-2 backdrop-blur-sm sm:p-6"
+          onClick={() => setAllOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="pop-in flex h-[96dvh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-hairline bg-background sm:rounded-3xl"
+          >
+            <div className="flex items-center justify-between gap-4 border-b border-hairline px-5 py-4">
+              <div>
+                <h3 className="text-lg font-semibold sm:text-xl">All Images</h3>
+                <p className="text-xs text-muted-foreground">
+                  {allGalleryImages.length} photos from KORR.fit Mansarovar
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAllOpen(false)}
+                aria-label="Close all images"
+                className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface/60 transition-transform duration-200 hover:bg-surface active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                <X width={26} height={26} aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="korr-scroll grid flex-1 grid-cols-2 gap-3 overflow-y-auto p-4 sm:grid-cols-3 sm:p-6 lg:grid-cols-4">
+              {allGalleryImages.map((p, i) => (
+                <button
+                  key={`${p.src}-${i}`}
+                  type="button"
+                  onClick={() => openLightbox(allMedia, i)}
+                  aria-label={`Open photo: ${p.alt}`}
+                  className="group aspect-square overflow-hidden rounded-xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <SmartImage
+                    src={p.src}
+                    alt={p.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className="object-cover group-hover:scale-105"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
 
       {lightbox ? (
         <MediaLightbox
