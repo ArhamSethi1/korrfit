@@ -231,7 +231,7 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
                 fetchPriority="high"
                 onLoad={() => setLoaded(true)}
                 className={cn(
-                  "relative mx-auto max-h-[88dvh] w-auto max-w-full object-contain transition-opacity duration-500",
+                  "relative mx-auto max-h-[82dvh] w-auto max-w-full object-contain transition-opacity duration-500",
                   loaded ? "opacity-100" : "opacity-0",
                 )}
               />
