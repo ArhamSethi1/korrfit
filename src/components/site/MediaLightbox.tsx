@@ -34,29 +34,38 @@ function VideoPlayer({ src, poster, label }: { src: string; poster?: string; lab
     else v.pause();
   };
 
+  // Start playing the moment the clip is enlarged.
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    const start = () => void v.play().catch(() => {});
+    if (v.readyState >= 2) start();
+    else v.addEventListener("loadeddata", start, { once: true });
+  }, [src]);
+
   return (
-    <div className="relative w-full bg-black">
+    <div className="flex max-h-[92dvh] w-full flex-col items-center">
       <video
         ref={ref}
         src={src}
         poster={poster}
         autoPlay
         playsInline
-        preload="metadata"
+        preload="auto"
         aria-label={label}
         onClick={toggle}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onTimeUpdate={(e) => setTime(e.currentTarget.currentTime)}
         onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-        className="mx-auto max-h-[78dvh] w-auto max-w-full cursor-pointer bg-black object-contain"
+        className="max-h-[82dvh] w-auto max-w-[96vw] cursor-pointer object-contain"
       />
-      <div className="flex items-center gap-3 border-t border-hairline bg-background px-4 py-3">
+      <div className="mt-3 flex w-full max-w-xl items-center gap-3 rounded-full border border-hairline bg-background/70 px-4 py-2.5 backdrop-blur">
         <button
           type="button"
           onClick={toggle}
           aria-label={playing ? "Pause video" : "Play video"}
-          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {playing ? (
             <Pause width={16} height={16} className="fill-current" aria-hidden="true" />
@@ -88,10 +97,10 @@ function VideoPlayer({ src, poster, label }: { src: string; poster?: string; lab
 }
 
 /**
- * Standalone media popup: Esc to close, focus trap, arrow keys to move
- * between the photos/videos attached to a review.
+ * Frameless media popup: the photo/video fills the screen at its own aspect
+ * ratio. Esc or the mobile back button closes it, arrows move between items.
  */
-export function MediaLightbox({ items, index, onIndexChange, onClose, title, kind = "Member" }: Props) {
+export function MediaLightbox({ items, index, onIndexChange, onClose, title }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
   const item = items[index];
@@ -110,7 +119,6 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
     }
   }, [index, items]);
 
-
   const go = useCallback(
     (dir: number) => {
       if (items.length < 2) return;
@@ -118,6 +126,17 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
     },
     [index, items.length, onIndexChange],
   );
+
+  // Mobile back button should dismiss the media, not leave the site.
+  useEffect(() => {
+    window.history.pushState({ korrLightbox: true }, "");
+    const onPop = () => onClose();
+    window.addEventListener("popstate", onPop);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      if (window.history.state?.korrLightbox) window.history.back();
+    };
+  }, [onClose]);
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
@@ -171,95 +190,71 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title, kin
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={title ? `Media from ${title}` : "Review media"}
-      className="backdrop-in fixed inset-0 z-[90] grid place-items-center bg-black/90 p-2 backdrop-blur-sm sm:p-6"
+      aria-label={title ? `Media from ${title}` : "Media viewer"}
+      className="backdrop-in fixed inset-0 z-[90] grid place-items-center bg-black/95 p-0 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
         ref={panelRef}
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
-        className="pop-in relative flex max-h-[96dvh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-hairline bg-background focus:outline-none sm:rounded-3xl"
+        className="pop-in relative flex max-h-[100dvh] w-full items-center justify-center focus:outline-none"
       >
-        <div className="flex items-center justify-between gap-4 border-b border-hairline px-4 py-3 sm:px-5">
-          <p className="min-w-0 truncate text-sm font-semibold">
-            {item.type === "video" ? `${kind} video` : `${kind} photo`}
-            {items.length > 1 ? (
-              <span className="ml-2 text-xs font-normal text-muted-foreground">
-                {index + 1} / {items.length}
-              </span>
-            ) : null}
-          </p>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close media"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-hairline transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            <X width={17} height={17} aria-hidden="true" />
-          </button>
-        </div>
+        {item.videoSrc ? (
+          <VideoPlayer key={item.videoSrc} src={item.videoSrc} poster={item.src} label={item.alt} />
+        ) : (
+          <>
+            <span
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute inset-x-8 inset-y-16 rounded-2xl transition-opacity duration-500",
+                loaded ? "opacity-0" : "skeleton-shimmer opacity-60",
+              )}
+            />
+            <img
+              key={item.src}
+              src={item.src}
+              alt={item.alt}
+              decoding="async"
+              fetchPriority="high"
+              onLoad={() => setLoaded(true)}
+              className={cn(
+                "max-h-[100dvh] max-w-[100vw] object-contain transition-opacity duration-500",
+                loaded ? "opacity-100" : "opacity-0",
+              )}
+            />
+          </>
+        )}
 
-        <div className="relative flex-1 bg-black/40">
-          {item.videoSrc ? (
-            <VideoPlayer key={item.videoSrc} src={item.videoSrc} poster={item.src} label={item.alt} />
-          ) : (
-            <>
-              {/* Skeleton + blurred preview keep the popup instant on mobile */}
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "skeleton-shimmer absolute inset-0 transition-opacity duration-500",
-                  loaded ? "opacity-0" : "opacity-100",
-                )}
-              />
-              <img
-                key={`${item.src}-preview`}
-                src={item.src}
-                alt=""
-                aria-hidden="true"
-                className={cn(
-                  "absolute inset-0 h-full w-full scale-105 object-contain blur-xl transition-opacity duration-500",
-                  loaded ? "opacity-0" : "opacity-70",
-                )}
-              />
-              <img
-                key={item.src}
-                src={item.src}
-                alt={item.alt}
-                decoding="async"
-                fetchPriority="high"
-                onLoad={() => setLoaded(true)}
-                className={cn(
-                  "relative mx-auto max-h-[82dvh] w-auto max-w-full object-contain transition-opacity duration-500",
-                  loaded ? "opacity-100" : "opacity-0",
-                )}
-              />
-            </>
-          )}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close media"
+          className="absolute right-3 top-3 inline-flex h-12 w-12 items-center justify-center rounded-full border border-hairline bg-background/70 backdrop-blur transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <X width={22} height={22} aria-hidden="true" />
+        </button>
 
-
-          {items.length > 1 ? (
-            <>
-              <button
-                type="button"
-                onClick={() => go(-1)}
-                aria-label="Previous media"
-                className="absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/80 backdrop-blur transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                <ChevronLeft width={18} height={18} aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={() => go(1)}
-                aria-label="Next media"
-                className="absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/80 backdrop-blur transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                <ChevronRight width={18} height={18} aria-hidden="true" />
-              </button>
-            </>
-          ) : null}
-        </div>
+        {items.length > 1 ? (
+          <>
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Previous media"
+              className="absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/70 backdrop-blur transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <ChevronLeft width={18} height={18} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Next media"
+              className="absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-hairline bg-background/70 backdrop-blur transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <ChevronRight width={18} height={18} aria-hidden="true" />
+            </button>
+          </>
+        ) : null}
       </div>
     </div>
   );
