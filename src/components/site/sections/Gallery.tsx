@@ -8,12 +8,21 @@ import { MediaLightbox } from "../MediaLightbox";
 import { SmartImage } from "../SmartImage";
 import { cn } from "@/lib/utils";
 
-/** First six photos build the masonry grid; the rest fill the marquee rail. */
-const grid = galleryPhotos.slice(0, 6).map((p, i) => ({
+/**
+ * First seven photos build the masonry grid (that fills the desktop 3x3 grid
+ * exactly); the rest fill the marquee rail. The tall cardio shot gets cropped
+ * on mobile, so there it moves to the end and spans the full width.
+ */
+const grid = galleryPhotos.slice(0, 7).map((p, i) => ({
   ...p,
-  span: i === 0 || i === 4 ? "row-span-2" : "",
+  span:
+    i === 0
+      ? "row-span-2"
+      : i === 4
+        ? "max-lg:order-last max-lg:col-span-2 max-lg:row-span-1 lg:row-span-2"
+        : "",
 }));
-const marquee = galleryPhotos.slice(6).concat(galleryPhotos.slice(0, 6));
+const marquee = galleryPhotos.slice(7).concat(galleryPhotos.slice(0, 7));
 
 const gridMedia: ReviewMedia[] = grid.map((g) => ({ type: "image", src: g.src, alt: g.alt }));
 const marqueeMedia: ReviewMedia[] = marquee.map((p) => ({
@@ -233,7 +242,7 @@ export function Gallery() {
               </button>
             </div>
 
-            <div className="korr-scroll grid flex-1 grid-cols-2 gap-3 overflow-y-auto p-4 sm:grid-cols-3 sm:p-6 lg:grid-cols-4">
+            <div className="korr-scroll grid flex-1 grid-cols-2 gap-4 overflow-y-auto p-4 sm:grid-cols-3 sm:gap-5 sm:p-6 lg:grid-cols-4 lg:gap-6">
               {allGalleryImages.map((p, i) => (
                 <button
                   key={`${p.src}-${i}`}
@@ -247,6 +256,9 @@ export function Gallery() {
                     alt={p.alt}
                     loading="lazy"
                     decoding="async"
+                    sizes="(min-width: 1024px) 220px, 45vw"
+                    width={320}
+                    height={320}
                     className="object-cover group-hover:scale-105"
                   />
                 </button>
