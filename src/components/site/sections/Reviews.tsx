@@ -21,7 +21,14 @@ function GoogleG({ size = 18 }: { size?: number }) {
   );
 }
 
+/** Characters shown before a review is collapsed behind "View more". */
+const CLAMP = 180;
+
 function ReviewCard({ r }: { r: Review }) {
+  const [expanded, setExpanded] = useState(false);
+  const long = r.text.length > CLAMP;
+  const shown = long && !expanded ? `${r.text.slice(0, CLAMP).trimEnd()}…` : r.text;
+
   return (
     <article className="flex h-full flex-col rounded-2xl border border-hairline bg-surface/40 p-4 transition-all duration-500 card-hover sm:p-5">
       <div className="flex items-center gap-2.5">
@@ -39,7 +46,17 @@ function ReviewCard({ r }: { r: Review }) {
       <div className="mt-3">
         <Stars size={12} />
       </div>
-      <p className="mt-2 flex-1 text-[0.8rem] leading-relaxed text-muted-foreground">{r.text}</p>
+      <p className="mt-2 flex-1 text-[0.8rem] leading-relaxed text-muted-foreground">{shown}</p>
+      {long ? (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          className="mt-2 self-start text-[0.72rem] font-semibold text-primary transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          {expanded ? "View less" : "View more"}
+        </button>
+      ) : null}
 
       <div className="mt-3 flex items-center gap-2 border-t border-hairline pt-3 text-[0.68rem] text-muted-foreground">
         <ThumbsUp width={12} height={12} aria-hidden="true" />

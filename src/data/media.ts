@@ -15,6 +15,7 @@ import g10 from "@/assets/media/gym-10.webp.asset.json";
 import g11 from "@/assets/media/gym-11.webp.asset.json";
 import g12 from "@/assets/media/gym-12.webp.asset.json";
 import g13 from "@/assets/media/gym-13.webp.asset.json";
+import g14 from "@/assets/media/gym-14.png.asset.json";
 
 import o1 from "@/assets/media/offer-1.jpg.asset.json";
 import o2 from "@/assets/media/offer-2.jpg.asset.json";
@@ -24,12 +25,14 @@ import o5 from "@/assets/media/offer-5.webp.asset.json";
 
 import v1 from "@/assets/media/tour-1.mp4.asset.json";
 import v2 from "@/assets/media/tour-2.mp4.asset.json";
+import v7 from "@/assets/media/tour-7.mp4.asset.json";
 import v3 from "@/assets/media/tour-3.mp4.asset.json";
 import v4 from "@/assets/media/tour-4.mp4.asset.json";
 import v5 from "@/assets/media/tour-5.mp4.asset.json";
 import v6 from "@/assets/media/tour-6.mp4.asset.json";
 import p1 from "@/assets/media/tour-1.jpg.asset.json";
 import p2 from "@/assets/media/tour-2.jpg.asset.json";
+import p7 from "@/assets/media/tour-7.jpg.asset.json";
 import p3 from "@/assets/media/tour-3.jpg.asset.json";
 import p4 from "@/assets/media/tour-4.jpg.asset.json";
 import p5 from "@/assets/media/tour-5.jpg.asset.json";
@@ -47,6 +50,7 @@ export const galleryPhotos: GalleryPhoto[] = [
   { src: g4.url, alt: "Members training on the KORR.fit gym floor" },
   { src: g5.url, alt: "Cardio machines at KORR.fit Mansarovar" },
   { src: g13.url, alt: "Strength racks and free weights on the KORR.fit floor" },
+  { src: g14.url, alt: "KORR.fit members celebrating Independence Day at the Mansarovar reception" },
   { src: g7.url, alt: "Coached training session at KORR.fit" },
   { src: g8.url, alt: "Well-maintained equipment at KORR.fit" },
   { src: g9.url, alt: "Inside the KORR.fit gym in Mansarovar, Jaipur" },
@@ -65,6 +69,7 @@ export type TourVideo = { src: string; poster: string; alt: string };
 
 export const tourVideos: TourVideo[] = [
   { src: v1.url, poster: p1.url, alt: "Full walkthrough of the KORR.fit gym floor" },
+  { src: v7.url, poster: p7.url, alt: "KORR.fit gym walkthrough clip" },
   { src: v2.url, poster: p2.url, alt: "KORR.fit training clip" },
   { src: v3.url, poster: p3.url, alt: "KORR.fit strength zone clip" },
   { src: v4.url, poster: p4.url, alt: "KORR.fit coaching clip" },
@@ -122,8 +127,5 @@ export const offerPosters: OfferPoster[] = [
   },
 ];
 
-/** Everything shown in the "All Images" popup — gym photos plus offer posters. */
-export const allGalleryImages: GalleryPhoto[] = [
-  ...allImages,
-  ...offerPosters.map((o) => ({ src: o.image, alt: o.title })),
-];
+/** Everything shown in the "All Images" popup — gym photos only. */
+export const allGalleryImages: GalleryPhoto[] = [...allImages];

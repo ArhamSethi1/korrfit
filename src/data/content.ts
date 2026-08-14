@@ -1,3 +1,9 @@
+import t1 from "@/assets/team/t1.jpg.asset.json";
+import t2 from "@/assets/team/t2.jpg.asset.json";
+import t3 from "@/assets/team/t3.jpg.asset.json";
+import t4 from "@/assets/team/t4.jpg.asset.json";
+import t5 from "@/assets/team/t5.jpg.asset.json";
+import t6 from "@/assets/team/t6.jpg.asset.json";
 
 /**
  * Placeholder-friendly content for KORR.fit.
@@ -162,21 +168,15 @@ export const ptTerms =
 export const ptTagline = "Transform yourself with expert coaching.";
 
 
-export type Trainer = {
-  name: string;
-  specialization: string;
-  experience: string;
-  bio: string;
-};
+export type Trainer = { name: string; photo: string };
 
-// TODO: replace with real trainer names, photos and bios.
 export const trainers: Trainer[] = [
-  { name: "Trainer Name", specialization: "Strength & Conditioning", experience: "— years experience", bio: "Short bio placeholder describing coaching style and the members they work best with." },
-  { name: "Trainer Name", specialization: "Weight Loss Coaching", experience: "— years experience", bio: "Short bio placeholder describing coaching style and the members they work best with." },
-  { name: "Trainer Name", specialization: "Functional Training", experience: "— years experience", bio: "Short bio placeholder describing coaching style and the members they work best with." },
-  { name: "Trainer Name", specialization: "Zumba & Group Fitness", experience: "— years experience", bio: "Short bio placeholder describing coaching style and the members they work best with." },
-  { name: "Trainer Name", specialization: "Nutrition Guidance", experience: "— years experience", bio: "Short bio placeholder describing coaching style and the members they work best with." },
-  { name: "Trainer Name", specialization: "Mobility & Rehab Support", experience: "— years experience", bio: "Short bio placeholder describing coaching style and the members they work best with." },
+  { name: "Vijendra Saharan", photo: t1.url },
+  { name: "Adarsh Kant", photo: t2.url },
+  { name: "Vikas Chopra", photo: t3.url },
+  { name: "Lekhraj Meena", photo: t4.url },
+  { name: "Wasim Khan", photo: t5.url },
+  { name: "Kapil Jatav", photo: t6.url },
 ];
 
 export type Session = { time: string; title: string; coach: string };
@@ -221,21 +221,6 @@ export const offers: Offer[] = [
   { badge: "Limited period", title: "Free Trial Session", blurb: "Walk in, train once with a coach, and decide afterwards. No pressure, no sign-up first.", cta: "Book Free Trial" },
   { badge: "New members", title: "Joining Offer Placeholder", blurb: "Offer details go here — discount, duration and terms are fully editable.", cta: "Talk To Us" },
   { badge: "Refer a friend", title: "Bring Someone With You", blurb: "Reward details placeholder for members who refer a friend to KORR.fit.", cta: "Ask On WhatsApp" },
-];
-
-export type Story = {
-  name: string;
-  program: string;
-  duration: string;
-  result: string;
-  quote: string;
-};
-
-// TODO: replace with real member transformations and photos.
-export const stories: Story[] = [
-  { name: "Member Name", program: "Weight Loss", duration: "6 months", result: "Result placeholder", quote: "Placeholder story about how training at KORR.fit changed their routine, energy and confidence." },
-  { name: "Member Name", program: "Muscle Gain", duration: "8 months", result: "Result placeholder", quote: "Placeholder story about how training at KORR.fit changed their routine, energy and confidence." },
-  { name: "Member Name", program: "Body Recomposition", duration: "4 months", result: "Result placeholder", quote: "Placeholder story about how training at KORR.fit changed their routine, energy and confidence." },
 ];
 
 export type ReviewMedia = {

@@ -14,6 +14,11 @@ function durationFor(distance: number) {
   return Math.min(900, Math.max(420, 320 + distance * 0.22));
 }
 
+/** Touch devices jump straight there — animated scrolling feels laggy. */
+const isTouch = () =>
+  typeof window !== "undefined" &&
+  (window.matchMedia?.("(pointer: coarse)").matches || window.innerWidth < 768);
+
 function animateScrollTo(target: number) {
   if (typeof window === "undefined") return;
   const start = window.scrollY;
@@ -22,7 +27,7 @@ function animateScrollTo(target: number) {
   const distance = end - start;
   if (Math.abs(distance) < 2) return;
 
-  if (prefersReduced()) {
+  if (prefersReduced() || isTouch()) {
     window.scrollTo({ top: end, behavior: "auto" });
     return;
   }

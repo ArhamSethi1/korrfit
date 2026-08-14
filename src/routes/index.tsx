@@ -11,14 +11,13 @@ import { Pricing } from "@/components/site/sections/Pricing";
 import { Trainers } from "@/components/site/sections/Trainers";
 import { Schedule } from "@/components/site/sections/Schedule";
 import { Offers } from "@/components/site/sections/Offers";
-import { Stories } from "@/components/site/sections/Stories";
 import { Reviews } from "@/components/site/sections/Reviews";
 import { Gallery } from "@/components/site/sections/Gallery";
 import { FindUs } from "@/components/site/sections/FindUs";
 import { Faq } from "@/components/site/sections/Faq";
 import { FinalCta, Footer } from "@/components/site/sections/FinalCta";
 import { site } from "@/lib/site";
-import { faqs, reviews, stories } from "@/data/content";
+import { faqs, reviews } from "@/data/content";
 import { BackToTop } from "@/components/site/BackToTop";
 import { SmoothAnchors } from "@/components/site/SmoothAnchors";
 import { ImagePreloader } from "@/components/site/ImagePreloader";
@@ -85,26 +84,6 @@ export const Route = createFileRoute("/")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "ItemList",
-          name: "KORR.fit member success stories",
-          itemListElement: stories.map((s, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: {
-              "@type": "CreativeWork",
-              name: `${s.name} — ${s.program} transformation`,
-              about: s.program,
-              text: `${s.quote} (${s.program}, ${s.duration}, ${s.result})`,
-              creator: { "@type": "Person", name: s.name },
-            },
-          })),
-        }),
-      },
-
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
           "@type": "FAQPage",
           mainEntity: faqs.map((f) => ({
             "@type": "Question",
@@ -128,11 +107,10 @@ function Home() {
             <Hero />
             <Offers />
             <Gallery />
-            <Stories />
             <Reviews />
+            <Pricing />
             <Amenities />
             <Programs />
-            <Pricing />
             <Trainers />
             <Schedule />
             <WhyUs />
