@@ -242,7 +242,7 @@ export function Gallery() {
               </button>
             </div>
 
-            <div className="korr-scroll grid flex-1 grid-cols-2 content-start gap-5 overflow-y-auto p-5 sm:grid-cols-3 sm:gap-6 sm:p-7 lg:grid-cols-4 lg:gap-7">
+            <div className="korr-scroll grid flex-1 auto-rows-min grid-cols-2 content-start gap-5 overflow-y-auto p-5 sm:grid-cols-3 sm:gap-6 sm:p-7 lg:grid-cols-4 lg:gap-7">
               {allGalleryImages.map((p, i) => (
                 <button
                   key={`${p.src}-${i}`}
