@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Clock } from "lucide-react";
+import { Dumbbell } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
 import { schedule } from "@/data/content";
@@ -41,7 +41,7 @@ export function Schedule() {
           <Reveal key={`${current.day}-${s.time}-${i}`} delay={i * 70}>
             <div className="float-in flex h-full items-start gap-3 rounded-2xl border border-hairline bg-background/40 p-3.5 transition-colors duration-500 hover:border-primary/40 sm:p-4">
               <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-2/60 text-primary">
-                <Clock width={15} height={15} aria-hidden="true" />
+                <Dumbbell width={15} height={15} aria-hidden="true" />
               </span>
               <div>
                 <div className="text-sm font-semibold">{s.title}</div>
