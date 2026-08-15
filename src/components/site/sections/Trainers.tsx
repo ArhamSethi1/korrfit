@@ -13,7 +13,7 @@ export function Trainers() {
         lead="Certified trainers across strength, weight loss, functional training, group fitness and nutrition."
       />
 
-      <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+      <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-6">
         {trainers.map((t, i) => (
           <Reveal key={t.name} delay={(i % 4) * 80}>
             <article className="group relative h-full overflow-hidden rounded-3xl border border-hairline bg-surface/40 transition-all duration-500 card-hover">
