@@ -30,18 +30,33 @@ function VideoPlayer({ src, poster, label }: { src: string; poster?: string; lab
   const toggle = () => {
     const v = ref.current;
     if (!v) return;
-    if (v.paused) void v.play();
+    if (v.paused) void v.play().catch(() => {});
     else v.pause();
   };
 
-  // Start playing the moment the clip is enlarged.
+  // Start playing the moment the clip is enlarged, and make absolutely sure
+  // the element is torn down on unmount so audio never keeps running.
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
+    setTime(0);
+    setDuration(0);
     const start = () => void v.play().catch(() => {});
     if (v.readyState >= 2) start();
     else v.addEventListener("loadeddata", start, { once: true });
+
+    return () => {
+      v.removeEventListener("loadeddata", start);
+      try {
+        v.pause();
+        v.removeAttribute("src");
+        v.load();
+      } catch {
+        /* nothing to clean up */
+      }
+    };
   }, [src]);
+
 
   return (
     <div className="flex max-h-[92dvh] w-full flex-col items-center">
