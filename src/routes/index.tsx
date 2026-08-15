@@ -108,10 +108,10 @@ function Home() {
             <Offers />
             <Gallery />
             <Reviews />
+            <Trainers />
             <Pricing />
             <Amenities />
             <Programs />
-            <Trainers />
             <Schedule />
             <WhyUs />
             <FindUs />
