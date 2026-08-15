@@ -249,7 +249,7 @@ export function Gallery() {
                   type="button"
                   onClick={() => openLightbox(allMedia, i)}
                   aria-label={`Open photo: ${p.alt}`}
-                  className="group aspect-square w-full self-start overflow-hidden rounded-xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="group w-full overflow-hidden rounded-xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <SmartImage
                     src={p.src}
@@ -259,6 +259,7 @@ export function Gallery() {
                     sizes="(min-width: 1024px) 220px, 45vw"
                     width={320}
                     height={320}
+                    wrapperClassName="aspect-square"
                     className="object-cover group-hover:scale-105"
                   />
                 </button>
