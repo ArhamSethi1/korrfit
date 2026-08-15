@@ -13,10 +13,10 @@ export function Trainers() {
         lead="Certified trainers across strength, weight loss, functional training, group fitness and nutrition."
       />
 
-      <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
+      <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-6">
         {trainers.map((t, i) => (
-          <Reveal key={t.name} delay={(i % 3) * 80}>
-            <article className="group h-full overflow-hidden rounded-3xl border border-hairline bg-surface/40 transition-all duration-500 card-hover">
+          <Reveal key={t.name} delay={(i % 4) * 80}>
+            <article className="group relative h-full overflow-hidden rounded-3xl border border-hairline bg-surface/40 transition-all duration-500 card-hover">
               <SmartImage
                 src={t.photo}
                 alt={t.name}
@@ -25,13 +25,17 @@ export function Trainers() {
                 wrapperClassName="aspect-[3/4]"
                 className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="p-4 text-center sm:p-5">
-                <h3 className="text-sm font-semibold sm:text-lg">{t.name}</h3>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/85 to-transparent px-3 pb-3 pt-8 text-center">
+                <span className="block text-[0.62rem] uppercase tracking-[0.2em] text-muted-foreground">
+                  Trainer
+                </span>
+                <h3 className="mt-1 text-sm font-semibold text-primary sm:text-base">{t.name}</h3>
               </div>
             </article>
           </Reveal>
         ))}
       </div>
+
 
       <div className="mt-10 hidden rounded-3xl border md:block border-hairline bg-surface/40 p-6 text-center md:p-8">
         <p className="text-base text-muted-foreground">
