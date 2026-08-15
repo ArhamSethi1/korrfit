@@ -53,11 +53,13 @@ export const heroBackground = g11.url;
 
 export const galleryPhotos: GalleryPhoto[] = [
   { src: g2.url, alt: "The main training floor at KORR.fit Mansarovar" },
+  { src: rFunctional.url, alt: "Functional training studio with kettlebells and rig at KORR.fit" },
+  { src: rHiit.url, alt: "Open HIIT and group training floor at KORR.fit Mansarovar" },
   { src: g1.url, alt: "Night view of the KORR.fit gym floor with members training" },
   { src: g3.url, alt: "Strength equipment and free weights at KORR.fit" },
   { src: g4.url, alt: "Members training on the KORR.fit gym floor" },
   { src: g5.url, alt: "Cardio machines at KORR.fit Mansarovar" },
-  { src: g13.url, alt: "Strength racks and free weights on the KORR.fit floor" },
+  { src: g15.url, alt: "Power rack and plate-loaded machines on the KORR.fit strength floor" },
   { src: g14.url, alt: "KORR.fit members celebrating Independence Day at the Mansarovar reception" },
   { src: g7.url, alt: "Coached training session at KORR.fit" },
   { src: g8.url, alt: "Well-maintained equipment at KORR.fit" },
@@ -67,10 +69,28 @@ export const galleryPhotos: GalleryPhoto[] = [
   { src: g12.url, alt: "Members working out at KORR.fit Jaipur" },
 ];
 
+/** Photo shown for each stop of the interactive tour, in room order. */
+export const tourRoomImages: string[] = [
+  rReception.url,
+  rStrength.url,
+  rCardio.url,
+  rFunctional.url,
+  rSteam.url,
+  rStretch.url,
+  // Changing rooms reuses the first "More moments" photo.
+  g14.url,
+];
+
 /** Every KORR.fit photo, including the ones not shown in the main gallery. */
 export const allImages: GalleryPhoto[] = [
   ...galleryPhotos,
   { src: g6.url, alt: "Functional training area at KORR.fit" },
+  { src: g13.url, alt: "Strength racks and free weights on the KORR.fit floor" },
+  { src: rReception.url, alt: "KORR.fit Mansarovar reception and waiting lounge" },
+  { src: rStrength.url, alt: "Strength zone with racks and machines at KORR.fit" },
+  { src: rCardio.url, alt: "Treadmills and cross trainers in the KORR.fit cardio zone" },
+  { src: rSteam.url, alt: "Steam room and lockers at KORR.fit Mansarovar" },
+  { src: rStretch.url, alt: "Stretch and mobility area with stability balls at KORR.fit" },
 ];
 
 export type TourVideo = { src: string; poster: string; alt: string };
