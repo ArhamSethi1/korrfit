@@ -150,25 +150,10 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
   );
   goRef.current = go;
 
-  // Mobile back button should dismiss the media, not leave the site.
-  // The router patches history.pushState and echoes a popstate of its own, so
-  // ignore anything that fires immediately after our own push.
-  useEffect(() => {
-    const pushedAt = Date.now();
-    // (disabled test)
-    let popped = false;
-    const onPop = () => {
-      if (Date.now() - pushedAt < 600) return;
-      popped = true;
-      closeRef.current();
-    };
-    window.addEventListener("popstate", onPop);
-    return () => {
-      window.removeEventListener("popstate", onPop);
-      if (!popped && window.history.state?.korrLightbox) window.history.back();
-    };
-  }, []);
-
+  // Note: we deliberately do NOT push a history entry here. The router patches
+  // history.pushState and re-renders the route on the echoed popstate, which
+  // used to close the popup instantly (and left videos playing in the
+  // background). Esc, the close button and the backdrop all dismiss it.
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
