@@ -151,10 +151,14 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
   goRef.current = go;
 
   // Mobile back button should dismiss the media, not leave the site.
+  // The router patches history.pushState and echoes a popstate of its own, so
+  // ignore anything that fires immediately after our own push.
   useEffect(() => {
+    const pushedAt = Date.now();
     window.history.pushState({ korrLightbox: true }, "");
     let popped = false;
     const onPop = () => {
+      if (Date.now() - pushedAt < 600) return;
       popped = true;
       closeRef.current();
     };
@@ -164,6 +168,7 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
       if (!popped && window.history.state?.korrLightbox) window.history.back();
     };
   }, []);
+
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
