@@ -14,7 +14,6 @@ export function Schedule() {
       <SectionHeading
         eyebrow="Weekly schedule"
         title="Know exactly what is running before you arrive."
-        lead="A sample timetable across the week. Timings are placeholders and can be updated any time."
       />
 
       <div className="mt-10 flex flex-wrap gap-2">
@@ -45,8 +44,7 @@ export function Schedule() {
                 <Clock width={15} height={15} aria-hidden="true" />
               </span>
               <div>
-                <div className="text-xs font-semibold text-primary">{s.time}</div>
-                <div className="mt-1 text-sm font-semibold">{s.title}</div>
+                <div className="text-sm font-semibold">{s.title}</div>
                 <div className="mt-0.5 text-xs text-muted-foreground">with {s.coach}</div>
               </div>
             </div>
