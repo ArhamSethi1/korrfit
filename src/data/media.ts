@@ -16,6 +16,14 @@ import g11 from "@/assets/media/gym-11.webp.asset.json";
 import g12 from "@/assets/media/gym-12.webp.asset.json";
 import g13 from "@/assets/media/gym-13.webp.asset.json";
 import g14 from "@/assets/media/gym-14.png.asset.json";
+import g15 from "@/assets/media/gym-15.webp.asset.json";
+import rReception from "@/assets/media/room-reception.png.asset.json";
+import rStrength from "@/assets/media/room-strength.webp.asset.json";
+import rCardio from "@/assets/media/room-cardio.webp.asset.json";
+import rFunctional from "@/assets/media/room-functional.webp.asset.json";
+import rSteam from "@/assets/media/room-steam.webp.asset.json";
+import rStretch from "@/assets/media/room-stretch.webp.asset.json";
+import rHiit from "@/assets/media/room-hiit.webp.asset.json";
 
 import o1 from "@/assets/media/offer-1.jpg.asset.json";
 import o2 from "@/assets/media/offer-2.jpg.asset.json";
