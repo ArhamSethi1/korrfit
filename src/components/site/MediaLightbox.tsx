@@ -155,7 +155,7 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
   // ignore anything that fires immediately after our own push.
   useEffect(() => {
     const pushedAt = Date.now();
-    window.history.pushState({ korrLightbox: true }, "");
+    // (disabled test)
     let popped = false;
     const onPop = () => {
       if (Date.now() - pushedAt < 600) return;
