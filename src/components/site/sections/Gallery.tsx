@@ -3,7 +3,7 @@ import { Play, ChevronLeft, ChevronRight, X, Images } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
 import { tourRooms, type ReviewMedia } from "@/data/content";
-import { galleryPhotos, tourVideos, allGalleryImages } from "@/data/media";
+import { galleryPhotos, tourVideos, allGalleryImages, tourRoomImages } from "@/data/media";
 import { MediaLightbox } from "../MediaLightbox";
 import { SmartImage } from "../SmartImage";
 import { cn } from "@/lib/utils";
@@ -42,7 +42,7 @@ const allMedia: ReviewMedia[] = allGalleryImages.map((p) => ({
   alt: p.alt,
 }));
 
-const tourImages = galleryPhotos.map((p) => p.src);
+const tourImages = tourRoomImages;
 
 export function Gallery() {
   const [room, setRoom] = useState(0);
@@ -242,14 +242,14 @@ export function Gallery() {
               </button>
             </div>
 
-            <div className="korr-scroll grid flex-1 grid-cols-2 gap-4 overflow-y-auto p-4 sm:grid-cols-3 sm:gap-5 sm:p-6 lg:grid-cols-4 lg:gap-6">
+            <div className="korr-scroll grid flex-1 auto-rows-min grid-cols-2 content-start gap-5 overflow-y-auto p-5 sm:grid-cols-3 sm:gap-6 sm:p-7 lg:grid-cols-4 lg:gap-7">
               {allGalleryImages.map((p, i) => (
                 <button
                   key={`${p.src}-${i}`}
                   type="button"
                   onClick={() => openLightbox(allMedia, i)}
                   aria-label={`Open photo: ${p.alt}`}
-                  className="group aspect-square overflow-hidden rounded-xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="group w-full overflow-hidden rounded-xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <SmartImage
                     src={p.src}
@@ -259,6 +259,7 @@ export function Gallery() {
                     sizes="(min-width: 1024px) 220px, 45vw"
                     width={320}
                     height={320}
+                    wrapperClassName="aspect-square"
                     className="object-cover group-hover:scale-105"
                   />
                 </button>
