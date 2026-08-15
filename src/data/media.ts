@@ -78,7 +78,7 @@ export const tourRoomImages: string[] = [
   rSteam.url,
   rStretch.url,
   // Changing rooms reuses the first "More moments" photo.
-  g14.url,
+  g15.url,
 ];
 
 /** Every KORR.fit photo, including the ones not shown in the main gallery. */
