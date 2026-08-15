@@ -120,14 +120,21 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
   const [loaded, setLoaded] = useState(false);
   const item = items[index];
 
+  // Keep the latest handlers in refs so the history/keyboard effects can run
+  // exactly once per mount — re-running them on every index change used to
+  // pop history (closing the popup) when the arrows were used.
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  const goRef = useRef<(dir: number) => void>(() => {});
+
   // Reset the lightweight placeholder whenever the active item changes, and
-  // warm the neighbours so arrow navigation feels instant on mobile.
+  // warm the neighbouring photos so arrow navigation feels instant on mobile.
   useEffect(() => {
     setLoaded(false);
     if (items.length < 2 || typeof Image === "undefined") return;
     for (const dir of [1, -1]) {
       const next = items[(index + dir + items.length) % items.length];
-      if (!next) continue;
+      if (!next || next.videoSrc) continue;
       const img = new Image();
       img.decoding = "async";
       img.src = next.src;
@@ -141,17 +148,22 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
     },
     [index, items.length, onIndexChange],
   );
+  goRef.current = go;
 
   // Mobile back button should dismiss the media, not leave the site.
   useEffect(() => {
     window.history.pushState({ korrLightbox: true }, "");
-    const onPop = () => onClose();
+    let popped = false;
+    const onPop = () => {
+      popped = true;
+      closeRef.current();
+    };
     window.addEventListener("popstate", onPop);
     return () => {
       window.removeEventListener("popstate", onPop);
-      if (window.history.state?.korrLightbox) window.history.back();
+      if (!popped && window.history.state?.korrLightbox) window.history.back();
     };
-  }, [onClose]);
+  }, []);
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
@@ -159,18 +171,19 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        e.preventDefault();
         e.stopPropagation();
-        onClose();
+        closeRef.current();
         return;
       }
       if (e.key === "ArrowRight") {
         e.preventDefault();
-        go(1);
+        goRef.current(1);
         return;
       }
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        go(-1);
+        goRef.current(-1);
         return;
       }
       if (e.key !== "Tab") return;
@@ -195,9 +208,11 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
     return () => {
       document.removeEventListener("keydown", onKey, true);
       document.body.style.overflow = prevOverflow;
+      // Return focus to the thumbnail that opened the popup.
       previouslyFocused?.focus?.();
     };
-  }, [go, onClose]);
+  }, []);
+
 
   if (!item) return null;
 
