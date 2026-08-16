@@ -15,7 +15,7 @@ import { useLead } from "../LeadDialog";
 import { WhatsAppIcon } from "../WhatsAppIcon";
 import { CountUp } from "../CountUp";
 import { useText } from "@/lib/text";
-import { heroBackground } from "@/data/media";
+import { heroBackground, heroBackgroundMobile } from "@/data/media";
 import logo from "@/assets/korr-logo.png.asset.json";
 
 
@@ -28,7 +28,16 @@ export function Hero() {
 
   return (
     <section id="home" className="gpu relative isolate overflow-hidden">
-      {/* Full-bleed hero background */}
+      {/* Full-bleed hero background — portrait crop on phones, wide on desktop */}
+      <img
+        src={heroBackgroundMobile}
+        alt="The training floor at KORR.fit gym in Mansarovar, Jaipur"
+        width={1562}
+        height={1920}
+        fetchPriority="high"
+        decoding="async"
+        className="absolute inset-0 -z-20 h-full w-full object-cover object-center sm:hidden"
+      />
       <img
         src={heroBackground}
         alt="The strength training floor at KORR.fit gym in Mansarovar, Jaipur"
@@ -36,16 +45,13 @@ export function Hero() {
         height={1200}
         fetchPriority="high"
         decoding="async"
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
+        className="absolute inset-0 -z-20 hidden h-full w-full object-cover object-center sm:block"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,oklch(0.185_0.003_30/0.96)_0%,oklch(0.185_0.003_30/0.86)_45%,oklch(0.185_0.003_30/0.55)_100%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,oklch(0.185_0.003_30/0.92)_0%,oklch(0.185_0.003_30/0.78)_45%,oklch(0.185_0.003_30/0.45)_100%)]"
       />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent to-background"
-      />
+
 
       <div className="mx-auto w-full max-w-7xl px-5 pb-14 pt-7 sm:px-8 sm:pt-24 md:pb-28 md:pt-32">
         <div className="max-w-3xl">

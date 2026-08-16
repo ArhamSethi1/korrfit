@@ -118,6 +118,9 @@ function VideoPlayer({ src, poster, label }: { src: string; poster?: string; lab
 export function MediaLightbox({ items, index, onIndexChange, onClose, title }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [origin, setOrigin] = useState("50% 50%");
+  const [pinching, setPinching] = useState(false);
   const item = items[index];
 
   // Keep the latest handlers in refs so the history/keyboard effects can run
@@ -131,6 +134,8 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
   // warm the neighbouring photos so arrow navigation feels instant on mobile.
   useEffect(() => {
     setLoaded(false);
+    setZoom(1);
+    setOrigin("50% 50%");
     if (items.length < 2 || typeof Image === "undefined") return;
     for (const dir of [1, -1]) {
       const next = items[(index + dir + items.length) % items.length];
@@ -150,10 +155,33 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
   );
   goRef.current = go;
 
-  // Note: we deliberately do NOT push a history entry here. The router patches
-  // history.pushState and re-renders the route on the echoed popstate, which
-  // used to close the popup instantly (and left videos playing in the
-  // background). Esc, the close button and the backdrop all dismiss it.
+  // Android/browser back button dismisses the popup instead of leaving the
+  // site. The router echoes its own popstate right after a pushState, so the
+  // listener is attached a tick later to ignore that echo.
+  useEffect(() => {
+    let closedByPop = false;
+    try {
+      window.history.pushState({ korrLightbox: true }, "");
+    } catch {
+      /* history unavailable */
+    }
+    const onPop = () => {
+      closedByPop = true;
+      closeRef.current();
+    };
+    const t = window.setTimeout(() => window.addEventListener("popstate", onPop), 80);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("popstate", onPop);
+      if (!closedByPop && window.history.state?.korrLightbox) {
+        try {
+          window.history.back();
+        } catch {
+          /* nothing to unwind */
+        }
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
@@ -203,8 +231,54 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
     };
   }, []);
 
+  // Pinch (touch) and wheel/trackpad (desktop) zoom on the enlarged photo.
+  // Pinching is live and snaps back the moment the fingers lift.
+  const pointers = useRef(new Map<number, { x: number; y: number }>());
+  const startDist = useRef(0);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLImageElement>) => {
+    if (e.pointerType !== "touch") return;
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.current.size === 2) {
+      const [a, b] = [...pointers.current.values()];
+      startDist.current = Math.hypot(a!.x - b!.x, a!.y - b!.y) || 1;
+      const rect = e.currentTarget.getBoundingClientRect();
+      setOrigin(
+        `${((((a!.x + b!.x) / 2) - rect.left) / rect.width) * 100}% ${((((a!.y + b!.y) / 2) - rect.top) / rect.height) * 100}%`,
+      );
+      setPinching(true);
+    }
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLImageElement>) => {
+    if (!pointers.current.has(e.pointerId)) return;
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.current.size !== 2) return;
+    const [a, b] = [...pointers.current.values()];
+    const dist = Math.hypot(a!.x - b!.x, a!.y - b!.y);
+    setZoom(Math.min(4, Math.max(1, dist / (startDist.current || 1))));
+  };
+
+  const endPointer = (e: React.PointerEvent<HTMLImageElement>) => {
+    pointers.current.delete(e.pointerId);
+    if (pointers.current.size < 2 && pinching) {
+      setPinching(false);
+      setZoom(1);
+      setOrigin("50% 50%");
+    }
+  };
+
+  const onWheel = (e: React.WheelEvent<HTMLImageElement>) => {
+    const dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 100 : 1);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setOrigin(
+      `${((e.clientX - rect.left) / rect.width) * 100}% ${((e.clientY - rect.top) / rect.height) * 100}%`,
+    );
+    setZoom((z) => Math.min(4, Math.max(1, z * Math.exp(-dy * 0.0015))));
+  };
 
   if (!item) return null;
+
 
   return (
     <div
@@ -238,11 +312,27 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
               decoding="async"
               fetchPriority="high"
               onLoad={() => setLoaded(true)}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={endPointer}
+              onPointerCancel={endPointer}
+              onWheel={onWheel}
+              onDoubleClick={() => {
+                setZoom(1);
+                setOrigin("50% 50%");
+              }}
+              style={{
+                transform: `scale(${zoom})`,
+                transformOrigin: origin,
+                touchAction: "none",
+              }}
               className={cn(
                 "max-h-[100dvh] max-w-[100vw] object-contain transition-opacity duration-500",
+                pinching ? "" : "transition-transform duration-300",
                 loaded ? "opacity-100" : "opacity-0",
               )}
             />
+
           </>
         )}
 

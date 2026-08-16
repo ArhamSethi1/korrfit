@@ -24,6 +24,14 @@ import rFunctional from "@/assets/media/room-functional.webp.asset.json";
 import rSteam from "@/assets/media/room-steam.webp.asset.json";
 import rStretch from "@/assets/media/room-stretch.webp.asset.json";
 import rHiit from "@/assets/media/room-hiit.webp.asset.json";
+import rChanging from "@/assets/media/room-changing.png.asset.json";
+import heroMobile from "@/assets/media/hero-mobile.png.asset.json";
+import zZumba from "@/assets/media/zone-zumba.webp.asset.json";
+import zSteam from "@/assets/media/zone-steam.png.asset.json";
+import zStrength from "@/assets/media/zone-strength.webp.asset.json";
+import zCardio from "@/assets/media/zone-cardio.webp.asset.json";
+import zFunctional from "@/assets/media/zone-functional.webp.asset.json";
+import zRecovery from "@/assets/media/zone-recovery.webp.asset.json";
 
 import o1 from "@/assets/media/offer-1.jpg.asset.json";
 import o2 from "@/assets/media/offer-2.jpg.asset.json";
@@ -51,6 +59,19 @@ export type GalleryPhoto = { src: string; alt: string };
 /** Hero background — the drone/night floor shot of the gym. */
 export const heroBackground = g11.url;
 
+/** Portrait hero background used on phones. */
+export const heroBackgroundMobile = heroMobile.url;
+
+/** Zone photo for each amenity group, in `amenityGroups` order. */
+export const zoneImages: string[] = [
+  zZumba.url,
+  zSteam.url,
+  zStrength.url,
+  zCardio.url,
+  zFunctional.url,
+  zRecovery.url,
+];
+
 export const galleryPhotos: GalleryPhoto[] = [
   { src: g2.url, alt: "The main training floor at KORR.fit Mansarovar" },
   { src: rFunctional.url, alt: "Functional training studio with kettlebells and rig at KORR.fit" },
@@ -60,14 +81,19 @@ export const galleryPhotos: GalleryPhoto[] = [
   { src: g4.url, alt: "Members training on the KORR.fit gym floor" },
   { src: g5.url, alt: "Cardio machines at KORR.fit Mansarovar" },
   { src: g15.url, alt: "Power rack and plate-loaded machines on the KORR.fit strength floor" },
-  { src: g14.url, alt: "KORR.fit members celebrating Independence Day at the Mansarovar reception" },
-  { src: g7.url, alt: "Coached training session at KORR.fit" },
   { src: g8.url, alt: "Well-maintained equipment at KORR.fit" },
   { src: g9.url, alt: "Inside the KORR.fit gym in Mansarovar, Jaipur" },
+  { src: g12.url, alt: "Members working out at KORR.fit Jaipur" },
+  { src: g6.url, alt: "Functional training area at KORR.fit" },
+  // Rest of the set feeds the "More moments" rail.
+  { src: g14.url, alt: "KORR.fit members celebrating Independence Day at the Mansarovar reception" },
+  { src: g7.url, alt: "Coached training session at KORR.fit" },
   { src: g10.url, alt: "Training zone at KORR.fit" },
   { src: g11.url, alt: "Wide view of the KORR.fit strength floor" },
-  { src: g12.url, alt: "Members working out at KORR.fit Jaipur" },
 ];
+
+/** How many of the photos above build the masonry grid. */
+export const GRID_COUNT = 12;
 
 /** Photo shown for each stop of the interactive tour, in room order. */
 export const tourRoomImages: string[] = [
@@ -77,20 +103,19 @@ export const tourRoomImages: string[] = [
   rFunctional.url,
   rSteam.url,
   rStretch.url,
-  // Changing rooms reuses the first "More moments" photo.
-  g15.url,
+  rChanging.url,
 ];
 
 /** Every KORR.fit photo, including the ones not shown in the main gallery. */
 export const allImages: GalleryPhoto[] = [
   ...galleryPhotos,
-  { src: g6.url, alt: "Functional training area at KORR.fit" },
   { src: g13.url, alt: "Strength racks and free weights on the KORR.fit floor" },
   { src: rReception.url, alt: "KORR.fit Mansarovar reception and waiting lounge" },
   { src: rStrength.url, alt: "Strength zone with racks and machines at KORR.fit" },
   { src: rCardio.url, alt: "Treadmills and cross trainers in the KORR.fit cardio zone" },
   { src: rSteam.url, alt: "Steam room and lockers at KORR.fit Mansarovar" },
   { src: rStretch.url, alt: "Stretch and mobility area with stability balls at KORR.fit" },
+  { src: rChanging.url, alt: "Changing room with benches, lockers and washbasins at KORR.fit" },
 ];
 
 export type TourVideo = { src: string; poster: string; alt: string };
