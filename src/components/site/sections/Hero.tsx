@@ -15,7 +15,7 @@ import { useLead } from "../LeadDialog";
 import { WhatsAppIcon } from "../WhatsAppIcon";
 import { CountUp } from "../CountUp";
 import { useText } from "@/lib/text";
-import { heroBackground } from "@/data/media";
+import { heroBackground, heroBackgroundMobile } from "@/data/media";
 import logo from "@/assets/korr-logo.png.asset.json";
 
 
