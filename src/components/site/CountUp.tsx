@@ -18,10 +18,9 @@ export function CountUp({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
-      setN(to);
-      return;
-    }
+    // The count-up is a soft, non-moving animation, so it still runs under
+    // reduced motion — just shorter (handled by the duration below).
+
     let raf = 0;
     const io = new IntersectionObserver(
       (entries) => {
