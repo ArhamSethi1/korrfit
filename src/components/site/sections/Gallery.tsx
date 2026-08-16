@@ -142,26 +142,12 @@ export function Gallery() {
         </div>
       </div>
 
-      <div className="mt-16 grid auto-rows-[11rem] grid-cols-2 gap-3 sm:auto-rows-[13rem] lg:grid-cols-3">
+      <div className="mt-16 grid auto-rows-[9.5rem] grid-flow-row-dense grid-cols-2 gap-3 sm:auto-rows-[11.5rem] lg:grid-cols-3">
         {grid.map((g, i) => (
-          <Reveal key={g.src} delay={(i % 3) * 70} className={cn("h-full", g.span)}>
-            <button
-              type="button"
-              onClick={() => openLightbox(gridMedia, i)}
-              aria-label={`Open photo: ${g.alt}`}
-              className="group block h-full w-full overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              <SmartImage
-                src={g.src}
-                alt={g.alt}
-                loading="lazy"
-                decoding="async"
-                className="object-cover group-hover:scale-105"
-              />
-            </button>
-          </Reveal>
+          <GridTile key={g.src} photo={g} index={i} onOpen={(idx) => openLightbox(gridMedia, idx)} />
         ))}
       </div>
+
 
       <div className="mt-8 flex justify-center">
         <button
