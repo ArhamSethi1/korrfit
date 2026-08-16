@@ -4,13 +4,8 @@ import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
 import { amenityGroups } from "@/data/content";
 import { cn } from "@/lib/utils";
-import strength from "@/assets/gym-strength.jpg";
-import cardio from "@/assets/gym-cardio.jpg";
-import functional from "@/assets/gym-functional.jpg";
-import recovery from "@/assets/gym-recovery.jpg";
-import studio from "@/assets/gym-studio.jpg";
-
-const images = [strength, cardio, functional, recovery, studio];
+import { zoneImages } from "@/data/media";
+import { SmartImage } from "../SmartImage";
 
 export function Amenities() {
   const [active, setActive] = useState(0);
@@ -62,15 +57,14 @@ export function Amenities() {
 
         <Reveal>
           <div className="overflow-hidden rounded-3xl border border-hairline bg-surface/40">
-            <img
+            <SmartImage
               key={active}
-              src={images[active]}
+              src={zoneImages[active % zoneImages.length]!}
               alt={`${group.title} at KORR.fit`}
-              width={1400}
-              height={900}
               loading="lazy"
               decoding="async"
-              className="float-in hidden h-56 w-full object-cover md:block md:h-80"
+              wrapperClassName="hidden bg-surface-2/40 md:block md:h-[24rem]"
+              className="float-in object-contain"
             />
             <div className="p-6 md:p-7">
               <h3 className="text-xl font-semibold">{group.title}</h3>

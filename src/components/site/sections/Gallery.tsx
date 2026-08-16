@@ -196,8 +196,8 @@ export function Gallery() {
               alt={`${tourRooms[room]!.name} at KORR.fit`}
               loading="lazy"
               decoding="async"
-              wrapperClassName="h-60 sm:h-80"
-              className="swap-in object-cover"
+              wrapperClassName="h-72 bg-surface-2/40 sm:h-[26rem]"
+              className="swap-in object-contain"
             />
             <div key={`copy-${room}`} className="swap-in p-6">
               <div className="text-xs uppercase tracking-widest text-primary">
