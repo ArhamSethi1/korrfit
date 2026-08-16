@@ -3,7 +3,7 @@ import { Play, ChevronLeft, ChevronRight, X, Images } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
 import { tourRooms, type ReviewMedia } from "@/data/content";
-import { galleryPhotos, tourVideos, allGalleryImages, tourRoomImages } from "@/data/media";
+import { galleryPhotos, tourVideos, allGalleryImages, tourRoomImages, GRID_COUNT } from "@/data/media";
 import { MediaLightbox } from "../MediaLightbox";
 import { SmartImage } from "../SmartImage";
 import { cn } from "@/lib/utils";
