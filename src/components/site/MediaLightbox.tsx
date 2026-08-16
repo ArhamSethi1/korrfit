@@ -312,11 +312,27 @@ export function MediaLightbox({ items, index, onIndexChange, onClose, title }: P
               decoding="async"
               fetchPriority="high"
               onLoad={() => setLoaded(true)}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={endPointer}
+              onPointerCancel={endPointer}
+              onWheel={onWheel}
+              onDoubleClick={() => {
+                setZoom(1);
+                setOrigin("50% 50%");
+              }}
+              style={{
+                transform: `scale(${zoom})`,
+                transformOrigin: origin,
+                touchAction: "none",
+              }}
               className={cn(
                 "max-h-[100dvh] max-w-[100vw] object-contain transition-opacity duration-500",
+                pinching ? "" : "transition-transform duration-300",
                 loaded ? "opacity-100" : "opacity-0",
               )}
             />
+
           </>
         )}
 
