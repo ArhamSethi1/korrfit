@@ -9,20 +9,12 @@ import { SmartImage } from "../SmartImage";
 import { cn } from "@/lib/utils";
 
 /**
- * First seven photos build the masonry grid (that fills the desktop 3x3 grid
- * exactly); the rest fill the marquee rail. The tall cardio shot gets cropped
- * on mobile, so there it moves to the end and spans the full width.
+ * The first `GRID_COUNT` photos build the masonry grid; the rest fill the
+ * marquee rail. Portrait shots claim a tall (two-row) tile so they are never
+ * cropped into a letterbox, and the grid uses dense flow so no holes are left.
  */
-const grid = galleryPhotos.slice(0, 7).map((p, i) => ({
-  ...p,
-  span:
-    i === 0
-      ? "row-span-2"
-      : i === 4
-        ? "max-lg:order-last max-lg:col-span-2 max-lg:row-span-1 lg:row-span-2"
-        : "",
-}));
-const marquee = galleryPhotos.slice(7).concat(galleryPhotos.slice(0, 7));
+const grid = galleryPhotos.slice(0, GRID_COUNT);
+const marquee = galleryPhotos.slice(GRID_COUNT).concat(galleryPhotos.slice(0, GRID_COUNT));
 
 const gridMedia: ReviewMedia[] = grid.map((g) => ({ type: "image", src: g.src, alt: g.alt }));
 const marqueeMedia: ReviewMedia[] = marquee.map((p) => ({
@@ -43,6 +35,43 @@ const allMedia: ReviewMedia[] = allGalleryImages.map((p) => ({
 }));
 
 const tourImages = tourRoomImages;
+
+/** Masonry tile that measures the photo and picks a square or tall frame. */
+function GridTile({
+  photo,
+  index,
+  onOpen,
+}: {
+  photo: { src: string; alt: string };
+  index: number;
+  onOpen: (i: number) => void;
+}) {
+  const [tall, setTall] = useState(false);
+
+  return (
+    <Reveal delay={(index % 3) * 70} className={cn("h-full", tall && "row-span-2")}>
+      <button
+        type="button"
+        onClick={() => onOpen(index)}
+        aria-label={`Open photo: ${photo.alt}`}
+        className="group block h-full w-full overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      >
+        <SmartImage
+          src={photo.src}
+          alt={photo.alt}
+          loading="lazy"
+          decoding="async"
+          onLoad={(e) => {
+            const img = e.currentTarget;
+            setTall(img.naturalHeight > img.naturalWidth * 1.15);
+          }}
+          className="object-cover group-hover:scale-105"
+        />
+      </button>
+    </Reveal>
+  );
+}
+
 
 export function Gallery() {
   const [room, setRoom] = useState(0);
