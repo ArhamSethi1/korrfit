@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Play, ChevronLeft, ChevronRight, X, Images } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
@@ -47,6 +47,7 @@ function GridTile({
   onOpen: (i: number) => void;
 }) {
   const [tall, setTall] = useState(false);
+  const measure = useCallback((w: number, h: number) => setTall(h > w * 1.15), []);
 
   return (
     <Reveal delay={(index % 3) * 70} className={cn("h-full", tall && "row-span-2")}>
@@ -61,7 +62,7 @@ function GridTile({
           alt={photo.alt}
           loading="lazy"
           decoding="async"
-          onMeasure={useCallbackMeasure(setTall)}
+          onMeasure={measure}
           className="object-cover group-hover:scale-105"
         />
 
