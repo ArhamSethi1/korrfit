@@ -6,20 +6,26 @@ type Props = React.ImgHTMLAttributes<HTMLImageElement> & {
   wrapperClassName?: string;
   /** Rounding applied to the skeleton so it matches the image frame. */
   skeletonClassName?: string;
+  /** Fires with the intrinsic size once known (also for cached images). */
+  onMeasure?: (width: number, height: number) => void;
 };
 
 /**
  * Image that shows a branded shimmer skeleton until the file has decoded.
  * Keeps layout stable and makes slow connections feel intentional.
  */
-export function SmartImage({ className, wrapperClassName, skeletonClassName, onLoad, ...props }: Props) {
+export function SmartImage({ className, wrapperClassName, skeletonClassName, onLoad, onMeasure, ...props }: Props) {
   const ref = useRef<HTMLImageElement>(null);
   const [loaded, setLoaded] = useState(false);
 
   // Cached images can finish before React attaches the load handler.
   useEffect(() => {
-    if (ref.current?.complete) setLoaded(true);
-  }, []);
+    const img = ref.current;
+    if (img?.complete) {
+      setLoaded(true);
+      if (img.naturalWidth) onMeasure?.(img.naturalWidth, img.naturalHeight);
+    }
+  }, [onMeasure, props.src]);
 
   return (
     <span className={cn("relative block h-full w-full overflow-hidden", wrapperClassName)}>
@@ -36,6 +42,7 @@ export function SmartImage({ className, wrapperClassName, skeletonClassName, onL
         {...props}
         onLoad={(e) => {
           setLoaded(true);
+          onMeasure?.(e.currentTarget.naturalWidth, e.currentTarget.naturalHeight);
           onLoad?.(e);
         }}
         className={cn(
