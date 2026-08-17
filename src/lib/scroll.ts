@@ -1,8 +1,7 @@
 const HEADER_OFFSET = 76;
 
-const prefersReduced = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+
 
 /** Gentle ease-in-out so the page visibly glides instead of snapping. */
 const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -27,7 +26,7 @@ function animateScrollTo(target: number) {
   const distance = end - start;
   if (Math.abs(distance) < 2) return;
 
-  if (prefersReduced() || isTouch()) {
+  if (isTouch()) {
     window.scrollTo({ top: end, behavior: "auto" });
     return;
   }

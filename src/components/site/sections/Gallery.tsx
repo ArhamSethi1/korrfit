@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Play, ChevronLeft, ChevronRight, X, Images } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
@@ -36,7 +36,7 @@ const allMedia: ReviewMedia[] = allGalleryImages.map((p) => ({
 
 const tourImages = tourRoomImages;
 
-/** Masonry tile that measures the photo and picks a square or tall frame. */
+/** Masonry tile: keeps the photo's natural aspect ratio inside a CSS column. */
 function GridTile({
   photo,
   index,
@@ -46,27 +46,27 @@ function GridTile({
   index: number;
   onOpen: (i: number) => void;
 }) {
-  const [tall, setTall] = useState(false);
+  const [ratio, setRatio] = useState<number | null>(null);
+  const measure = useCallback((w: number, h: number) => setRatio(w / h), []);
 
   return (
-    <Reveal delay={(index % 3) * 70} className={cn("h-full", tall && "row-span-2")}>
+    <Reveal delay={(index % 3) * 70} className="mb-3 break-inside-avoid">
       <button
         type="button"
         onClick={() => onOpen(index)}
         aria-label={`Open photo: ${photo.alt}`}
-        className="group block h-full w-full overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="group block w-full overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <SmartImage
-          src={photo.src}
-          alt={photo.alt}
-          loading="lazy"
-          decoding="async"
-          onLoad={(e) => {
-            const img = e.currentTarget;
-            setTall(img.naturalHeight > img.naturalWidth * 1.15);
-          }}
-          className="object-cover group-hover:scale-105"
-        />
+        <div style={{ aspectRatio: ratio ?? 4 / 3 }} className="w-full">
+          <SmartImage
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            decoding="async"
+            onMeasure={measure}
+            className="object-cover group-hover:scale-105"
+          />
+        </div>
       </button>
     </Reveal>
   );
@@ -142,7 +142,7 @@ export function Gallery() {
         </div>
       </div>
 
-      <div className="mt-16 grid auto-rows-[9.5rem] grid-flow-row-dense grid-cols-2 gap-3 sm:auto-rows-[11.5rem] lg:grid-cols-3">
+      <div className="mt-16 columns-2 gap-3 lg:columns-3">
         {grid.map((g, i) => (
           <GridTile key={g.src} photo={g} index={i} onOpen={(idx) => openLightbox(gridMedia, idx)} />
         ))}

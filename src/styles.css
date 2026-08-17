@@ -299,11 +299,6 @@ body,
 }
 
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
 
 
 /* ---------- Interaction & popup motion ---------- */
@@ -480,11 +475,6 @@ body {
   animation: korr-shimmer 1.6s linear infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .skeleton-shimmer {
-    animation: none;
-  }
-}
 
 /* ---------- Extra motion polish (desktop + mobile) ---------- */
 
@@ -517,32 +507,6 @@ body {
   }
 }
 
-/* Reduced motion: keep gentle fades, drop movement (no dead, static page) */
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 0;
-    transform: none;
-    transition: opacity 0.6s ease;
-  }
-  .is-revealed {
-    opacity: 1;
-  }
-  .rise-in,
-  .pop-in,
-  .float-in,
-  .swap-in,
-  [role="dialog"] {
-    animation-name: korr-fade-only !important;
-    animation-duration: 0.4s !important;
-  }
-  .marquee-track {
-    animation-duration: 90s !important;
-  }
-  .skeleton-shimmer {
-    animation: none !important;
-    background-image: none !important;
-  }
-}
 
 @keyframes korr-fade-only {
   from {
