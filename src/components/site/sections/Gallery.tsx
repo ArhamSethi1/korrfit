@@ -61,12 +61,10 @@ function GridTile({
           alt={photo.alt}
           loading="lazy"
           decoding="async"
-          onLoad={(e) => {
-            const img = e.currentTarget;
-            setTall(img.naturalHeight > img.naturalWidth * 1.15);
-          }}
+          onMeasure={useCallbackMeasure(setTall)}
           className="object-cover group-hover:scale-105"
         />
+
       </button>
     </Reveal>
   );
