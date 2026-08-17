@@ -26,7 +26,7 @@ function animateScrollTo(target: number) {
   const distance = end - start;
   if (Math.abs(distance) < 2) return;
 
-  if (prefersReduced() || isTouch()) {
+  if (isTouch()) {
     window.scrollTo({ top: end, behavior: "auto" });
     return;
   }
