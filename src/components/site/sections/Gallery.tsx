@@ -57,16 +57,16 @@ function GridTile({
         aria-label={`Open photo: ${photo.alt}`}
         className="group block w-full overflow-hidden rounded-2xl border border-hairline transition-all duration-500 hover:-translate-y-1 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <SmartImage
-          src={photo.src}
-          alt={photo.alt}
-          loading="lazy"
-          decoding="async"
-          onMeasure={measure}
-          wrapperClassName="h-auto"
-          style={{ aspectRatio: ratio ?? 4 / 3 }}
-          className="object-cover group-hover:scale-105"
-        />
+        <div style={{ aspectRatio: ratio ?? 4 / 3 }} className="w-full">
+          <SmartImage
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            decoding="async"
+            onMeasure={measure}
+            className="object-cover group-hover:scale-105"
+          />
+        </div>
       </button>
     </Reveal>
   );
