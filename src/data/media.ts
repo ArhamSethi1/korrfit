@@ -93,7 +93,7 @@ export const galleryPhotos: GalleryPhoto[] = [
 ];
 
 /** How many of the photos above build the masonry grid. */
-export const GRID_COUNT = 12;
+export const GRID_COUNT = 14;
 
 /** Photo shown for each stop of the interactive tour, in room order. */
 export const tourRoomImages: string[] = [
