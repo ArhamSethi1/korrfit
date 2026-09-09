@@ -24,7 +24,7 @@ import { ImagePreloader } from "@/components/site/ImagePreloader";
 
 const title = "KORR.fit — Premium Gym in Mansarovar, Jaipur";
 const description =
-  "KORR.fit is a premium gym in Mansarovar, Jaipur with certified trainers, strength, cardio, functional training, Zumba, steam and personalised plans. Book a free trial.";
+  "KORR.fit is a premium gym in Mansarovar, Jaipur with certified trainers, strength, cardio, Zumba and personalised plans. Book a free trial.";
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>) => ({
