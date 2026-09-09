@@ -108,12 +108,7 @@ export function LeadProvider({ children }: { children: ReactNode }) {
       `Mobile: ${form.phone}`,
     ];
     if (form.email) lines.push(`Email: ${form.email}`);
-    lines.push(
-      "",
-      `Goal: ${form.goal}`,
-      `Preferred day: ${form.preferredDay}`,
-      `Preferred time: ${form.preferredTime}`,
-    );
+    lines.push("", `Goal: ${form.goal}`);
     if (form.plan) lines.push("", `Plan: ${form.plan}`);
     if (form.message) lines.push("", `Anything else: ${form.message}`);
     return lines;
@@ -249,37 +244,6 @@ export function LeadProvider({ children }: { children: ReactNode }) {
                     ))}
                   </select>
                 </Field>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field id="lead-day" label="Preferred day">
-                    <select
-                      id="lead-day"
-                      value={form.preferredDay}
-                      onChange={(e) => set("preferredDay", e.target.value)}
-                      className={fieldClass}
-                    >
-                      {days.map((d) => (
-                        <option key={d} value={d}>
-                          {d}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-                  <Field id="lead-time" label="Preferred time">
-                    <select
-                      id="lead-time"
-                      value={form.preferredTime}
-                      onChange={(e) => set("preferredTime", e.target.value)}
-                      className={fieldClass}
-                    >
-                      {timeSlots.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-                </div>
               </>
             )}
 
