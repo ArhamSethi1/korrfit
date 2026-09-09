@@ -79,12 +79,12 @@ export function Hero() {
             className="rise-in mt-5 font-display text-2xl font-semibold leading-tight tracking-tight sm:mt-6 sm:text-3xl md:text-4xl"
             style={{ animationDelay: "80ms" }}
           >
-            {t("hero.headline", "Train with people who")}{" "}
-            <span className="text-primary">{t("hero.headlineAccent", "actually know your name.")}</span>
+            {t("hero.headline", "Get Fit")}{" "}
+            <span className="text-primary">{t("hero.headlineAccent", "Feel Great")}</span>
           </p>
 
           <p
-            className="rise-in mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-5 md:text-lg"
+            className="rise-in mt-4 max-w-xl text-base font-medium leading-relaxed text-foreground/85 sm:mt-5 md:text-lg"
             style={{ animationDelay: "140ms" }}
           >
             {t(
@@ -109,14 +109,21 @@ export function Hero() {
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
             </button>
-            <button
-              type="button"
-              onClick={() => openLead({ intent: "membership", source: "hero" })}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-background/50 px-6 py-4 text-sm font-semibold backdrop-blur transition-colors hover:bg-background/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            <a
+              href="#gallery"
+              className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground shadow-soft transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <CreditCard width={16} height={16} aria-hidden="true" />
-              Buy Membership
-            </button>
+              <Images width={16} height={16} aria-hidden="true" />
+              View Gallery
+            </a>
+            <a
+              href={site.tel}
+              onClick={() => trackEvent("click_call", { source: "hero" })}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-primary/60 bg-background/60 px-6 py-4 text-sm font-semibold backdrop-blur transition-colors hover:bg-background/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              <Phone width={16} height={16} aria-hidden="true" className="text-primary" />
+              Call Now
+            </a>
           </div>
 
           <div className="mt-5 flex flex-wrap gap-2.5">
