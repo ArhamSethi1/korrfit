@@ -24,25 +24,38 @@ export function FindUs() {
 
         <div className="rounded-3xl border border-hairline bg-surface/40 p-7">
           <ul className="space-y-6">
-            <li className="flex gap-4">
-              <MapPin width={18} height={18} aria-hidden="true" className="mt-0.5 shrink-0 text-primary" />
-              <div className="text-sm leading-relaxed text-muted-foreground">
-                {site.address.line1}
-                <br />
-                {site.address.line2}
-                <br />
-                {site.address.city}, {site.address.state} {site.address.postalCode}
-              </div>
+            <li>
+              <a
+                href={site.directions}
+                target="_blank"
+                rel="noreferrer"
+                className="flex gap-4 rounded-2xl border border-primary/30 bg-primary/5 p-3 transition-colors hover:border-primary hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <MapPin width={18} height={18} aria-hidden="true" className="mt-0.5 shrink-0 text-primary" />
+                <span className="text-sm font-medium leading-relaxed text-foreground">
+                  {site.address.line1}
+                  <br />
+                  {site.address.line2}
+                  <br />
+                  {site.address.city}, {site.address.state} {site.address.postalCode}
+                </span>
+              </a>
             </li>
-            <li className="flex gap-4">
-              <Phone width={18} height={18} aria-hidden="true" className="mt-0.5 shrink-0 text-primary" />
-              <a href={site.tel} className="text-sm text-muted-foreground hover:text-foreground">
+            <li>
+              <a
+                href={site.tel}
+                className="flex gap-4 rounded-2xl border border-primary/30 bg-primary/5 p-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <Phone width={18} height={18} aria-hidden="true" className="mt-0.5 shrink-0 text-primary" />
                 {site.phoneDisplay}
               </a>
             </li>
-            <li className="flex gap-4">
-              <Mail width={18} height={18} aria-hidden="true" className="mt-0.5 shrink-0 text-primary" />
-              <a href={`mailto:${site.email}`} className="text-sm text-muted-foreground hover:text-foreground">
+            <li>
+              <a
+                href={`mailto:${site.email}`}
+                className="flex gap-4 rounded-2xl border border-primary/30 bg-primary/5 p-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <Mail width={18} height={18} aria-hidden="true" className="mt-0.5 shrink-0 text-primary" />
                 {site.email}
               </a>
             </li>
@@ -66,13 +79,13 @@ export function FindUs() {
               className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
             >
               <Navigation width={15} height={15} aria-hidden="true" />
-              Get directions
+              Visit Our Gym
             </a>
             <a
               href={site.whatsapp}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-hairline bg-background/40 px-6 py-3.5 text-sm font-semibold transition-colors hover:bg-surface"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-black transition-transform duration-300 hover:-translate-y-0.5"
             >
               Message on WhatsApp
             </a>

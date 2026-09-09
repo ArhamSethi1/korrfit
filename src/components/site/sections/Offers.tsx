@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight, Expand } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
+import { VisitOurGym } from "../VisitOurGym";
 import { SmartImage } from "../SmartImage";
 import { MediaLightbox } from "../MediaLightbox";
 import { offerPosters } from "@/data/media";
@@ -89,6 +90,8 @@ export function Offers() {
           </Reveal>
         ))}
       </div>
+
+      <VisitOurGym source="offers" />
 
       {open !== null ? (
         <MediaLightbox
