@@ -1,6 +1,7 @@
 import { Check, Sparkles, Info, Dot } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
+import { VisitOurGym } from "../VisitOurGym";
 import { PricingSkeleton } from "../Skeletons";
 import { useText, useTextsLoading } from "@/lib/text";
 import { useLead } from "../LeadDialog";
@@ -203,6 +204,8 @@ export function Pricing() {
         </a>{" "}
         and we will tell you honestly.
       </p>
+
+      <VisitOurGym source="pricing" />
     </Section>
   );
 }

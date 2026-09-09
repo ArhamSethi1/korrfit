@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Play, ChevronLeft, ChevronRight, X, Images } from "lucide-react";
 import { Section, SectionHeading } from "../primitives";
 import { Reveal } from "../Reveal";
+import { VisitOurGym } from "../VisitOurGym";
 import { tourRooms, type ReviewMedia } from "@/data/content";
 import { galleryPhotos, tourVideos, allGalleryImages, tourRoomImages, GRID_COUNT } from "@/data/media";
 import { MediaLightbox } from "../MediaLightbox";
@@ -159,6 +160,8 @@ export function Gallery() {
           View all images
         </button>
       </div>
+
+      <VisitOurGym source="gallery" />
 
       <MoreMoments images={marquee} onOpen={(i) => openLightbox(marqueeMedia, i)} />
 
