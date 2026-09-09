@@ -25,24 +25,9 @@ export function ImagePreloader() {
       }
     };
 
-    const startAfterHero = () => {
-      const hero = document.querySelector<HTMLImageElement>("#home img");
-      if (!hero || hero.complete) {
-        schedule();
-        return;
-      }
-      hero.addEventListener("load", schedule, { once: true });
-      hero.addEventListener("error", schedule, { once: true });
-    };
-
-    const schedule = () => {
-      const ric = (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
-        .requestIdleCallback;
-      if (ric) ric(warm);
-      else window.setTimeout(warm, 300);
-    };
-
-    startAfterHero();
+    // Start warming right away so gallery/offer thumbnails are cached long
+    // before the visitor scrolls to them.
+    warm();
     return () => {
       cancelled = true;
     };

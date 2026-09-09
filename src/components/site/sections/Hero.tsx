@@ -2,7 +2,7 @@ import {
   MapPin,
   Star,
   ArrowRight,
-  CreditCard,
+  Images,
   Tag,
   Dumbbell,
   Phone,
@@ -20,7 +20,7 @@ import logo from "@/assets/korr-logo.png.asset.json";
 
 
 const pillClass =
-  "inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-background/40 px-4 py-2.5 text-sm font-medium text-muted-foreground backdrop-blur transition-colors hover:border-primary/40 hover:bg-background/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+  "inline-flex min-h-12 items-center gap-2 rounded-full border border-primary/40 bg-background/70 px-5 py-3 text-sm font-semibold text-foreground shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-primary hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background md:min-h-14 md:px-7 md:py-4 md:text-base";
 
 export function Hero() {
   const { openLead } = useLead();
@@ -79,12 +79,12 @@ export function Hero() {
             className="rise-in mt-5 font-display text-2xl font-semibold leading-tight tracking-tight sm:mt-6 sm:text-3xl md:text-4xl"
             style={{ animationDelay: "80ms" }}
           >
-            {t("hero.headline", "Train with people who")}{" "}
-            <span className="text-primary">{t("hero.headlineAccent", "actually know your name.")}</span>
+            {t("hero.headline", "Get Fit")}{" "}
+            <span className="text-primary">{t("hero.headlineAccent", "Feel Great")}</span>
           </p>
 
           <p
-            className="rise-in mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-5 md:text-lg"
+            className="rise-in mt-4 max-w-xl text-base font-medium leading-relaxed text-foreground/85 sm:mt-5 md:text-lg"
             style={{ animationDelay: "140ms" }}
           >
             {t(
@@ -109,41 +109,40 @@ export function Hero() {
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
             </button>
-            <button
-              type="button"
-              onClick={() => openLead({ intent: "membership", source: "hero" })}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-background/50 px-6 py-4 text-sm font-semibold backdrop-blur transition-colors hover:bg-background/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            <a
+              href="#gallery"
+              className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground shadow-soft transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <CreditCard width={16} height={16} aria-hidden="true" />
-              Buy Membership
-            </button>
-          </div>
-
-          <div className="mt-5 flex flex-wrap gap-2.5">
-            <a href="#pricing" className={pillClass}>
-              <Tag width={15} height={15} aria-hidden="true" className="text-primary" />
-              View Pricing
-            </a>
-            <a href="#amenities" className={pillClass}>
-              <Dumbbell width={15} height={15} aria-hidden="true" className="text-primary" />
-              Amenities
+              <Images width={16} height={16} aria-hidden="true" />
+              View Gallery
             </a>
             <a
               href={site.tel}
               onClick={() => trackEvent("click_call", { source: "hero" })}
-              className={pillClass}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-primary/60 bg-background/60 px-6 py-4 text-sm font-semibold backdrop-blur transition-colors hover:bg-background/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <Phone width={15} height={15} aria-hidden="true" className="text-primary" />
+              <Phone width={16} height={16} aria-hidden="true" className="text-primary" />
               Call Now
+            </a>
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-2.5 md:gap-3">
+            <a href="#pricing" className={pillClass}>
+              <Tag width={16} height={16} aria-hidden="true" className="text-primary" />
+              View Pricing
+            </a>
+            <a href="#amenities" className={pillClass}>
+              <Dumbbell width={16} height={16} aria-hidden="true" className="text-primary" />
+              Amenities
             </a>
             <a
               href={site.whatsapp}
               target="_blank"
               rel="noreferrer"
               onClick={() => trackEvent("click_whatsapp", { source: "hero" })}
-              className={pillClass}
+              className="inline-flex min-h-12 items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-black shadow-soft transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-background md:min-h-14 md:px-7 md:py-4 md:text-base"
             >
-              <WhatsAppIcon size={15} className="text-[#25D366]" />
+              <WhatsAppIcon size={17} />
               WhatsApp
             </a>
             <a
@@ -153,8 +152,8 @@ export function Hero() {
               onClick={() => trackEvent("click_directions", { source: "hero" })}
               className={pillClass}
             >
-              <Navigation width={15} height={15} aria-hidden="true" className="text-primary" />
-              Get Directions
+              <Navigation width={16} height={16} aria-hidden="true" className="text-primary" />
+              Visit Our Gym
             </a>
             <a
               href={site.instagram}
@@ -163,7 +162,7 @@ export function Hero() {
               onClick={() => trackEvent("click_instagram", { source: "hero" })}
               className={pillClass}
             >
-              <Instagram width={15} height={15} aria-hidden="true" className="text-primary" />
+              <Instagram width={16} height={16} aria-hidden="true" className="text-primary" />
               Instagram
             </a>
           </div>

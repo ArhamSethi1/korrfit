@@ -6,6 +6,7 @@ import { Section, Stars } from "../primitives";
 import { ReviewsSkeleton } from "../Skeletons";
 import { useTextsLoading } from "@/lib/text";
 import { Reveal } from "../Reveal";
+import { VisitOurGym } from "../VisitOurGym";
 import { reviews, reviewTags, type Review } from "@/data/content";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -225,6 +226,8 @@ export function Reviews() {
           Review us on Google
         </a>
       </div>
+
+      <VisitOurGym source="reviews" />
 
       {open ? (
         <div
