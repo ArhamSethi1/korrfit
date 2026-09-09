@@ -2,7 +2,7 @@ import {
   MapPin,
   Star,
   ArrowRight,
-  CreditCard,
+  Images,
   Tag,
   Dumbbell,
   Phone,
@@ -20,7 +20,7 @@ import logo from "@/assets/korr-logo.png.asset.json";
 
 
 const pillClass =
-  "inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-background/40 px-4 py-2.5 text-sm font-medium text-muted-foreground backdrop-blur transition-colors hover:border-primary/40 hover:bg-background/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+  "inline-flex min-h-12 items-center gap-2 rounded-full border border-primary/40 bg-background/70 px-5 py-3 text-sm font-semibold text-foreground shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-primary hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background md:min-h-14 md:px-7 md:py-4 md:text-base";
 
 export function Hero() {
   const { openLead } = useLead();
@@ -126,31 +126,23 @@ export function Hero() {
             </a>
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-2.5">
+          <div className="mt-5 flex flex-wrap gap-2.5 md:gap-3">
             <a href="#pricing" className={pillClass}>
-              <Tag width={15} height={15} aria-hidden="true" className="text-primary" />
+              <Tag width={16} height={16} aria-hidden="true" className="text-primary" />
               View Pricing
             </a>
             <a href="#amenities" className={pillClass}>
-              <Dumbbell width={15} height={15} aria-hidden="true" className="text-primary" />
+              <Dumbbell width={16} height={16} aria-hidden="true" className="text-primary" />
               Amenities
-            </a>
-            <a
-              href={site.tel}
-              onClick={() => trackEvent("click_call", { source: "hero" })}
-              className={pillClass}
-            >
-              <Phone width={15} height={15} aria-hidden="true" className="text-primary" />
-              Call Now
             </a>
             <a
               href={site.whatsapp}
               target="_blank"
               rel="noreferrer"
               onClick={() => trackEvent("click_whatsapp", { source: "hero" })}
-              className={pillClass}
+              className="inline-flex min-h-12 items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-black shadow-soft transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-background md:min-h-14 md:px-7 md:py-4 md:text-base"
             >
-              <WhatsAppIcon size={15} className="text-[#25D366]" />
+              <WhatsAppIcon size={17} />
               WhatsApp
             </a>
             <a
@@ -160,8 +152,8 @@ export function Hero() {
               onClick={() => trackEvent("click_directions", { source: "hero" })}
               className={pillClass}
             >
-              <Navigation width={15} height={15} aria-hidden="true" className="text-primary" />
-              Get Directions
+              <Navigation width={16} height={16} aria-hidden="true" className="text-primary" />
+              Visit Our Gym
             </a>
             <a
               href={site.instagram}
@@ -170,7 +162,7 @@ export function Hero() {
               onClick={() => trackEvent("click_instagram", { source: "hero" })}
               className={pillClass}
             >
-              <Instagram width={15} height={15} aria-hidden="true" className="text-primary" />
+              <Instagram width={16} height={16} aria-hidden="true" className="text-primary" />
               Instagram
             </a>
           </div>
