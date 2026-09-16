@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { galleryPhotos, offerPosters, tourVideos } from "@/data/media";
+import { galleryPhotos, tourVideos } from "@/data/media";
 
 const deferred = [
-  ...offerPosters.map((o) => o.image),
   ...galleryPhotos.map((p) => p.src),
   ...tourVideos.map((v) => v.poster),
 ];
@@ -15,21 +14,40 @@ const deferred = [
 export function ImagePreloader() {
   useEffect(() => {
     let cancelled = false;
+    let timer = 0;
+    let idleCallback = 0;
 
-    const warm = () => {
+    const warmNext = (index = 0) => {
       if (cancelled) return;
-      for (const src of deferred) {
-        const img = new Image();
-        img.decoding = "async";
-        img.src = src;
+      const src = deferred[index];
+      if (!src) return;
+
+      const img = new Image();
+      img.decoding = "async";
+      img.fetchPriority = "low";
+      img.src = src;
+
+      // One request at a time prevents off-screen media from competing with
+      // the first screen, fonts, navigation and form code on slower phones.
+      timer = window.setTimeout(() => warmNext(index + 1), 350);
+    };
+
+    const start = () => {
+      if ("requestIdleCallback" in window) {
+        idleCallback = window.requestIdleCallback(() => warmNext(), { timeout: 1800 });
+      } else {
+        timer = window.setTimeout(() => warmNext(), 1200);
       }
     };
 
-    // Start warming right away so gallery/offer thumbnails are cached long
-    // before the visitor scrolls to them.
-    warm();
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+
     return () => {
       cancelled = true;
+      window.removeEventListener("load", start);
+      window.clearTimeout(timer);
+      if (idleCallback && "cancelIdleCallback" in window) window.cancelIdleCallback(idleCallback);
     };
   }, []);
 
