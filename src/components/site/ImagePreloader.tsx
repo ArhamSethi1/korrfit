@@ -14,8 +14,7 @@ const deferred = [
 export function ImagePreloader() {
   useEffect(() => {
     let cancelled = false;
-    let timer = 0;
-    let idleCallback = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
 
     const warmNext = (index = 0) => {
       if (cancelled) return;
@@ -29,15 +28,11 @@ export function ImagePreloader() {
 
       // One request at a time prevents off-screen media from competing with
       // the first screen, fonts, navigation and form code on slower phones.
-      timer = window.setTimeout(() => warmNext(index + 1), 350);
+      timer = setTimeout(() => warmNext(index + 1), 350);
     };
 
     const start = () => {
-      if ("requestIdleCallback" in window) {
-        idleCallback = window.requestIdleCallback(() => warmNext(), { timeout: 1800 });
-      } else {
-        timer = window.setTimeout(() => warmNext(), 1200);
-      }
+      timer = setTimeout(() => warmNext(), 1200);
     };
 
     if (document.readyState === "complete") start();
@@ -46,8 +41,7 @@ export function ImagePreloader() {
     return () => {
       cancelled = true;
       window.removeEventListener("load", start);
-      window.clearTimeout(timer);
-      if (idleCallback && "cancelIdleCallback" in window) window.cancelIdleCallback(idleCallback);
+      if (timer) clearTimeout(timer);
     };
   }, []);
 
