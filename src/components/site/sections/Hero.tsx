@@ -29,24 +29,18 @@ export function Hero() {
   return (
     <section id="home" className="gpu relative isolate overflow-hidden">
       {/* Full-bleed hero background — portrait crop on phones, wide on desktop */}
-      <img
-        src={heroBackgroundMobile}
-        alt="The training floor at KORR.fit gym in Mansarovar, Jaipur"
-        width={1562}
-        height={1920}
-        fetchPriority="high"
-        decoding="async"
-        className="absolute inset-0 -z-20 h-full w-full object-cover object-center sm:hidden"
-      />
-      <img
-        src={heroBackground}
-        alt="The strength training floor at KORR.fit gym in Mansarovar, Jaipur"
-        width={1600}
-        height={1200}
-        fetchPriority="high"
-        decoding="async"
-        className="absolute inset-0 -z-20 hidden h-full w-full object-cover object-center sm:block"
-      />
+      <picture className="absolute inset-0 -z-20 block h-full w-full">
+        <source media="(min-width: 640px)" srcSet={heroBackground} />
+        <img
+          src={heroBackgroundMobile}
+          alt="The strength training floor at KORR.fit gym in Mansarovar, Jaipur"
+          width={1562}
+          height={1920}
+          fetchPriority="high"
+          decoding="async"
+          className="h-full w-full object-cover object-center"
+        />
+      </picture>
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,oklch(0.185_0.003_30/0.92)_0%,oklch(0.185_0.003_30/0.78)_45%,oklch(0.185_0.003_30/0.45)_100%)]"

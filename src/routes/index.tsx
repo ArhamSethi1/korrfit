@@ -21,6 +21,7 @@ import { faqs, reviews } from "@/data/content";
 import { BackToTop } from "@/components/site/BackToTop";
 import { SmoothAnchors } from "@/components/site/SmoothAnchors";
 import { ImagePreloader } from "@/components/site/ImagePreloader";
+import { heroBackground, heroBackgroundMobile } from "@/data/media";
 
 const title = "KORR.fit — Premium Gym in Mansarovar, Jaipur";
 const description =
@@ -40,7 +41,23 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "/" },
+      {
+        rel: "preload",
+        as: "image",
+        href: heroBackgroundMobile,
+        media: "(max-width: 639px)",
+        fetchPriority: "high",
+      },
+      {
+        rel: "preload",
+        as: "image",
+        href: heroBackground,
+        media: "(min-width: 640px)",
+        fetchPriority: "high",
+      },
+    ],
     scripts: [
       {
         type: "application/ld+json",
