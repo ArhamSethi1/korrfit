@@ -1,47 +1,52 @@
 import { useEffect } from "react";
-import { galleryPhotos, tourVideos } from "@/data/media";
+import { galleryPhotos, offerPosters, tourRoomImages, tourVideos } from "@/data/media";
 
-const deferred = [
-  ...galleryPhotos.map((p) => p.src),
-  ...tourVideos.map((v) => v.poster),
+const startup = [
+  ...offerPosters.map((offer) => offer.image),
+  ...tourVideos.map((video) => video.poster),
+  ...galleryPhotos.slice(0, 8).map((photo) => photo.src),
+];
+
+const remaining = [
+  ...galleryPhotos.slice(8).map((photo) => photo.src),
+  ...tourRoomImages,
 ];
 
 
 /**
- * Once the hero image has painted, quietly warm every other photo on the page
- * so gallery/amenity images are already in cache by the time they scroll in.
+ * Warm the Offers and opening Gallery assets as soon as the app starts. The
+ * rest continue at low priority after that first useful group is requested.
  */
 export function ImagePreloader() {
   useEffect(() => {
     let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    const timers: number[] = [];
+    const images: HTMLImageElement[] = [];
 
-    const warmNext = (index = 0) => {
+    const warm = (src: string, priority: "high" | "low") => {
       if (cancelled) return;
-      const src = deferred[index];
-      if (!src) return;
-
       const img = new Image();
       img.decoding = "async";
-      img.fetchPriority = "low";
+      img.fetchPriority = priority;
       img.src = src;
-
-      // One request at a time prevents off-screen media from competing with
-      // the first screen, fonts, navigation and form code on slower phones.
-      timer = setTimeout(() => warmNext(index + 1), 350);
+      images.push(img);
     };
 
-    const start = () => {
-      timer = setTimeout(() => warmNext(), 1200);
-    };
+    // Do not wait for window.load: that event itself waits for important page
+    // assets and caused the website to appear unfinished for several seconds.
+    startup.forEach((src) => warm(src, "high"));
 
-    if (document.readyState === "complete") start();
-    else window.addEventListener("load", start, { once: true });
+    remaining.forEach((src, index) => {
+      timers.push(window.setTimeout(() => warm(src, "low"), 150 + index * 80));
+    });
 
     return () => {
       cancelled = true;
-      window.removeEventListener("load", start);
-      if (timer) clearTimeout(timer);
+      timers.forEach(window.clearTimeout);
+      images.forEach((img) => {
+        img.onload = null;
+        img.onerror = null;
+      });
     };
   }, []);
 
