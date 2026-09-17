@@ -46,7 +46,8 @@ export function Offers() {
                 <SmartImage
                   src={o.image}
                   alt={`${o.title} poster`}
-                  loading="lazy"
+                  loading="eager"
+                  fetchPriority={i < 2 ? "high" : "auto"}
                   decoding="async"
                   wrapperClassName="aspect-[4/5]"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"

@@ -8,7 +8,10 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    scrollRestoration: true,
+    // This is a one-page experience with its own anchor scrolling. Restoring
+    // the initial position after hydration can pull someone back to the hero
+    // if they start scrolling while startup assets are still arriving.
+    scrollRestoration: false,
     defaultPreloadStaleTime: 0,
   });
 
