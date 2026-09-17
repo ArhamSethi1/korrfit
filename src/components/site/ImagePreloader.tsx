@@ -20,7 +20,7 @@ const remaining = [
 export function ImagePreloader() {
   useEffect(() => {
     let cancelled = false;
-    const timers: Array<ReturnType<typeof setTimeout>> = [];
+    const timers: number[] = [];
     const images: HTMLImageElement[] = [];
 
     const warm = (src: string, priority: "high" | "low") => {
