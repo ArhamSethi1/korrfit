@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import { galleryPhotos, offerPosters, tourRoomImages, tourVideos } from "@/data/media";
 
-const startup = [
-  ...offerPosters.map((offer) => offer.image),
-  ...tourVideos.map((video) => video.poster),
-  ...galleryPhotos.slice(0, 8).map((photo) => photo.src),
-];
+// Keep the critical queue intentionally small. Starting every gallery request
+// at once on desktop can starve the offer posters directly below the hero.
+const startup = offerPosters.map((offer) => offer.image);
 
 const remaining = [
-  ...galleryPhotos.slice(8).map((photo) => photo.src),
+  ...galleryPhotos.map((photo) => photo.src),
+  ...tourVideos.map((video) => video.poster),
   ...tourRoomImages,
 ];
 
@@ -37,7 +36,7 @@ export function ImagePreloader() {
     startup.forEach((src) => warm(src, "high"));
 
     remaining.forEach((src, index) => {
-      timers.push(window.setTimeout(() => warm(src, "low"), 150 + index * 80));
+      timers.push(window.setTimeout(() => warm(src, "low"), 500 + index * 120));
     });
 
     return () => {
