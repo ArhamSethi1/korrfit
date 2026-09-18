@@ -62,8 +62,8 @@ function GridTile({
           <SmartImage
             src={photo.src}
             alt={photo.alt}
-            loading={index < 8 ? "eager" : "lazy"}
-            fetchPriority={index < 4 ? "high" : "auto"}
+            loading="lazy"
+            fetchPriority="auto"
             decoding="async"
             onMeasure={measure}
             className="object-cover group-hover:scale-105"
@@ -124,8 +124,8 @@ export function Gallery() {
                 <SmartImage
                   src={v.poster}
                   alt={v.alt}
-                  loading="eager"
-                  fetchPriority={i < 4 ? "high" : "auto"}
+                  loading="lazy"
+                  fetchPriority="auto"
                   decoding="async"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
