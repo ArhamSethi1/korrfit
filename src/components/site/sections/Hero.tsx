@@ -12,7 +12,6 @@ import {
 import { site } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 import { useLead } from "../LeadDialog";
-import { WhatsAppIcon } from "../WhatsAppIcon";
 import { CountUp } from "../CountUp";
 import { useText } from "@/lib/text";
 import { heroBackground, heroBackgroundMobile } from "@/data/media";
@@ -128,16 +127,6 @@ export function Hero() {
             <a href="#amenities" className={pillClass}>
               <Dumbbell width={16} height={16} aria-hidden="true" className="text-primary" />
               Amenities
-            </a>
-            <a
-              href={site.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => trackEvent("click_whatsapp", { source: "hero" })}
-              className="inline-flex min-h-12 items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-black shadow-soft transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-background md:min-h-14 md:px-7 md:py-4 md:text-base"
-            >
-              <WhatsAppIcon size={17} />
-              WhatsApp
             </a>
             <a
               href={site.directions}
