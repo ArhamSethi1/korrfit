@@ -194,6 +194,22 @@
   transform: none;
 }
 
+/* Desktop content must be present immediately. Scroll-reveal remains a
+   mobile-only enhancement so hydration can never leave lower sections hidden. */
+@media (min-width: 1024px) {
+  .reveal,
+  .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  .is-revealed .eyebrow span[aria-hidden="true"] {
+    animation: none;
+  }
+}
+
 @keyframes korr-marquee {
   from {
     transform: translate3d(0, 0, 0);

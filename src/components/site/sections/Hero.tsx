@@ -174,7 +174,8 @@ export function Hero() {
               </span>
               <span aria-hidden="true" className="h-4 w-px bg-hairline" />
               <span className="text-sm text-muted-foreground">
-                <CountUp to={site.rating.count} suffix="+" /> Google reviews
+                <CountUp to={site.rating.count} suffix="+" className="lg:hidden" />
+                <span className="hidden lg:inline">{site.rating.count}+</span> Google reviews
               </span>
             </div>
             {[
