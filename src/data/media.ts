@@ -35,9 +35,9 @@ import zRecovery from "@/assets/media/zone-recovery.webp.asset.json";
 
 import o1 from "@/assets/media/offer-1.jpg.asset.json";
 import o2 from "@/assets/media/offer-2.jpg.asset.json";
-import o3 from "@/assets/media/offer-3.jpg.asset.json";
-import o4 from "@/assets/media/offer-4.jpg.asset.json";
-import o5 from "@/assets/media/offer-5.webp.asset.json";
+import membershipSpecial from "@/assets/media/membership-special-offer.png.asset.json";
+import zumbaFreeTrial from "@/assets/media/zumba-free-trial.png.asset.json";
+import membershipPersonalTraining from "@/assets/media/membership-personal-training.png.asset.json";
 
 import v1 from "@/assets/media/tour-1.mp4.asset.json";
 import v2 from "@/assets/media/tour-2.mp4.asset.json";
@@ -140,11 +140,11 @@ export type OfferPoster = {
 
 export const offerPosters: OfferPoster[] = [
   {
-    image: o4.url,
-    badge: "Valid till 31 Aug 2026",
-    title: "Independence Month Offer",
+    image: membershipSpecial.url,
+    badge: "Limited period offer",
+    title: "Membership Special Offer",
     blurb:
-      "Azadi Fitness Challenge: 3 months + 3 months free, 6 months + 6 months free, or 12 months with 1 month PT free. Free diet consultation on every plan.",
+      "Get 4 months for ₹5,999, 8 months for ₹8,999, or 15 months for ₹11,999. Every plan includes gym, yoga, Zumba and steam access.",
     cta: "Claim this offer",
   },
   {
@@ -156,20 +156,20 @@ export const offerPosters: OfferPoster[] = [
     cta: "Get anniversary pricing",
   },
   {
-    image: o3.url,
-    badge: "Limited period",
-    title: "Monsoon Mega Offer",
+    image: zumbaFreeTrial.url,
+    badge: "Free trial available",
+    title: "Zumba — Fitness for a Happier You",
     blurb:
-      "Lock today's price for just ₹999 and pay the rest later. Up to 8 months free, 20% off personal training and free group classes.",
-    cta: "Lock my price",
+      "Join certified Zumba trainer Salonee Purohit every Monday, Wednesday and Friday from 7:30 to 8:30 AM at no extra cost.",
+    cta: "Book a free trial",
   },
   {
-    image: o5.url,
-    badge: "3 days a week",
-    title: "Zumba Special Classes",
+    image: membershipPersonalTraining.url,
+    badge: "Expert guidance",
+    title: "Membership + Personal Training",
     blurb:
-      "Mon, Wed & Fri at 8 AM — designed for women. Dance, sweat, smile, repeat with our certified Zumba instructor.",
-    cta: "Join Zumba",
+      "Choose 3 months for ₹40,000, 6 months for ₹70,000, or 12 months for ₹1,00,000 with customised workouts, nutrition guidance and progress tracking.",
+    cta: "Start personal training",
   },
   {
     image: o2.url,
