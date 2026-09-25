@@ -322,7 +322,8 @@ function OffersEditPage() {
                       const row = document
                         .elementFromPoint(pointerEvent.clientX, pointerEvent.clientY)
                         ?.closest<HTMLElement>("[data-offer-id]");
-                      if (row?.dataset.offerId) pointerTargetId.current = row.dataset.offerId;
+                      const targetId = row?.dataset["offerId"];
+                      if (targetId) pointerTargetId.current = targetId;
                     };
                     const finishDrag = () => {
                       document.removeEventListener("pointermove", trackPointer);
