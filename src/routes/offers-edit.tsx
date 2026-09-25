@@ -315,26 +315,33 @@ function OffersEditPage() {
                   className="cursor-grab touch-none text-muted-foreground active:cursor-grabbing"
                   aria-label={`Drag ${offer.title} to reorder`}
                   onPointerDown={(event: PointerEvent<HTMLSpanElement>) => {
+                    event.preventDefault();
                     dragId.current = offer.id;
                     pointerTargetId.current = offer.id;
-                    event.currentTarget.setPointerCapture(event.pointerId);
-                  }}
-                  onPointerMove={(event: PointerEvent<HTMLSpanElement>) => {
-                    if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
-                    const row = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-offer-id]");
-                    if (row?.dataset.offerId) pointerTargetId.current = row.dataset.offerId;
-                  }}
-                  onPointerUp={(event: PointerEvent<HTMLSpanElement>) => {
-                    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-                      event.currentTarget.releasePointerCapture(event.pointerId);
-                    }
-                    const targetId = pointerTargetId.current;
-                    pointerTargetId.current = null;
-                    if (targetId) void moveOffer(targetId);
-                  }}
-                  onPointerCancel={() => {
-                    dragId.current = null;
-                    pointerTargetId.current = null;
+                    const trackPointer = (pointerEvent: globalThis.PointerEvent) => {
+                      const row = document
+                        .elementFromPoint(pointerEvent.clientX, pointerEvent.clientY)
+                        ?.closest<HTMLElement>("[data-offer-id]");
+                      if (row?.dataset.offerId) pointerTargetId.current = row.dataset.offerId;
+                    };
+                    const finishDrag = () => {
+                      document.removeEventListener("pointermove", trackPointer);
+                      document.removeEventListener("pointerup", finishDrag);
+                      document.removeEventListener("pointercancel", cancelDrag);
+                      const targetId = pointerTargetId.current;
+                      pointerTargetId.current = null;
+                      if (targetId) void moveOffer(targetId);
+                    };
+                    const cancelDrag = () => {
+                      document.removeEventListener("pointermove", trackPointer);
+                      document.removeEventListener("pointerup", finishDrag);
+                      document.removeEventListener("pointercancel", cancelDrag);
+                      dragId.current = null;
+                      pointerTargetId.current = null;
+                    };
+                    document.addEventListener("pointermove", trackPointer);
+                    document.addEventListener("pointerup", finishDrag, { once: true });
+                    document.addEventListener("pointercancel", cancelDrag, { once: true });
                   }}
                 >
                   <GripVertical aria-hidden="true" />
