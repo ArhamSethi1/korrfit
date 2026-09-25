@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent, type PointerEvent } from "react";
+import { useRef, useState, type DragEvent, type FormEvent } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { GripVertical, ImagePlus, Pencil, Plus, Trash2 } from "lucide-react";
@@ -96,7 +96,6 @@ function OffersEditPage() {
   const [busy, setBusy] = useState(false);
   const [previewKey, setPreviewKey] = useState(0);
   const dragId = useRef<string | null>(null);
-  const pointerTargetId = useRef<string | null>(null);
 
   const refresh = async (password = passcode) => {
     const next = await loadOffers({ data: { passcode: password } });
@@ -309,40 +308,27 @@ function OffersEditPage() {
               <article
                 key={offer.id}
                 data-offer-id={offer.id}
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  event.dataTransfer.dropEffect = "move";
+                }}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  void moveOffer(offer.id);
+                }}
                 className="flex items-center gap-3 rounded-lg border border-hairline bg-surface p-3"
               >
                 <span
-                  className="cursor-grab touch-none text-muted-foreground active:cursor-grabbing"
+                  draggable
+                  className="cursor-grab text-muted-foreground active:cursor-grabbing"
                   aria-label={`Drag ${offer.title} to reorder`}
-                  onPointerDown={(event: PointerEvent<HTMLSpanElement>) => {
-                    event.preventDefault();
+                  onDragStart={(event: DragEvent<HTMLSpanElement>) => {
                     dragId.current = offer.id;
-                    pointerTargetId.current = offer.id;
-                    const trackPointer = (pointerEvent: globalThis.PointerEvent) => {
-                      const row = document
-                        .elementFromPoint(pointerEvent.clientX, pointerEvent.clientY)
-                        ?.closest<HTMLElement>("[data-offer-id]");
-                      const targetId = row?.dataset["offerId"];
-                      if (targetId) pointerTargetId.current = targetId;
-                    };
-                    const finishDrag = () => {
-                      document.removeEventListener("pointermove", trackPointer);
-                      document.removeEventListener("pointerup", finishDrag);
-                      document.removeEventListener("pointercancel", cancelDrag);
-                      const targetId = pointerTargetId.current;
-                      pointerTargetId.current = null;
-                      if (targetId) void moveOffer(targetId);
-                    };
-                    const cancelDrag = () => {
-                      document.removeEventListener("pointermove", trackPointer);
-                      document.removeEventListener("pointerup", finishDrag);
-                      document.removeEventListener("pointercancel", cancelDrag);
-                      dragId.current = null;
-                      pointerTargetId.current = null;
-                    };
-                    document.addEventListener("pointermove", trackPointer);
-                    document.addEventListener("pointerup", finishDrag, { once: true });
-                    document.addEventListener("pointercancel", cancelDrag, { once: true });
+                    event.dataTransfer.effectAllowed = "move";
+                    event.dataTransfer.setData("text/plain", offer.id);
+                  }}
+                  onDragEnd={() => {
+                    dragId.current = null;
                   }}
                 >
                   <GripVertical aria-hidden="true" />
