@@ -5,18 +5,17 @@ import { Reveal } from "../Reveal";
 import { VisitOurGym } from "../VisitOurGym";
 import { SmartImage } from "../SmartImage";
 import { MediaLightbox } from "../MediaLightbox";
-import { offerPosters } from "@/data/media";
 import type { ReviewMedia } from "@/data/content";
 import { site } from "@/lib/site";
+import type { ManagedOffer } from "@/lib/offers.functions";
 
-const posterMedia: ReviewMedia[] = offerPosters.map((o) => ({
-  type: "image",
-  src: o.image,
-  alt: `${o.title} — KORR.fit offer poster`,
-}));
-
-export function Offers() {
+export function Offers({ offers }: { offers: ManagedOffer[] }) {
   const [open, setOpen] = useState<number | null>(null);
+  const posterMedia: ReviewMedia[] = offers.map((offer) => ({
+    type: "image",
+    src: offer.image,
+    alt: `${offer.title} — KORR.fit offer poster`,
+  }));
 
   return (
     <Section id="offers">
@@ -28,12 +27,11 @@ export function Offers() {
       />
 
       <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-        {offerPosters.map((o, i) => (
+        {offers.map((o, i) => (
           <Reveal
-            key={o.title}
+            key={o.id}
             delay={(i % 3) * 90}
-            // Keep the legacy Zumba card available on desktop only.
-            className={o.title === "Zumba Classes — 3 Days A Week" ? "hidden sm:block" : ""}
+            className={o.mobileVisible ? "" : "hidden sm:block"}
           >
             <article className="card-hover group relative flex h-full flex-col overflow-hidden rounded-2xl border border-hairline bg-surface/40 transition-all duration-500 md:rounded-3xl">
 
@@ -73,7 +71,7 @@ export function Offers() {
                   {o.blurb}
                 </p>
                 <a
-                  href={site.whatsapp}
+                  href={o.action || site.whatsapp}
                   target="_blank"
                   rel="noreferrer"
                   className="mt-auto inline-flex items-center gap-1.5 pt-4 text-xs font-semibold text-foreground underline-offset-4 hover:underline sm:text-sm"

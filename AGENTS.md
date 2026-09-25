@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Offers are persisted in Lovable Cloud and accessed through `src/lib/offers.functions.ts`; keep public reads server-rendered and all mutations passcode-protected because poster files live in private storage.

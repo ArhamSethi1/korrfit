@@ -56,6 +56,51 @@ export type Database = {
         }
         Relationships: []
       }
+      offers: {
+        Row: {
+          created_at: string
+          cta_action: string
+          cta_text: string
+          description: string
+          eyebrow: string
+          id: string
+          image_url: string
+          mobile_visible: boolean
+          sort_order: number
+          storage_path: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          cta_action: string
+          cta_text: string
+          description: string
+          eyebrow: string
+          id?: string
+          image_url: string
+          mobile_visible?: boolean
+          sort_order: number
+          storage_path?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          cta_action?: string
+          cta_text?: string
+          description?: string
+          eyebrow?: string
+          id?: string
+          image_url?: string
+          mobile_visible?: boolean
+          sort_order?: number
+          storage_path?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_texts: {
         Row: {
           key: string
@@ -79,7 +124,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      reorder_offers: { Args: { _ids: string[] }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never

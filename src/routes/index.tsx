@@ -22,12 +22,14 @@ import { BackToTop } from "@/components/site/BackToTop";
 import { SmoothAnchors } from "@/components/site/SmoothAnchors";
 import { ImagePreloader } from "@/components/site/ImagePreloader";
 import { heroBackground, heroBackgroundMobile } from "@/data/media";
+import { getPublicOffers } from "@/lib/offers.functions";
 
 const title = "KORR.fit — Premium Gym in Mansarovar, Jaipur";
 const description =
   "KORR.fit is a premium gym in Mansarovar, Jaipur with certified trainers, strength, cardio, Zumba and personalised plans. Book a free trial.";
 
 export const Route = createFileRoute("/")({
+  loader: async () => ({ offers: await getPublicOffers() }),
   validateSearch: (search: Record<string, unknown>) => ({
     reviews: typeof search["reviews"] === "string" ? (search["reviews"] as string) : undefined,
   }),
@@ -115,6 +117,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const { offers } = Route.useLoaderData();
   return (
     <TextProvider>
       <LeadProvider>
@@ -122,7 +125,7 @@ function Home() {
           <SiteNav />
           <main>
             <Hero />
-            <Offers />
+            <Offers offers={offers} />
             <Gallery />
             <Reviews />
             <Trainers />
@@ -139,7 +142,7 @@ function Home() {
           <BackToTop />
           <WhatsAppFloat />
           <SmoothAnchors />
-          <ImagePreloader />
+          <ImagePreloader offerImages={offers.map((offer) => offer.image)} />
         </div>
       </LeadProvider>
     </TextProvider>
