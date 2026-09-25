@@ -304,23 +304,7 @@ function OffersEditPage() {
             </form>
           ) : null}
 
-          <div
-            className="mt-6 space-y-3"
-            onPointerMove={(event) => {
-              if (!dragId.current) return;
-              const row = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-offer-id]");
-              if (row?.dataset.offerId) pointerTargetId.current = row.dataset.offerId;
-            }}
-            onPointerUp={() => {
-              const targetId = pointerTargetId.current;
-              pointerTargetId.current = null;
-              if (targetId) void moveOffer(targetId);
-            }}
-            onPointerCancel={() => {
-              dragId.current = null;
-              pointerTargetId.current = null;
-            }}
-          >
+          <div className="mt-6 space-y-3">
             {offers.map((offer) => (
               <article
                 key={offer.id}
@@ -333,6 +317,24 @@ function OffersEditPage() {
                   onPointerDown={(event: PointerEvent<HTMLSpanElement>) => {
                     dragId.current = offer.id;
                     pointerTargetId.current = offer.id;
+                    event.currentTarget.setPointerCapture(event.pointerId);
+                  }}
+                  onPointerMove={(event: PointerEvent<HTMLSpanElement>) => {
+                    if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+                    const row = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-offer-id]");
+                    if (row?.dataset.offerId) pointerTargetId.current = row.dataset.offerId;
+                  }}
+                  onPointerUp={(event: PointerEvent<HTMLSpanElement>) => {
+                    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                      event.currentTarget.releasePointerCapture(event.pointerId);
+                    }
+                    const targetId = pointerTargetId.current;
+                    pointerTargetId.current = null;
+                    if (targetId) void moveOffer(targetId);
+                  }}
+                  onPointerCancel={() => {
+                    dragId.current = null;
+                    pointerTargetId.current = null;
                   }}
                 >
                   <GripVertical aria-hidden="true" />
