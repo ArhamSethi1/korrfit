@@ -32,7 +32,7 @@ export function Offers() {
           <Reveal
             key={o.title}
             delay={(i % 3) * 90}
-            // This poster duplicates the Zumba special — hide it on small screens.
+            // Keep the legacy Zumba card available on desktop only.
             className={o.title === "Zumba Classes — 3 Days A Week" ? "hidden sm:block" : ""}
           >
             <article className="card-hover group relative flex h-full flex-col overflow-hidden rounded-2xl border border-hairline bg-surface/40 transition-all duration-500 md:rounded-3xl">
